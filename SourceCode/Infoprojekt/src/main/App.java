@@ -19,6 +19,8 @@ public class App {
         window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        window.setMinimumSize(new Dimension(500, 300));//random values, TO DO: choose better
     }
 
     private static void loadGameScreen(JFrame window){
