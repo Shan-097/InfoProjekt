@@ -9,7 +9,7 @@ import game.GamePanel;
 public class App {
     private final static int frameRate = 60;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         loadStartingScreen();
     }
 
