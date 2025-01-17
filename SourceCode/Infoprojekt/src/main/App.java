@@ -1,21 +1,24 @@
 package main;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 
 import game.GamePanel;
 
 public class App {
-    final static int frameRate = 60;
+    private final static int frameRate = 60;
 
     public static void main(String[] args) throws Exception {
-        JFrame window = new JFrame("some name");
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        loadStartingScreen(window);
+        loadStartingScreen();
     }
 
-    private static void loadStartingScreen(JFrame window){
+    public static void loadStartingScreen(){
+        JFrame window = new JFrame("some name");
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         StartingPanel startingPanel = new StartingPanel(frameRate);
         
         window.setContentPane(startingPanel);
@@ -27,7 +30,10 @@ public class App {
         startingPanel.startGameThread();
     }
 
-    private static void loadGameScreen(JFrame window){
+    public static void loadGameScreen(){
+        JFrame window = new JFrame("some name");
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
         window.pack();
