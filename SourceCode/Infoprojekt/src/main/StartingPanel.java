@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 
 
 public class StartingPanel extends JPanel implements Runnable{   
-    private final int buttonWidth = 100;
+    private final int buttonWidth = 150;
     private final int buttonHeight = 30;
     private final int frameRate;
 
