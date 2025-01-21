@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,12 +9,12 @@ import javax.swing.JPanel;
 
 
 public class StartingPanel extends JPanel implements Runnable{   
-    private final int buttonWidth = 100;
-    private final int buttonHeight = 30;
+    private final int buttonWidth = 230;
+    private final int buttonHeight = 35;
     private final int frameRate;
 
     JButton startNewGame;
-    JButton changeHotkeys;
+    JButton controls;
     JButton loadGame;
     Thread thread;
 
@@ -23,23 +24,26 @@ public class StartingPanel extends JPanel implements Runnable{
         this.setPreferredSize(null);
         this.setDoubleBuffered(true);
         this.setOpaque(true);
-        startNewGame = new JButton("Create new world");
+        startNewGame = new JButton("Create New World");
         startNewGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 App.loadGameScreen();
             }
         });
-        changeHotkeys = new JButton("Change hotkeys");
-        loadGame = new JButton("load existing world");
+        controls = new JButton("Controls");
+        loadGame = new JButton("Load Existing World");
+        startNewGame.setFont(new Font("Arial", Font.BOLD, 15));
+        loadGame.setFont(new Font("Arial", Font.BOLD, 15));
+        controls.setFont(new Font("Arial", Font.BOLD, 15));
         add(startNewGame);
-        add(changeHotkeys);
+        add(controls);
         add(loadGame);
     }
 
     public void moveButtons(){
-        startNewGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 - 40, buttonWidth, buttonHeight);
-        changeHotkeys.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
-        loadGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 + 40, buttonWidth, buttonHeight);
+        startNewGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 - 45, buttonWidth, buttonHeight);
+        controls.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 + 45, buttonWidth, buttonHeight);
+        loadGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
         this.validate();
         this.setVisible(true);
     }
