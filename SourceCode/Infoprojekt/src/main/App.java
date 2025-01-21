@@ -7,14 +7,15 @@ import javax.swing.JFrame;
 import game.GamePanel;
 
 public class App {
+    private static JFrame window;
     private final static int frameRate = 60;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         loadStartingScreen();
     }
 
     public static void loadStartingScreen(){
-        JFrame window = new JFrame("some name");
+        window = new JFrame("some name");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         StartingPanel startingPanel = new StartingPanel(frameRate);
@@ -29,7 +30,8 @@ public class App {
     }
 
     public static void loadGameScreen(){
-        JFrame window = new JFrame("some name");
+        window.dispose();
+        window = new JFrame("some name");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         GamePanel gamePanel = new GamePanel();
