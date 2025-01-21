@@ -6,17 +6,51 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-
-public class StartingPanel extends JPanel implements Runnable{   
+/**
+ * 
+ */
+public class StartingPanel extends JPanel implements Runnable{  
+    /**
+     * 
+     */
     private final int buttonWidth = 100;
+
+    /**
+     * 
+     */
     private final int buttonHeight = 30;
+
+    /**
+     * 
+     */
     private final int frameRate;
 
+    /**
+     * 
+     */
     JButton startNewGame;
+
+    /**
+     * 
+     */
     JButton changeHotkeys;
+
+    /**
+     * 
+     */
     JButton loadGame;
+
+    /**
+     * 
+     */
     Thread thread;
 
+
+
+    /**
+     * 
+     * @param pFR
+     */
     public StartingPanel(int pFR){
         frameRate = pFR;
         this.setLayout(null);
@@ -36,6 +70,9 @@ public class StartingPanel extends JPanel implements Runnable{
         add(loadGame);
     }
 
+    /**
+     * 
+     */
     public void moveButtons(){
         startNewGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 - 40, buttonWidth, buttonHeight);
         changeHotkeys.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
@@ -44,11 +81,17 @@ public class StartingPanel extends JPanel implements Runnable{
         this.setVisible(true);
     }
 
+    /**
+     * 
+     */
     public void startGameThread() {
         thread = new Thread(this);
         thread.start();
     }
 
+    /**
+     * 
+     */
     @Override
     public void run() {
         double frameDisplayTime = 1000000000 / frameRate;

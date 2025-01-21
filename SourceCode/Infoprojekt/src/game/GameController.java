@@ -1,5 +1,8 @@
 package game;
 
+/**
+ * 
+ */
 public class GameController {
     private int posXinArray;
     private int posYinArray;
@@ -7,6 +10,9 @@ public class GameController {
     private byte posYonTile;//max is 100, min is 0
 
 
+    /**
+     * 
+     */
     public GameController(){
         posXinArray = 10;
         posYinArray = 8;
@@ -14,6 +20,9 @@ public class GameController {
         posYinArray = 50;
     }
 
+    /**
+     * 
+     */
     public void update(){
 
     }

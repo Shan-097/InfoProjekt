@@ -7,24 +7,46 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+/**
+ * 
+ */
 public class GamePanel extends JPanel implements Runnable {
+    /**
+     * 
+     */
     private final int tileSize = 16;
-    private int screenWidth;
-    private int screenHeight;
-    
+
+    /**
+     * 
+     */
     Thread gameThread;
+
+    /**
+     * 
+     */
     GameController gameController;
 
+
+
+    /**
+     * 
+     */
     public GamePanel(){
         this.setPreferredSize(new Dimension(1000,600));//random values, TO DO: choose better
         this.setDoubleBuffered(true);
     }
 
+    /**
+     * 
+     */
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
+    /**
+     * 
+     */
     @Override
     public void run() {
         gameController = new GameController();
@@ -36,6 +58,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    
+    /** 
+     * @param g
+     */
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;

@@ -26,6 +26,12 @@ public class App {
     }
 
     /**
+     * 
+     */
+    public App(){
+    }
+
+    /**
      * loadStartingScreen sets the necessary values and creates 
      * the window for and of the starting screen
      * closing the others in the process
