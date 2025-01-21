@@ -1,8 +1,8 @@
 package main;
 
+import game.GameController;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -30,7 +30,13 @@ public class StartingPanel extends JPanel implements Runnable{
             }
         });
         changeHotkeys = new JButton("Change hotkeys");
-        loadGame = new JButton("load existing world");
+        loadGame = new JButton("Save Current World");
+        loadGame.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                GameController controller = new GameController();
+                controller.saveWorld();
+            }
+        });
         add(startNewGame);
         add(changeHotkeys);
         add(loadGame);

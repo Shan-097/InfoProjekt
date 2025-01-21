@@ -1,6 +1,12 @@
 package game;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class GameController {
+
+    private String worldName = "TestWorld";
+
     private int posXinArray;
     private int posYinArray;
     private byte posXonTile;//max is 100, min is 0
@@ -16,5 +22,15 @@ public class GameController {
 
     public void update(){
 
+    }
+
+    public boolean saveWorld(){
+        try (FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {
+            file.write("{\"worldName\": \"" + worldName + "\"}");
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
