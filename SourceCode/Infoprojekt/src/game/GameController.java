@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class GameController {
 
-    private String worldName = "TestWorld";
+    private final String worldName = "TestWorld";
 
     private int posXinArray;
     private int posYinArray;
