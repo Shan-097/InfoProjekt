@@ -27,6 +27,7 @@ public class StartingPanel extends JPanel implements Runnable{
         startNewGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 App.loadGameScreen();
+                thread = null;
             }
         });
         changeHotkeys = new JButton("Change hotkeys");
