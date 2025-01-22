@@ -14,21 +14,24 @@ public class Extractor extends Building {
         cost.put(3, 1);
         cost.put(4, 1);
         inputDirections = null;
-        outputDirections = new byte[]{2};
+        outputDirections = new byte[] { 2 };
     }
 
-    public Extractor(){
+    public Extractor() {
         super();
+        outputDirections = new byte[] { 2 };
     }
 
     @Override
     public HashMap<Integer, Integer> getCost() {
         return cost;
     }
+
     @Override
     public byte[] getInputDirections() {
         return inputDirections;
     }
+
     @Override
     public byte[] getOutputDirections() {
         return outputDirections;
