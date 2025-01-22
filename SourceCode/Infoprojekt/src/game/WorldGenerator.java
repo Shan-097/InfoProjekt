@@ -3,13 +3,24 @@ package game;
 import java.util.Random;
 import java.lang.Math;
 
+/**
+ * to be done
+ */
 public class WorldGenerator {
     private Field[][] map;
 
+    /**
+     * to be done
+     */
     public WorldGenerator() {
         map = new Field[Integer.MAX_VALUE][Integer.MAX_VALUE];
     }
 
+    /**
+     * to be done
+     * @param posX to be done
+     * @param posY to be done
+     */
     public void generateTile(int posX, int posY) {
         if (posX < 0 || posY < 0) {
             throw new IndexOutOfBoundsException();
@@ -29,6 +40,11 @@ public class WorldGenerator {
         }
     }
 
+    /**
+     * to be done
+     * @param ressources to be done
+     * @return to be done
+     */
     private int generateRandomTileWeighted(int[] ressources) {
         byte countRes1 = 0, countRes2 = 0, countRes3 = 0, countRes4 = 0;
         for (byte i = 0; i < ressources.length; i++) {
@@ -58,10 +74,20 @@ public class WorldGenerator {
         return 4;
     }
 
+    /**
+     * to be done
+     * @param posX to be done
+     * @param posY to be done
+     */
     private void chooseTileToBeginFuctionCollapse(int posX, int posY) {
-        //still to be implemented
+        // still to be implemented
     }
 
+    /**
+     * to be done
+     * @param posX to be done
+     * @param posY to be done
+     */
     private void collapseFunctionWave(int posX, int posY) {
         if (map[posX][posY].getResource() != null) {
             return;

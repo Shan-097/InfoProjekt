@@ -15,7 +15,7 @@ public abstract class Resource {
 
     public abstract int getResourceID();
 
-    public static Resource getResourceObjectByID(int pResourceID) {
+    public static Resource getResourceWithID(int pResourceID) {
         try {
             return (Resource) resourceOfID.get(pResourceID).getConstructor(new Class[0]).newInstance();
         } catch (Exception e) {

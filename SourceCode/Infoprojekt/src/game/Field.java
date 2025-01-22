@@ -14,7 +14,7 @@ public class Field {
     }
 
     public Field(int pResourceID) {
-        resource = Resource.getResourceObjectByID(pResourceID);
+        resource = Resource.getResourceWithID(pResourceID);
     }
 
     public Building getBuilding() {
