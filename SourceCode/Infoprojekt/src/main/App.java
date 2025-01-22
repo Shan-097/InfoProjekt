@@ -29,7 +29,7 @@ public class App {
     }
 
     public static void loadGameScreen(){
-        JFrame window = new JFrame("some name");
+        JFrame window = new JFrame("Keria");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         GamePanel gamePanel = new GamePanel();
