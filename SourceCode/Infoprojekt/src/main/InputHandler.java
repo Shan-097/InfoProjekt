@@ -12,23 +12,24 @@ public class InputHandler implements KeyListener {
     private HashMap<Character, Boolean> keysPressed;
 
     /**
-     * Standard constructor of the In
+     * Standard constructor of the InnputHandler. 
+     * Only instantiates the collection.
      */
     public InputHandler(){
         keysPressed = new HashMap<Character, Boolean>();
     }
 
     
-    /** 
-     * @param e
+    /** Is not used but has to be implemented
+     * @param e The KeyEvent
      */
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
     
-    /** 
-     * @param e
+    /** Sets the boolean wheter the key is typed or not to true or adds the entry to the collection.
+     * @param e The registered KeyEvent
      */
     @Override
     public void keyPressed(KeyEvent e) {
@@ -41,8 +42,8 @@ public class InputHandler implements KeyListener {
     }
 
     
-    /** 
-     * @param e
+    /** Sets the boolean wheter the key is typed or not to false or adds the entry to the collection.
+     * @param e The registered KeyEvent
      */
     @Override
     public void keyReleased(KeyEvent e) {
@@ -55,9 +56,9 @@ public class InputHandler implements KeyListener {
     }
     
     
-    /** 
-     * @param c
-     * @return boolean
+    /** Returns wheter a character is pressed or not.
+     * @param c The character to be checked
+     * @return boolean True if pressed otherwise false
      */
     public boolean keyIsPressed(char c){
         if(keysPressed.containsKey(c)){
