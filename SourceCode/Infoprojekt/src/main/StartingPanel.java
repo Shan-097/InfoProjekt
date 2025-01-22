@@ -7,49 +7,52 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
- * 
+ * The class of the starting panel.
+ * Controls the behavior of the window and the buttons in it.
  */
 public class StartingPanel extends JPanel implements Runnable{  
     /**
-     * 
+     * generic width of the buttons in the starting menu
      */
     private final int buttonWidth = 100;
 
     /**
-     * 
+     * generic height of the buttons in the starting menu
      */
     private final int buttonHeight = 30;
 
     /**
-     * 
+     * desired frame rate of the game, it can't be higher but can drop under load
      */
     private final int frameRate;
 
     /**
-     * 
+     * button to start a new game
      */
     JButton startNewGame;
 
     /**
-     * 
+     * button to access the menu to change the key bindings
      */
     JButton changeHotkeys;
 
     /**
-     * 
+     * button to open the menu to load an existing saved game
      */
     JButton loadGame;
 
     /**
-     * 
+     * thread that keeps the game running
      */
     Thread thread;
 
 
 
     /**
-     * 
-     * @param pFR
+     * Constructor of the starting panel. 
+     * Instantiates the buttons, adds listeners to them and 
+     * sets important values of the frame.
+     * @param pFR the desired frame rate of the starting menu
      */
     public StartingPanel(int pFR){
         frameRate = pFR;
@@ -71,7 +74,7 @@ public class StartingPanel extends JPanel implements Runnable{
     }
 
     /**
-     * 
+     * Updates the postion of the buttons so that they are centered and have the correct height and width.
      */
     public void moveButtons(){
         startNewGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 - 40, buttonWidth, buttonHeight);
@@ -82,7 +85,7 @@ public class StartingPanel extends JPanel implements Runnable{
     }
 
     /**
-     * 
+     * Starts the thread to keep updating the window.
      */
     public void startGameThread() {
         thread = new Thread(this);
@@ -90,7 +93,9 @@ public class StartingPanel extends JPanel implements Runnable{
     }
 
     /**
-     * 
+     * Executed upon starting the thread.
+     * Starts the game loop.
+     * Controls the maximum frame rate and calls @moveButtons to update their position.
      */
     @Override
     public void run() {

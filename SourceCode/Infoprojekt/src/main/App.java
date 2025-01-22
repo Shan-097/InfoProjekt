@@ -19,14 +19,14 @@ public class App {
 
     /**
      * The main method loads the game upon launch of the programm. 
-     * @param args
+     * @param args is not used but necessary
      */
     public static void main(String[] args) {
         loadStartingScreen();
     }
 
     /**
-     * 
+     * Empty and unused constructor of App
      */
     public App(){
     }
