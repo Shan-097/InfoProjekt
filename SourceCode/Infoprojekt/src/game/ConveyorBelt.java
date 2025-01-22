@@ -17,9 +17,10 @@ public class ConveyorBelt extends Building {
     }
 
     public ConveyorBelt(){
+        super();
         inputDirections = new byte[]{0};
         outputDirections = new byte[]{2};
-        super();
+        
     }
 
     @Override

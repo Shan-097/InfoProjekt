@@ -1,10 +1,18 @@
 package main;
 
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
@@ -17,6 +25,7 @@ public class StartingPanel extends JPanel implements Runnable{
     JButton controls;
     JButton loadGame;
     Thread thread;
+    BufferedImage myPicture;
 
     public StartingPanel(int pFR){
         frameRate = pFR;
@@ -38,6 +47,14 @@ public class StartingPanel extends JPanel implements Runnable{
         add(startNewGame);
         add(controls);
         add(loadGame);
+        try {
+            myPicture = ImageIO.read(new File("H:\\Informatik\\projektQ4\\Download.jpg"));
+            JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+            add(picLabel);
+        } catch (IOException e1) {
+            System.out.println("aaaaa");
+            e1.printStackTrace();
+        }
     }
 
     public void moveButtons(){
@@ -65,9 +82,16 @@ public class StartingPanel extends JPanel implements Runnable{
             delta += (currentTime - lastTime) / frameDisplayTime;
             lastTime = currentTime;
             if(delta >= 1){
+                repaint();
                 moveButtons();
                 delta--;
             }
         }
+    }
+    public void paint(Graphics g){
+        super.paint(g);
+        Graphics2D g2d = (Graphics2D)g;
+        g2d.drawImage(myPicture, this.getWidth() / 2, this.getHeight() / 2,null);
+        g2d.dispose();
     }
 }

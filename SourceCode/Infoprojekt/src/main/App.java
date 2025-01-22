@@ -14,7 +14,7 @@ public class App {
     }
 
     public static void loadStartingScreen(){
-        JFrame window = new JFrame("some name");
+        JFrame window = new JFrame("Keria");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         StartingPanel startingPanel = new StartingPanel(frameRate);
