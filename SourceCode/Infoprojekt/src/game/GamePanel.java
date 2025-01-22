@@ -8,28 +8,28 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 /**
- * 
+ * to be done
  */
 public class GamePanel extends JPanel implements Runnable {
     /**
-     * 
+     * to be done
      */
     private final int tileSize = 16;
 
     /**
-     * 
+     * to be done
      */
     Thread gameThread;
 
     /**
-     * 
+     * to be done
      */
     GameController gameController;
 
 
 
     /**
-     * 
+     * to be done
      */
     public GamePanel(){
         this.setPreferredSize(new Dimension(1000,600));//random values, TO DO: choose better
@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     /**
-     * 
+     * to be done
      */
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     /**
-     * 
+     * to be done
      */
     @Override
     public void run() {
@@ -60,7 +60,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     
     /** 
-     * @param g
+     * to be done
+     * @param g to be done
      */
     public void paintComponent(Graphics g){
         super.paintComponent(g);

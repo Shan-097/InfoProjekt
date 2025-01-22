@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 
 /**
- * 
+ * to be done
  */
 public class ConveyorBelt extends Building {
     private static HashMap<Integer, Integer> cost;
@@ -13,7 +13,8 @@ public class ConveyorBelt extends Building {
 
     
     /** 
-     * @param args
+     * to be done
+     * @param args to be done
      */
     public static void main(String[] args) {
         cost = new HashMap<Integer, Integer>(4);
@@ -24,7 +25,7 @@ public class ConveyorBelt extends Building {
     }
 
     /**
-     * 
+     * to be done
      */
     public ConveyorBelt(){
         inputDirections = new byte[]{0};
@@ -34,7 +35,8 @@ public class ConveyorBelt extends Building {
 
     
     /** 
-     * @return HashMap<Integer, Integer>
+     * to be done
+     * @return HashMap<Integer, Integer> to be done
      */
     @Override
     public HashMap<Integer, Integer> getCost() {
@@ -42,7 +44,8 @@ public class ConveyorBelt extends Building {
     }
     
     /** 
-     * @return byte[]
+     * to be done
+     * @return byte[] to be done
      */
     @Override
     public byte[] getInputDirections() {
@@ -50,7 +53,8 @@ public class ConveyorBelt extends Building {
     }
     
     /** 
-     * @return byte[]
+     * to be done
+     * @return byte[] to be done
      */
     @Override
     public byte[] getOutputDirections() {
@@ -58,7 +62,8 @@ public class ConveyorBelt extends Building {
     }
     
     /** 
-     * @param pInputDirections
+     * to be done
+     * @param pInputDirections to be done
      */
     public void setInputDirections(byte[] pInputDirections){
         if(pInputDirections.length != 1 || pInputDirections[0] < 0 || pInputDirections[0] > 4) {
@@ -69,7 +74,8 @@ public class ConveyorBelt extends Building {
     }
     
     /** 
-     * @param pOutputDirections
+     * to be done
+     * @param pOutputDirections to be done
      */
     public void setOutputDirections(byte[] pOutputDirections){
         if(pOutputDirections.length != 1 || pOutputDirections[0] < 0 || pOutputDirections[0] > 4 || pOutputDirections[0] == inputDirections[0]) {

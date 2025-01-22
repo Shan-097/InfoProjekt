@@ -1,7 +1,7 @@
 package game;
 
 /**
- * 
+ * to be done
  */
 public class GameController {
     private int posXinArray;
@@ -11,7 +11,7 @@ public class GameController {
 
 
     /**
-     * 
+     * to be done
      */
     public GameController(){
         posXinArray = 10;
@@ -21,7 +21,7 @@ public class GameController {
     }
 
     /**
-     * 
+     * to be done
      */
     public void update(){
 

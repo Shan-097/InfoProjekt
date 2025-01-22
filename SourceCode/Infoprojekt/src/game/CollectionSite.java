@@ -3,7 +3,7 @@ package game;
 import java.util.HashMap;
 
 /**
- * 
+ * to be done
  */
 public class CollectionSite extends Building {
     private static HashMap<Integer, Integer> cost;
@@ -12,7 +12,8 @@ public class CollectionSite extends Building {
 
     
     /** 
-     * @param args
+     * to be done
+     * @param args to be done
      */
     public static void main(String[] args) {
         cost = null;
@@ -21,7 +22,7 @@ public class CollectionSite extends Building {
     }
 
     /**
-     * 
+     * to be done
      */
     public CollectionSite(){
         super();
@@ -29,7 +30,8 @@ public class CollectionSite extends Building {
 
     
     /** 
-     * @return HashMap<Integer, Integer>
+     * to be done
+     * @return HashMap<Integer, Integer> to be done
      */
     @Override
     public HashMap<Integer, Integer> getCost() {
@@ -37,7 +39,8 @@ public class CollectionSite extends Building {
     }
     
     /** 
-     * @return byte[]
+     * to be done
+     * @return byte[] to be done
      */
     @Override
     public byte[] getInputDirections() {
@@ -45,7 +48,8 @@ public class CollectionSite extends Building {
     }
     
     /** 
-     * @return byte[]
+     * to be done
+     * @return byte[] to be done
      */
     @Override
     public byte[] getOutputDirections() {

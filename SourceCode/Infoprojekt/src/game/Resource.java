@@ -3,7 +3,7 @@ package game;
 import java.util.HashMap;
 
 /**
- * 
+ * to be done
  */
 public class Resource {
     private static final HashMap<Integer, String> iDMap = new HashMap<Integer, String>(5);
@@ -11,7 +11,8 @@ public class Resource {
 
     
     /** 
-     * @param args
+     * to be done
+     * @param args to be done
      */
     public static void main(String[] args) {
         iDMap.put(0, "NoRessource");
@@ -22,8 +23,8 @@ public class Resource {
     }
 
     /**
-     * 
-     * @param pResourceID
+     * to be done
+     * @param pResourceID to be done
      */
     public Resource(int pResourceID){
         resourceID = pResourceID;
@@ -31,7 +32,8 @@ public class Resource {
 
     
     /** 
-     * @return int
+     * to be done
+     * @return int to be done
      */
     public int getResourceID(){
         return resourceID;

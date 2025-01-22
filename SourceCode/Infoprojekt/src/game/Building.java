@@ -3,13 +3,13 @@ package game;
 import java.util.HashMap;
 
 /**
- * 
+ * to be done
  */
 public abstract class Building {
     private byte rotation;
 
     /**
-     * 
+     * to be done
      */
     public Building(){
         rotation = 0;
@@ -17,32 +17,34 @@ public abstract class Building {
 
     
     /** 
-     * @return byte
+     * to be done
+     * @return byte to be done
      */
     public byte getRotation(){
         return rotation;
     }
 
     /**
-     * 
-     * @return
+     * to be done
+     * @return to be done
      */
     public abstract HashMap<Integer, Integer> getCost();
 
     /**
-     * 
-     * @return
+     * to be done
+     * @return to be done
      */
     public abstract byte[] getInputDirections();
     
     /**
-     * 
-     * @return
+     * to be done
+     * @return to be done
      */
     public abstract byte[] getOutputDirections();
     
     /** 
-     * @param pRotation
+     * to be done
+     * @param pRotation to be done
      */
     public void setRotation(byte pRotation){
         rotation = pRotation;
