@@ -2,17 +2,17 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Map;
 import java.util.HashMap;
 
 /**
- * 
+ * The class of the Input handler implementing Keylistener.
+ * Every Object has a collection of all keys with wether or not they are pressed.
  */
 public class InputHandler implements KeyListener {
-    private Map<Character, Boolean> keysPressed;
+    private HashMap<Character, Boolean> keysPressed;
 
     /**
-     * 
+     * Standard constructor of the In
      */
     public InputHandler(){
         keysPressed = new HashMap<Character, Boolean>();
