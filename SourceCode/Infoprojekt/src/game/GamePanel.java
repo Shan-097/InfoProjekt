@@ -7,11 +7,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
-    private final int tileSize = 50;
+    private final int tileSize = 100;
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int frameWidth;  
     int frameHeight;
@@ -38,16 +39,29 @@ public class GamePanel extends JPanel implements Runnable {
         while (gameThread != null) {
             //update
             gameController.update();
+
+            // Movement prove of concept: player moves one square to the left every second
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            a -= 1;
+
             //draw updated
             repaint();
         }
     }
-
     int TileCenterX; // Coordinates of topleft corner of the player square
     int TileCenterY;
 
     int a = 50;// tile on which player is standing, center tile Field-coords
     int b = 50;
+
+    // temp please ignore!!
+    int aHelp = a-4;
+    int bHelp = a-4;
+    // temp
 
     int indexCurrentX;
     int indexCurrentY;
@@ -67,21 +81,28 @@ public class GamePanel extends JPanel implements Runnable {
         TileCenterX = ((frameWidth - tileSize) / 2);
         TileCenterY = ((frameHeight - tileSize) / 2);
 
-        for(int i = 0; i<numWidth; i++){
+        for(int i = 0; i<numWidth; i++){ // TODO: add exception for border of world (arrayOutOfBounds)
             for(int j = 0; j<numHeight; j++){
                 indexCurrentX = a-(numWidth / 2)+(i*1);
                 indexCurrentY = b-(numHeight / 2)+(j*1);
 
-                if(indexCurrentX == a && indexCurrentY == b){
-                    g2d.setColor(Color.YELLOW);
-                }else if(field[indexCurrentX][indexCurrentY] == 'X'){
-                    g2d.setColor(Color.BLUE);
+                //if(indexCurrentX == a && indexCurrentY == b){
+                //    g2d.setColor(Color.YELLOW); // highlight current player square yellow
+                //} else 
+                if(indexCurrentX == aHelp && indexCurrentY == bHelp) {
+                    g2d.setColor(Color.BLUE); // paint random square blue to visualize movement
+                } else if(field[indexCurrentX][indexCurrentY] == 'X'){
+                    g2d.setColor(Color.WHITE);
                 } else {
                     g2d.setColor(Color.GRAY);
                 }
                 g2d.fillRect((TileCenterX-(tileSize*(a-indexCurrentX))), (TileCenterY-(tileSize*(b-indexCurrentY))), tileSize, tileSize); //find location of the square relative to player square
             }
         } 
+        // temp player dot
+        g2d.setColor(Color.BLACK);
+        g2d.fillOval((int)(TileCenterX + (0.125*tileSize)),(int) (TileCenterY + (0.125*tileSize)), (int)(tileSize*0.75), (int)(tileSize*0.75));
+
         g2d.dispose();
     }
     
