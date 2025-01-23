@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 import java.lang.Math;
 
@@ -18,12 +20,16 @@ public class WorldGenerator {
 
     /**
      * to be done
+     * 
      * @param posX to be done
      * @param posY to be done
      */
     public void generateTile(int posX, int posY) {
-        if (posX < 0 || posY < 0) {
+        if (posX < 0 || posY < 0 || map.length >= posX || map[0].length >= posY) {
             throw new IndexOutOfBoundsException();
+        }
+        if (map[posX][posY] != null) {
+            return;
         }
         chooseTileToBeginFuctionCollapse(posX, posY);
         if (posY != 0) {
@@ -42,6 +48,7 @@ public class WorldGenerator {
 
     /**
      * to be done
+     * 
      * @param ressources to be done
      * @return to be done
      */
@@ -76,6 +83,7 @@ public class WorldGenerator {
 
     /**
      * to be done
+     * 
      * @param posX to be done
      * @param posY to be done
      */
@@ -85,110 +93,59 @@ public class WorldGenerator {
 
     /**
      * to be done
+     * 
      * @param posX to be done
      * @param posY to be done
      */
     private void collapseFunctionWave(int posX, int posY) {
-        if (map[posX][posY].getResource() != null) {
+        if (map[posX][posY] != null) {
             return;
         }
-        boolean aboveKnown = false;
-        boolean belowKnown = false;
-        boolean leftKnown = false;
-        boolean rightKnown = false;
-        byte knownTiles = 0;
+        byte tilesWithResources = 0;
+        HashSet<Integer> neighboringResources = new HashSet<Integer>(4);
         if (posY != 0 && map[posX][posY - 1] != null) {
-            knownTiles++;
-            aboveKnown = true;
+            if (map[posX][posY - 1].getResourceID() != 0) {
+                neighboringResources.add(map[posX][posY - 1].getResourceID());
+                tilesWithResources++;
+            }
         } else if (posY != map[0].length - 1 && map[posX][posY + 1] != null) {
-            knownTiles++;
-            belowKnown = true;
+            if (map[posX][posY + 1].getResourceID() != 0) {
+                neighboringResources.add(map[posX][posY + 1].getResourceID());
+                tilesWithResources++;
+            }
         }
         if (posX != 0 && map[posX - 1][posY] != null) {
-            knownTiles++;
-            leftKnown = true;
+            if (map[posX - 1][posY].getResourceID() != 0) {
+                neighboringResources.add(map[posX - 1][posY].getResourceID());
+                tilesWithResources++;
+            }
         } else if (posX != map.length - 1 && map[posX + 1][posY] != null) {
-            knownTiles++;
-            rightKnown = true;
-        }
-        int[] ressourcesOfTiles = new int[knownTiles];
-        byte counter = 0;
-        if (posY != 0 && map[posX][posY - 1] != null) {
-            ressourcesOfTiles[counter] = map[posX][posY - 1].getResourceID();
-            counter++;
-        } else if (posY != map[0].length - 1 && map[posX][posY + 1] != null) {
-            ressourcesOfTiles[counter] = map[posX][posY + 1].getResourceID();
-            counter++;
-        }
-        if (posX != 0 && map[posX - 1][posY] != null) {
-            ressourcesOfTiles[counter] = map[posX - 1][posY].getResourceID();
-            counter++;
-        } else if (posX != map.length - 1 && map[posX + 1][posY] != null) {
-            ressourcesOfTiles[counter] = map[posX + 1][posY].getResourceID();
+            if (map[posX + 1][posY].getResourceID() != 0) {
+                neighboringResources.add(map[posX + 1][posY].getResourceID());
+                tilesWithResources++;
+            }
         }
 
-        if (knownTiles == 1 || knownTiles == 0) {
+        if (tilesWithResources < 2) {
             return;
-        } else if (knownTiles == 2) {
-            if (ressourcesOfTiles[0] != 0 && ressourcesOfTiles[1] != 0
-                    && ressourcesOfTiles[0] == ressourcesOfTiles[1]) {
-                map[posX][posY] = new Field(ressourcesOfTiles[0]);
-            } else if (ressourcesOfTiles[0] != 0 && ressourcesOfTiles[1] != 0
-                    && ressourcesOfTiles[0] != ressourcesOfTiles[1]) {
-                map[posX][posY] = new Field(0);
+        } else {
+            if (neighboringResources.size() == 1) {
+                map[posX][posY] = new Field((int) neighboringResources.toArray()[0]);
             } else {
-                return;
+                map[posX][posY] = new Field(0);
             }
-        } else if (knownTiles == 3) {
-            if (ressourcesOfTiles[0] != 0 && ressourcesOfTiles[1] != 0 && ressourcesOfTiles[2] != 0) {// kein
-                                                                                                      // Hintergrund
-                if (ressourcesOfTiles[0] == ressourcesOfTiles[1] && ressourcesOfTiles[1] == ressourcesOfTiles[2]) {
-                    map[posX][posY] = new Field(ressourcesOfTiles[0]);
-                } else {
-                    map[posX][posY] = new Field(0);
-                }
-            } else if (ressourcesOfTiles[0] == 0 ^ ressourcesOfTiles[1] == 0 ^ ressourcesOfTiles[2] == 0) {// einmal
-                                                                                                           // Hintergrund
-                if (ressourcesOfTiles[0] == 0) {
-                    if (ressourcesOfTiles[1] == ressourcesOfTiles[2]) {
-                        map[posX][posY] = new Field(ressourcesOfTiles[1]);
-                    } else {
-                        map[posX][posY] = new Field(0);
-                    }
-                } else if (ressourcesOfTiles[1] == 0) {
-                    if (ressourcesOfTiles[0] == ressourcesOfTiles[2]) {
-                        map[posX][posY] = new Field(ressourcesOfTiles[0]);
-                    } else {
-                        map[posX][posY] = new Field(0);
-                    }
-                } else {
-                    if (ressourcesOfTiles[0] == ressourcesOfTiles[1]) {
-                        map[posX][posY] = new Field(ressourcesOfTiles[0]);
-                    } else {
-                        map[posX][posY] = new Field(0);
-                    }
-                }
-            } else if (ressourcesOfTiles[0] == 0 && ressourcesOfTiles[1] == 0 && ressourcesOfTiles[2] == 0) {// nur
-                                                                                                             // Hintergrund
-                return;
-            } else {// einmal kein Hintergrund
-                return;
-            }
-        } else if (knownTiles == 4) {
-            return;
-            // to do
         }
 
-        if (!aboveKnown && posY != 0) {
+        if (posY != 0) {
             collapseFunctionWave(posX, posY - 1);
         }
-        if (!belowKnown && posY != map[0].length - 1) {
+        if (posY != map[0].length - 1) {
             collapseFunctionWave(posX, posY + 1);
         }
-        if (!leftKnown && posX != 0) {
+        if (posX != 0) {
             collapseFunctionWave(posX - 1, posY);
         }
-        if (!rightKnown && posX != map.length - 1) {
+        if (posX != map.length - 1) {
             collapseFunctionWave(posX + 1, posY);
         }
     }
