@@ -2,6 +2,7 @@ package game;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import org.json.JSONObject;
 
 public class GameController {
 
@@ -25,8 +26,12 @@ public class GameController {
     }
 
     public boolean saveWorld(){
-        try (FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {
-            file.write("{\"worldName\": \"" + worldName + "\"}");
+        try (FileWriter file = new FileWriter("saves/" + worldName + ".json")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("worldName", worldName);
+            jsonObject.put("posX", posXinArray);
+            jsonObject.put("posY", posYinArray);
+            file.write(jsonObject.toString());
             return true;
         } catch (IOException e) {
             e.printStackTrace();
