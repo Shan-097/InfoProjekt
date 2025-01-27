@@ -92,6 +92,7 @@ public class StartingPanel extends JPanel implements Runnable{
         super.paint(g);
         Graphics2D g2d = (Graphics2D)g;
         g2d.drawImage(myPicture, this.getWidth() / 2, this.getHeight() / 2,null);
+        g2d.drawImage(myPicture, this.getWidth() / 2 + 200, this.getHeight() / 2 + 200,null);
         g2d.dispose();
     }
 }

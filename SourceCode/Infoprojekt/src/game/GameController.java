@@ -17,4 +17,5 @@ public class GameController {
     public void update(){
 
     }
+    // pls: variable to tell me what direction player is moving in
 }

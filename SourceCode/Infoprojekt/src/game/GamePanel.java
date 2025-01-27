@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
-    private final int tileSize = 100;
+    private final int tileSize = 64;
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int frameWidth;  
     int frameHeight;
@@ -46,7 +46,8 @@ public class GamePanel extends JPanel implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            a -= 1;
+            //a -= 1;
+            
 
             //draw updated
             repaint();
@@ -57,6 +58,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     int a = 50;// tile on which player is standing, center tile Field-coords
     int b = 50;
+
+    int posXonTile = 0;
+    int posYonTile = 0;
 
     // temp please ignore!!
     int aHelp = a-4;
@@ -96,7 +100,11 @@ public class GamePanel extends JPanel implements Runnable {
                 } else {
                     g2d.setColor(Color.GRAY);
                 }
-                g2d.fillRect((TileCenterX-(tileSize*(a-indexCurrentX))), (TileCenterY-(tileSize*(b-indexCurrentY))), tileSize, tileSize); //find location of the square relative to player square
+                // lagere die coords berechnung von fillRect aus, berechne mithilfe je 1/10 square, musst wissen wo TileCenter liegt (ändere Tilecenter je nachdem)
+                // diagonal sollte auch (erweiterbar) möglich sein; free movement auf gesamten bildschirm; nur der hintergrund bewegt sich
+                // int posXonTile/posYonTile von GameController (relativ zu TileCenterX/Y)
+
+                g2d.fillRect((int)(TileCenterX-(tileSize*((a-indexCurrentX)*0.9))), (TileCenterY-(tileSize*(b-indexCurrentY))), tileSize, tileSize); //find location of the square relative to player square
             }
         } 
         // temp player dot
