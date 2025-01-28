@@ -26,8 +26,8 @@ public class GameController {
         posXonTile = 50;
         posYinArray = 50;
 
-        worldMap.add(new WorldTile(TileValue.copperore));
-        worldMap.add(new WorldTile(TileValue.ironore));
+        worldMap.add(new WorldTile(0, 0, TileValue.copperore));
+        worldMap.add(new WorldTile(1, 0, TileValue.ironore));
     }
 
     public void update(){
@@ -43,9 +43,7 @@ public class GameController {
 
             JSONArray tilesArray = new JSONArray();
             for (WorldTile tile : worldMap) {
-                JSONObject tileJson = new JSONObject();
-                tileJson.put("value", tile.getValue());
-                tilesArray.put(tileJson);
+                tilesArray.put(tile.toJSON());
             }
 
             jsonObject.put("worldMap", tilesArray);
