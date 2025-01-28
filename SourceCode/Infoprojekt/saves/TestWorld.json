@@ -1,1 +1,9 @@
-{"posX":10,"posY":50,"worldName":"TestWorld"}
+{
+    "posX": 10,
+    "posY": 50,
+    "worldMap": [
+        {"value": "copperore"},
+        {"value": "ironore"}
+    ],
+    "worldName": "TestWorld"
+}
