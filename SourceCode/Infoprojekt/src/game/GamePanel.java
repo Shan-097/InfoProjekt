@@ -2,19 +2,23 @@ package game;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
     private final int tileSize = 64;
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    int frameWidth;  
+    int frameWidth; 
     int frameHeight;
 
     int numWidth; // number of squares on the screen 
@@ -23,9 +27,19 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     GameController gameController;
 
+    BufferedImage grass;
+
     public GamePanel(){
         this.setPreferredSize(new Dimension(1000,600)); //random values, TO DO: choose better
         this.setDoubleBuffered(true);
+
+        try {
+            grass = ImageIO.read(new File("H:\\Informatik\\projektQ4\\MajasBranch\\Graphics\\between grass (64x64).png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JLabel picLabel = new JLabel(new ImageIcon(grass));
+        add(picLabel);
     }
 
     public void startGameThread() {
@@ -40,14 +54,17 @@ public class GamePanel extends JPanel implements Runnable {
             //update
             gameController.update();
 
-            // Movement prove of concept: player moves one square to the left every second
+            posXinArray = gameController.getPosX(); 
+            posYinArray = gameController.getPosY();
+            calcMovement(gameController.getDirection());
+
+            // wait so during testing, it doens't get overwhelmed
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //a -= 1;
-            
+            posXinArray += 1;
 
             //draw updated
             repaint();
@@ -56,26 +73,28 @@ public class GamePanel extends JPanel implements Runnable {
     int TileCenterX; // Coordinates of topleft corner of the player square
     int TileCenterY;
 
-    int a = 50;// tile on which player is standing, center tile Field-coords
-    int b = 50;
+    int posXinArray = 50;// tile on which player is standing, center tile Field-coords
+    int posYinArray = 50;
 
     int posXonTile = 0;
     int posYonTile = 0;
 
     // temp please ignore!!
-    int aHelp = a-4;
-    int bHelp = a-4;
+    int aHelp = posXinArray-4;
+    int bHelp = posYinArray-4;
     // temp
 
     int indexCurrentX;
     int indexCurrentY;
+
+    int movementX;
+    int movementY;
 
     char[][] field = testField();
     public void paintComponent(Graphics g){ // paint() oder paintComponent() ???
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
 
-        // here cuz this.getHeight only works in paint()
         frameWidth = this.getWidth(); 
         frameHeight = this.getHeight();
 
@@ -87,24 +106,27 @@ public class GamePanel extends JPanel implements Runnable {
 
         for(int i = 0; i<numWidth; i++){ // TODO: add exception for border of world (arrayOutOfBounds)
             for(int j = 0; j<numHeight; j++){
-                indexCurrentX = a-(numWidth / 2)+(i*1);
-                indexCurrentY = b-(numHeight / 2)+(j*1);
+                indexCurrentX = posXinArray-(numWidth / 2)+(i*1);
+                indexCurrentY = posYinArray-(numHeight / 2)+(j*1);
 
-                //if(indexCurrentX == a && indexCurrentY == b){
-                //    g2d.setColor(Color.YELLOW); // highlight current player square yellow
-                //} else 
-                if(indexCurrentX == aHelp && indexCurrentY == bHelp) {
-                    g2d.setColor(Color.BLUE); // paint random square blue to visualize movement
-                } else if(field[indexCurrentX][indexCurrentY] == 'X'){
+                if(indexCurrentX == posXinArray && indexCurrentY == posYinArray){
+                    g2d.setColor(Color.YELLOW); // highlight current player square yellow
+                }
+                
+                 else if(field[indexCurrentX][indexCurrentY] == 'X'){
                     g2d.setColor(Color.WHITE);
                 } else {
                     g2d.setColor(Color.GRAY);
                 }
                 // lagere die coords berechnung von fillRect aus, berechne mithilfe je 1/10 square, musst wissen wo TileCenter liegt (ändere Tilecenter je nachdem)
-                // diagonal sollte auch (erweiterbar) möglich sein; free movement auf gesamten bildschirm; nur der hintergrund bewegt sich
-                // int posXonTile/posYonTile von GameController (relativ zu TileCenterX/Y)
+                movementX = (int)(TileCenterX-(gameController.getOffsetX()*tileSize)-(tileSize*(posXinArray-indexCurrentX)));
+                movementY = (int)(TileCenterY-(gameController.getOffsetY()*tileSize)-(tileSize*(posYinArray-indexCurrentY)));
 
-                g2d.fillRect((int)(TileCenterX-(tileSize*((a-indexCurrentX)*0.9))), (TileCenterY-(tileSize*(b-indexCurrentY))), tileSize, tileSize); //find location of the square relative to player square
+                g2d.drawImage(grass, movementX, movementY,null);
+                if(indexCurrentX == aHelp && indexCurrentY == bHelp) {
+                    g2d.setColor(Color.BLUE); // paint random square blue to visualize movement
+                    g2d.fillRect(movementX, movementY, tileSize, tileSize); //find location of the square relative to player square
+                }
             }
         } 
         // temp player dot
@@ -113,7 +135,21 @@ public class GamePanel extends JPanel implements Runnable {
 
         g2d.dispose();
     }
-    
+
+
+    // Q W E 
+    // A   D
+    // Y S C
+    public void calcMovement(char mov) {
+
+        if(mov == 'Q' || mov == 'W' || mov == 'E') {
+        } else if(mov == 'Y' || mov == 'S' || mov == 'C') {
+        }
+        if(mov == 'Q' || mov == 'A' || mov == 'Y') {
+        } else if (mov == 'E' || mov == 'D' || mov == 'C') {
+        }
+    }
+
     public char[][] testField(){ // 2D array with checkerboard pattern to test the paint method
         int rows = 100; 
         int cols = 100; 

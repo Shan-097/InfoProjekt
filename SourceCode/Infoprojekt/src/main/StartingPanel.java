@@ -48,7 +48,7 @@ public class StartingPanel extends JPanel implements Runnable{
         add(controls);
         add(loadGame);
         try {
-            myPicture = ImageIO.read(new File("H:\\Informatik\\projektQ4\\Download.jpg"));
+            myPicture = ImageIO.read(new File("H:\\Informatik\\projektQ4\\MajasBranch\\Graphics\\grass (64x64).png"));
             JLabel picLabel = new JLabel(new ImageIcon(myPicture));
             add(picLabel);
         } catch (IOException e1) {
@@ -91,8 +91,8 @@ public class StartingPanel extends JPanel implements Runnable{
     public void paint(Graphics g){
         super.paint(g);
         Graphics2D g2d = (Graphics2D)g;
-        g2d.drawImage(myPicture, this.getWidth() / 2, this.getHeight() / 2,null);
-        g2d.drawImage(myPicture, this.getWidth() / 2 + 200, this.getHeight() / 2 + 200,null);
+        //g2d.drawImage(myPicture, this.getWidth() / 2, this.getHeight() / 2,null);
+        //g2d.drawImage(myPicture, this.getWidth() / 2 + 200, this.getHeight() / 2 + 200,null);
         g2d.dispose();
     }
 }

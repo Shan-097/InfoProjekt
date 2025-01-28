@@ -8,8 +8,8 @@ public class GameController {
 
 
     public GameController(){
-        posXinArray = 10;
-        posYinArray = 8;
+        posXinArray = 50;
+        posYinArray = 50;
         posXonTile = 50;
         posYinArray = 50;
     }
@@ -17,5 +17,23 @@ public class GameController {
     public void update(){
 
     }
+
+    public int getPosX() {
+        return posXinArray;
+    }
+    public int getPosY() {
+        return posYinArray;
+    }
+    public char getDirection() {
+        return 'A';
+    }
+    public float getOffsetX() {
+        return 0;
+    }
+    public float getOffsetY() {
+        return 0;
+    }
+
+
     // pls: variable to tell me what direction player is moving in
 }
