@@ -4,7 +4,7 @@ public class WorldGenerator {
     private Field[][] map;
 
     public WorldGenerator() {
-        map = new Field[Integer.MAX_VALUE][Integer.MAX_VALUE];
+        map = new Field[1000][1000];
     }
 
     public void generateTile(int posX, int posY) {
