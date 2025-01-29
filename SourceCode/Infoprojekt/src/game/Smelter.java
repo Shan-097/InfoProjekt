@@ -3,18 +3,18 @@ package game;
 import java.util.HashMap;
 
 public class Smelter extends Building {
-    private static HashMap<Integer, Integer> cost;
-    private static byte[] inputDirections;
-    private static byte[] outputDirections;
+    private static final HashMap<Integer, Integer> COST;
+    private static final byte[] INPUT_DIRECTIONS;
+    private static final byte[] OUTPUT_DIRECTIONS;
 
-    public static void main(String[] args) {
-        cost = new HashMap<Integer, Integer>(4);
-        cost.put(1, 1);
-        cost.put(2, 1);
-        cost.put(3, 1);
-        cost.put(4, 1);
-        inputDirections = new byte[]{0};
-        outputDirections = new byte[]{2};
+    static {
+        COST = new HashMap<Integer, Integer>(4);
+        COST.put(1, 1);
+        COST.put(2, 1);
+        COST.put(3, 1);
+        COST.put(4, 1);
+        INPUT_DIRECTIONS = new byte[]{0};
+        OUTPUT_DIRECTIONS = new byte[]{2};
     }
 
     public Smelter(){
@@ -23,14 +23,14 @@ public class Smelter extends Building {
 
     @Override
     public HashMap<Integer, Integer> getCost() {
-        return cost;
+        return COST;
     }
     @Override
     public byte[] getInputDirections() {
-        return inputDirections;
+        return INPUT_DIRECTIONS;
     }
     @Override
     public byte[] getOutputDirections() {
-        return outputDirections;
+        return OUTPUT_DIRECTIONS;
     }
 }

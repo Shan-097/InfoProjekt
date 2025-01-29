@@ -3,14 +3,14 @@ package game;
 import java.util.HashMap;
 
 public class CollectionSite extends Building {
-    private static HashMap<Integer, Integer> cost;
-    private static byte[] inputDirections;
-    private static byte[] outputDirections;
+    private static final HashMap<Integer, Integer> COST;
+    private static final byte[] INPUT_DIRECTIONS;
+    private static final byte[] OUTPUT_DIRECTIONS;
 
-    public static void main(String[] args) {
-        cost = null;
-        inputDirections = new byte[]{(byte) 0, (byte) 1, (byte) 3, (byte) 4};
-        outputDirections = null;
+    static {
+        COST = null;
+        INPUT_DIRECTIONS = new byte[]{(byte) 0, (byte) 1, (byte) 3, (byte) 4};
+        OUTPUT_DIRECTIONS = new byte[0];
     }
 
     public CollectionSite(){
@@ -19,14 +19,14 @@ public class CollectionSite extends Building {
 
     @Override
     public HashMap<Integer, Integer> getCost() {
-        return cost;
+        return COST;
     }
     @Override
     public byte[] getInputDirections() {
-        return inputDirections;
+        return INPUT_DIRECTIONS;
     }
     @Override
     public byte[] getOutputDirections() {
-        return outputDirections;
+        return OUTPUT_DIRECTIONS;
     }
 }

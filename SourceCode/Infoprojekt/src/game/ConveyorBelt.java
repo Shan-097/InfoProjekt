@@ -4,28 +4,27 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 
 public class ConveyorBelt extends Building {
-    private static HashMap<Integer, Integer> cost;
+    private static final HashMap<Integer, Integer> COST;
     private byte[] inputDirections;
     private byte[] outputDirections;
 
-    public static void main(String[] args) {
-        cost = new HashMap<Integer, Integer>(4);
-        cost.put(1, 1);
-        cost.put(2, 1);
-        cost.put(3, 1);
-        cost.put(4, 1);
+    static {
+        COST = new HashMap<Integer, Integer>(4);
+        COST.put(1, 1);
+        COST.put(2, 1);
+        COST.put(3, 1);
+        COST.put(4, 1);
     }
 
     public ConveyorBelt() {
         super();
         inputDirections = new byte[] { 0 };
         outputDirections = new byte[] { 2 };
-
     }
 
     @Override
     public HashMap<Integer, Integer> getCost() {
-        return cost;
+        return COST;
     }
 
     @Override
