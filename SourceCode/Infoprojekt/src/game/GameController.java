@@ -35,6 +35,14 @@ public class GameController {
      */
     private byte posYonTile;//max is 50, min is -50
 
+    // Q W E 
+    // A   D
+    // Y S C
+    /**
+     * to be done
+     */
+    private char movementDirection;
+
     /**
      * to be done
      */
@@ -48,10 +56,10 @@ public class GameController {
     public GameController() {
         inventory = new HashMap<Item, Integer>();
         wGenerator = new WorldGenerator();
-        posXinArray = 10;
-        posYinArray = 8;
-        posXonTile = 50;
+        posXinArray = 50;
         posYinArray = 50;
+        posXonTile = 0;
+        posYinArray = 0;
     }
 
 
@@ -151,7 +159,7 @@ public class GameController {
      * to be done
      * @return int to be done
      */
-    public int getXKoordinateInArray(){
+    public int getPosX(){
         return posXinArray;
     }
 
@@ -159,7 +167,7 @@ public class GameController {
      * to be done
      * @return int to be done
      */
-    public int getYKoordinateInArray(){
+    public int getPosY(){
         return posYinArray;
     }
 
@@ -167,7 +175,7 @@ public class GameController {
      * to be done
      * @return byte to be done
      */
-    public byte getXKoordinateOnTile(){
+    public byte getOffsetX(){
         return posXonTile;
     }
 
@@ -175,10 +183,17 @@ public class GameController {
      * to be done
      * @return byte to be done
      */
-    public byte getYKoordinateOnTile(){
+    public byte getOffsetY(){
         return posYonTile;
     }
 
+    /**
+     * to be done
+     * @return char to be done
+     */
+    public char getDirection(){
+        return movementDirection;
+    }
 
 
     /**

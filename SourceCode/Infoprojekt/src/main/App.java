@@ -51,7 +51,7 @@ public class App {
      * closing the others in the process
      */
     public static void loadStartingScreen(){
-        window = new JFrame("some name");
+        window = new JFrame("Keria");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         StartingPanel startingPanel = new StartingPanel(FRAME_RATE);
@@ -72,7 +72,7 @@ public class App {
      */
     public static void loadGameScreen(){
         window.dispose();
-        window = new JFrame("some name");
+        window = new JFrame("Keria");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         GamePanel gamePanel = new GamePanel(FRAME_RATE);
