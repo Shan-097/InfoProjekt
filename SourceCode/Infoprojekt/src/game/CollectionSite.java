@@ -18,6 +18,11 @@ public class CollectionSite extends Building {
     }
 
     @Override
+    public boolean addItem(Item item){
+        return GameController.addItemToInventory(item);
+    }
+
+    @Override
     public HashMap<Integer, Integer> getCost() {
         return COST;
     }

@@ -1,15 +1,18 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameController {
-    private int posXinArray;
-    private int posYinArray;
-    private byte posXonTile;// max is 100, min is 0
-    private byte posYonTile;// max is 100, min is 0
+    private static HashMap<Item, Integer> inventory;
+    private static int posXinArray;
+    private static int posYinArray;
+    private static byte posXonTile;// max is 50, min is -50
+    private static byte posYonTile;// max is 50, min is -50
     private WorldGenerator wGenerator;
 
     public GameController() {
+        inventory = new HashMap<Item, Integer>();
         wGenerator = new WorldGenerator();
         posXinArray = 10;
         posYinArray = 8;
@@ -82,6 +85,34 @@ public class GameController {
             }
         }
         return listOfStartingPoints;
+    }
+
+    public static boolean addItemToInventory(Item item){
+        if (inventory.containsKey(item)){
+            if (inventory.get(item) == Integer.MAX_VALUE) {
+                return false;
+            }
+            inventory.replace(item, inventory.get(item) + 1);
+        } else {
+            inventory.put(item, 1);
+        }
+        return true;
+    }
+
+    public int getXKoordinateInArray(){
+        return posXinArray;
+    }
+
+    public int getYKoordinateInArray(){
+        return posYinArray;
+    }
+    
+    public int getXKoordinateOnTile(){
+        return posXonTile;
+    }
+    
+    public int getYKoordinateOnTile(){
+        return posYonTile;
     }
 
     private class Tuple{

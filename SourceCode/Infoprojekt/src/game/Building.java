@@ -1,13 +1,30 @@
 package game;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public abstract class Building {
     private byte rotation;
-    private HashMap<Item, Integer> content;
+    private LinkedList<Item> content;
 
     public Building() {
         rotation = 0;
+        content = new LinkedList<Item>();
+    }
+
+    public boolean addItem(Item item){
+        if (content.size() > 4) {
+            return false;
+        }
+        return content.add(item);
+    }
+
+    public void moveItemToNextBuilding(Building otherBuilding){
+        if (content.size() != 0){
+            if(otherBuilding.addItem(content.getFirst())){
+                content.removeFirst();
+            }
+        }
     }
 
     public byte getRotation() {

@@ -6,7 +6,7 @@ public class Item {
     private static final HashMap<Integer, Item> iDMap = new HashMap<Integer, Item>(5);
     private final int itemID;
 
-    public static void main(String[] args) {
+    static {
         iDMap.put(0, new Item(0)); //brick
         iDMap.put(1, new Item(1)); //copper ingot
         iDMap.put(2, new Item(2)); //iron ingot
