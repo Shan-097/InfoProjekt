@@ -1,10 +1,13 @@
 package main;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+
 
 /**
  * The class of the starting panel.
@@ -29,22 +32,22 @@ public class StartingPanel extends JPanel implements Runnable{
     /**
      * button to start a new game
      */
-    JButton startNewGame;
+    private JButton startNewGame;
 
     /**
      * button to access the menu to change the key bindings
      */
-    JButton changeHotkeys;
+    private JButton changeHotkeys;
 
     /**
      * button to open the menu to load an existing saved game
      */
-    JButton loadGame;
+    private JButton loadGame;
 
     /**
      * thread that keeps the game running
      */
-    Thread thread;
+    private Thread thread;
 
 
 
@@ -64,6 +67,7 @@ public class StartingPanel extends JPanel implements Runnable{
         startNewGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 App.loadGameScreen();
+                thread = null;
             }
         });
         changeHotkeys = new JButton("Change hotkeys");
@@ -72,6 +76,7 @@ public class StartingPanel extends JPanel implements Runnable{
         add(changeHotkeys);
         add(loadGame);
     }
+
 
     /**
      * Updates the postion of the buttons so that they are centered and have the correct height and width.

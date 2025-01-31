@@ -1,10 +1,14 @@
 package main;
 
+
+import game.GamePanel;
+
+
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-import game.GamePanel;
+
 
 /**
  * Main class of the programm.
@@ -13,9 +17,16 @@ import game.GamePanel;
  */
 public class App {
     /**
+     * JFrame object that holds the currently open window.
+     */
+    private static JFrame window;
+
+    /**
      * Specifies the frame rate of the programm.
      */
-    private final static int frameRate = 60;
+    private final static int FRAME_RATE = 60;
+
+
 
     /**
      * The main method loads the game upon launch of the programm. 
@@ -25,11 +36,14 @@ public class App {
         loadStartingScreen();
     }
 
+
+
     /**
      * Empty and unused constructor of App
      */
     public App(){
     }
+
 
     /**
      * loadStartingScreen sets the necessary values and creates 
@@ -37,10 +51,10 @@ public class App {
      * closing the others in the process
      */
     public static void loadStartingScreen(){
-        JFrame window = new JFrame("some name");
+        window = new JFrame("some name");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        StartingPanel startingPanel = new StartingPanel(frameRate);
+        StartingPanel startingPanel = new StartingPanel(FRAME_RATE);
         
         window.setContentPane(startingPanel);
         window.pack();
@@ -57,10 +71,11 @@ public class App {
      * closing the others in the process
      */
     public static void loadGameScreen(){
-        JFrame window = new JFrame("some name");
+        window.dispose();
+        window = new JFrame("some name");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        GamePanel gamePanel = new GamePanel();
+        GamePanel gamePanel = new GamePanel(FRAME_RATE);
         window.add(gamePanel);
         window.pack();
         window.setLocationRelativeTo(null);

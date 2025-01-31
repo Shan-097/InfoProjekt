@@ -1,25 +1,41 @@
 package game;
 
+
 import java.util.HashMap;
+
+
 
 /**
  * to be done
  */
 public class CollectionSite extends Building {
-    private static HashMap<Integer, Integer> cost;
-    private static byte[] inputDirections;
-    private static byte[] outputDirections;
-
-    
     /** 
      * to be done
-     * @param args to be done
      */
-    public static void main(String[] args) {
-        cost = null;
-        inputDirections = new byte[]{(byte) 0, (byte) 1, (byte) 3, (byte) 4};
-        outputDirections = null;
+    private static final HashMap<Integer, Integer> COST;
+
+    /** 
+     * to be done
+     */
+    private static final byte[] INPUT_DIRECTIONS;
+
+    /** 
+     * to be done
+     */
+    private static final byte[] OUTPUT_DIRECTIONS;
+
+
+    /** 
+     * to be done
+     */
+    static {
+        COST = null;
+        INPUT_DIRECTIONS = new byte[]{(byte) 0, (byte) 1, (byte) 3, (byte) 4};
+        OUTPUT_DIRECTIONS = new byte[0];
+
     }
+
+
 
     /**
      * to be done
@@ -28,14 +44,24 @@ public class CollectionSite extends Building {
         super();
     }
 
-    
+
+    /** 
+     * to be done
+     * @return boolean to be done
+     */
+    @Override
+    public boolean addItem(Item item){
+        return GameController.addItemToInventory(item);
+    }
+
+
     /** 
      * to be done
      * @return HashMap<Integer, Integer> to be done
      */
     @Override
     public HashMap<Integer, Integer> getCost() {
-        return cost;
+        return COST;
     }
     
     /** 
@@ -44,7 +70,7 @@ public class CollectionSite extends Building {
      */
     @Override
     public byte[] getInputDirections() {
-        return inputDirections;
+        return INPUT_DIRECTIONS;
     }
     
     /** 
@@ -53,6 +79,6 @@ public class CollectionSite extends Building {
      */
     @Override
     public byte[] getOutputDirections() {
-        return outputDirections;
+        return OUTPUT_DIRECTIONS;
     }
 }
