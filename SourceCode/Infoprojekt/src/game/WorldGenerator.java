@@ -18,8 +18,15 @@ public class WorldGenerator {
      * to be done
      */
     public WorldGenerator() {
-        map = new Field[Integer.MAX_VALUE][Integer.MAX_VALUE];
+        map = new Field[1000][1000];
     }
+
+  /**
+   * to be done
+   * @return Field[][] to be done
+   */
+    public Field[][] getMap() {
+        return map;
 
     /**
      * to be done

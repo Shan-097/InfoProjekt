@@ -12,10 +12,10 @@ public class StartingPanel extends JPanel implements Runnable{
     private final int buttonHeight = 30;
     private final int frameRate;
 
-    JButton startNewGame;
-    JButton changeHotkeys;
-    JButton loadGame;
-    Thread thread;
+    private JButton startNewGame;
+    private JButton changeHotkeys;
+    private JButton loadGame;
+    private Thread thread;
 
     public StartingPanel(int pFR){
         frameRate = pFR;

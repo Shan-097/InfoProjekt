@@ -34,7 +34,7 @@ public class App {
         window = new JFrame("some name");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        GamePanel gamePanel = new GamePanel();
+        GamePanel gamePanel = new GamePanel(frameRate);
         window.add(gamePanel);
         window.pack();
         window.setLocationRelativeTo(null);

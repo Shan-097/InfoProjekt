@@ -6,7 +6,7 @@ public class Resource {
     private static final HashMap<Integer, Resource> iDMap = new HashMap<Integer, Resource>(5);
     private final int resourceID;
 
-    public static void main(String[] args) {
+    static {
         iDMap.put(0, new Resource(0)); //no resource
         iDMap.put(1, new Resource(1)); //stone
         iDMap.put(2, new Resource(1)); //copper
