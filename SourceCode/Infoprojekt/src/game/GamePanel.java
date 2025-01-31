@@ -5,11 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -100,8 +98,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-
-
+    /**
+     * to be done
+     * @param g to be done
+     */
     public void paintComponent(Graphics g){ // paint() oder paintComponent() ???
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
@@ -169,6 +169,10 @@ public class GamePanel extends JPanel implements Runnable {
         g2d.dispose();
     }
 
+    /**
+     * to be done
+     * @return char[][] to be done
+     */
     private char[][] testField(){ // 2D array with checkerboard pattern to test the paint method
         int rows = 100; 
         int cols = 100; 

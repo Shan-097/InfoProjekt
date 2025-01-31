@@ -148,6 +148,11 @@ public class StartingPanel extends JPanel implements Runnable{
             }
         }
     }
+
+    /**
+     * to be done
+     * @param g to be done
+     */
     public void paint(Graphics g){
         super.paint(g);
         Graphics2D g2d = (Graphics2D)g;

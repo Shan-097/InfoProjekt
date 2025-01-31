@@ -189,6 +189,7 @@ public class GameController {
 
     /**
      * to be done
+     * @return char to be done
      */
     public char getDirection(){
         return movementDirection;
