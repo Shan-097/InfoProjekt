@@ -1,5 +1,6 @@
 package game;
 
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -15,23 +16,46 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
+
+/**
+ * to be done
+ */
 public class GamePanel extends JPanel implements Runnable {
+    /**
+     * to be done
+     */
     private final int tileSize = 64;
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    int frameWidth; 
-    int frameHeight;
 
-    int numWidth; // number of squares on the screen 
-    int numHeight;
-    
-    Thread gameThread;
-    GameController gameController;
+    /**
+     * to be done
+     */
+    private final int frameRate;
 
-    BufferedImage grass;
+    /**
+     * to be done
+     */
+    private Thread gameThread;
 
-    public GamePanel(){
-        this.setPreferredSize(new Dimension(1000,600)); //random values, TO DO: choose better
+    /**
+     * to be done
+     */
+    private GameController gameController;
+
+    /**
+     * to be done
+     */
+    private BufferedImage grass;
+
+
+
+    /**
+     * to be done
+     */
+    public GamePanel(int pFr) {
+        this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
         this.setDoubleBuffered(true);
+        frameRate = pFr;
 
         try {
             grass = ImageIO.read(new File("H:\\Informatik\\projektQ4\\MajasBranch\\Graphics\\between grass (64x64).png"));
@@ -42,67 +66,76 @@ public class GamePanel extends JPanel implements Runnable {
         add(picLabel);
     }
 
+
+    /**
+     * to be done
+     */
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
+    /**
+     * to be done
+     */
     @Override
     public void run() {
+        double frameDisplayTime = 1000000000 / frameRate;
+        long lastTime = System.nanoTime();
+        long currentTime;
+        double delta = 0;
+
         gameController = new GameController();
         while (gameThread != null) {
-            //update
-            gameController.update();
+            currentTime = System.nanoTime();
+            delta += (currentTime - lastTime) / frameDisplayTime;
+            lastTime = currentTime;
+            if (delta >= 1) {
+                // update
+                gameController.update();
 
-            posXinArray = gameController.getPosX(); 
-            posYinArray = gameController.getPosY();
-            calcMovement(gameController.getDirection());
-
-            // wait so during testing, it doens't get overwhelmed
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                // draw updated
+                repaint();
             }
-            posXinArray += 1;
-
-            //draw updated
-            repaint();
         }
     }
-    int TileCenterX; // Coordinates of topleft corner of the player square
-    int TileCenterY;
 
-    int posXinArray = 50;// tile on which player is standing, center tile Field-coords
-    int posYinArray = 50;
 
-    int posXonTile = 0;
-    int posYonTile = 0;
 
-    // temp please ignore!!
-    int aHelp = posXinArray-4;
-    int bHelp = posYinArray-4;
-    // temp
-
-    int indexCurrentX;
-    int indexCurrentY;
-
-    int movementX;
-    int movementY;
-
-    char[][] field = testField();
     public void paintComponent(Graphics g){ // paint() oder paintComponent() ???
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
 
-        frameWidth = this.getWidth(); 
-        frameHeight = this.getHeight();
+        
+        int posXinArray = gameController.getPosX();// tile on which player is standing, center tile Field-coords
+        int posYinArray = gameController.getPosY();
 
-        numWidth = (int) frameWidth / tileSize + 3;
-        numHeight = (int) frameHeight / tileSize + 3;
+        int posXonTile = 0;
+        int posYonTile = 0;
 
-        TileCenterX = ((frameWidth - tileSize) / 2);
-        TileCenterY = ((frameHeight - tileSize) / 2);
+        // temp please ignore!!
+        int aHelp = posXinArray-4;
+        int bHelp = posYinArray-4;
+        // temp
+
+        int indexCurrentX;
+        int indexCurrentY;
+
+        int movementX;
+        int movementY;
+
+        char[][] field = testField();
+
+        int frameWidth = this.getWidth(); 
+        int frameHeight = this.getHeight();
+
+        // number of squares on the screen 
+        int numWidth = (int) frameWidth / tileSize + 3;
+        int numHeight = (int) frameHeight / tileSize + 3;
+
+        // Coordinates of topleft corner of the player square
+        int TileCenterX = ((frameWidth - tileSize) / 2);
+        int TileCenterY = ((frameHeight - tileSize) / 2);
 
         for(int i = 0; i<numWidth; i++){ // TODO: add exception for border of world (arrayOutOfBounds)
             for(int j = 0; j<numHeight; j++){
@@ -136,21 +169,7 @@ public class GamePanel extends JPanel implements Runnable {
         g2d.dispose();
     }
 
-
-    // Q W E 
-    // A   D
-    // Y S C
-    public void calcMovement(char mov) {
-
-        if(mov == 'Q' || mov == 'W' || mov == 'E') {
-        } else if(mov == 'Y' || mov == 'S' || mov == 'C') {
-        }
-        if(mov == 'Q' || mov == 'A' || mov == 'Y') {
-        } else if (mov == 'E' || mov == 'D' || mov == 'C') {
-        }
-    }
-
-    public char[][] testField(){ // 2D array with checkerboard pattern to test the paint method
+    private char[][] testField(){ // 2D array with checkerboard pattern to test the paint method
         int rows = 100; 
         int cols = 100; 
         char[][] field = new char[rows][cols];
