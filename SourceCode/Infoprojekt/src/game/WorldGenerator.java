@@ -1,18 +1,46 @@
 package game;
 
+
 import java.util.HashSet;
 import java.util.Random;
+
+
 
 /**
  * to be done
  */
 public class WorldGenerator {
+    /**
+     * to be done
+     */
     private static final double baseProbRes0 = 0.95d;
+
+    /**
+     * to be done
+     */
     private static final double baseProbRes1 = 0.02d;
+
+    /**
+     * to be done
+     */
     private static final double baseProbRes2 = 0.015d;
+
+    /**
+     * to be done
+     */
     private static final double baseProbRes3 = 0.01d;
+
+    /**
+     * to be done
+     */
     private static final double baseProbRes4 = 0.005d;
+
+    /**
+     * to be done
+     */
     private Field[][] map;
+
+
 
     /**
      * to be done
@@ -21,12 +49,6 @@ public class WorldGenerator {
         map = new Field[1000][1000];
     }
 
-  /**
-   * to be done
-   * @return Field[][] to be done
-   */
-    public Field[][] getMap() {
-        return map;
 
     /**
      * to be done
@@ -255,5 +277,14 @@ public class WorldGenerator {
         if (posX != map.length - 1) {
             collapseFunctionWave(posX + 1, posY);
         }
+    }
+
+
+    /**
+    * to be done
+    * @return Field[][] to be done
+    */
+    public Field[][] getMap() {
+        return map;
     }
 }

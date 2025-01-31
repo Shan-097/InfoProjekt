@@ -1,34 +1,78 @@
 package game;
 
+
+/**
+ * to be done
+ */
 public class Field {
+    /** 
+     * to be done
+     */
     private Building building;
+
+    /** 
+     * to be done
+     */
     private Resource resource;
 
+
+
+    /**
+     * to be done
+     * @param pBuilding to be done
+     * @param pResource to be done
+     */
     public Field(Building pBuilding, Resource pResource) {
         building = pBuilding;
         resource = pResource;
     }
 
-    public Field(Resource pResource) {
+    /**
+     * to be done
+     * @param pResource to be done
+     */
+    public Field(Resource pResource){
         resource = pResource;
     }
 
+    /** 
+     * to be done
+     * @param pResourceID to be done
+     */
     public Field(int pResourceID) {
         resource = Resource.getResourceWithID(pResourceID);
     }
 
-    public Building getBuilding() {
+
+    /** 
+     * to be done
+     * @return Building to be done
+     */
+    public Building getBuilding(){
         return building;
     }
-
-    public Resource getResource() {
+    
+    /** 
+     * to be done
+     * @return Resource to be done
+     */
+    public Resource getResource(){
         return resource;
     }
 
+    /** 
+     * to be done
+     * @return int to be done
+     */
     public int getResourceID() {
         return resource.getResourceID();
     }
 
+
+    /** 
+     * to be done
+     * @param pBuilding to be done
+     */
     public void setBuilding(Building pBuilding) {
         building = pBuilding;
     }

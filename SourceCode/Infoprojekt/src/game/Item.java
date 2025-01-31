@@ -1,11 +1,28 @@
 package game;
 
+
 import java.util.HashMap;
 
+
+
+/**
+ * to be done
+ */
 public class Item {
+    /**
+    * to be done
+    */
     private static final HashMap<Integer, Item> iDMap = new HashMap<Integer, Item>(5);
+
+    /**
+    * to be done
+    */
     private final int itemID;
 
+
+    /** 
+     * to be done
+     */
     static {
         iDMap.put(0, new Item(0)); //brick
         iDMap.put(1, new Item(1)); //copper ingot
@@ -17,14 +34,31 @@ public class Item {
         iDMap.put(7, new Item(7)); //gold ore
     }
 
-    private Item(int pItemID){
+
+
+    /**
+     * to be done
+     * @param pItemID to be done
+     */
+    public Item(int pItemID){
         itemID = pItemID;
     }
 
+
+    /** 
+     * to be done
+     * @param pItemID to be done
+     * @return Item to be done
+     */
     public static Item getItemWithID(int pItemID){
         return iDMap.get(pItemID);
     }
 
+
+    /** 
+     * to be done
+     * @return int to be done
+     */
     public int getItemID(){
         return itemID;
     }

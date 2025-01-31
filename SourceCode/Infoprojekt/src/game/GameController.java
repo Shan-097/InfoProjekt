@@ -1,16 +1,50 @@
 package game;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+
+/**
+ * to be done
+ */
 public class GameController {
+    /**
+     * to be done
+     */
     private static HashMap<Item, Integer> inventory;
-    private static int posXinArray;
-    private static int posYinArray;
-    private static byte posXonTile;// max is 50, min is -50
-    private static byte posYonTile;// max is 50, min is -50
+
+    /**
+     * to be done
+     */
+    private int posXinArray;
+
+    /**
+     * to be done
+     */
+    private int posYinArray;
+
+    /**
+     * to be done
+     */
+    private byte posXonTile;//max is 50, min is -50
+
+    /**
+     * to be done
+     */
+    private byte posYonTile;//max is 50, min is -50
+
+    /**
+     * to be done
+     */
     private WorldGenerator wGenerator;
 
+
+
+    /**
+     * to be done
+     */
     public GameController() {
         inventory = new HashMap<Item, Integer>();
         wGenerator = new WorldGenerator();
@@ -20,10 +54,18 @@ public class GameController {
         posYinArray = 50;
     }
 
+
+    /**
+     * to be done
+     */
     public void update() {
         ArrayList<Tuple> startingPoints = getStartingPoints();
     }
 
+    /**
+     * to be done
+     * @return ArrayList<Tuple> to be done
+     */
     public ArrayList<Tuple> getStartingPoints() {
         ArrayList<Tuple> buildingList = new ArrayList<Tuple>();
         Field[][] map = wGenerator.getMap();
@@ -87,6 +129,11 @@ public class GameController {
         return listOfStartingPoints;
     }
 
+    /**
+     * to be done
+     * @param item to be done
+     * @return boolean to be done
+     */
     public static boolean addItemToInventory(Item item){
         if (inventory.containsKey(item)){
             if (inventory.get(item) == Integer.MAX_VALUE) {
@@ -99,22 +146,44 @@ public class GameController {
         return true;
     }
 
+
+    /**
+     * to be done
+     * @return int to be done
+     */
     public int getXKoordinateInArray(){
         return posXinArray;
     }
 
+    /**
+     * to be done
+     * @return int to be done
+     */
     public int getYKoordinateInArray(){
         return posYinArray;
     }
-    
-    public int getXKoordinateOnTile(){
+
+    /**
+     * to be done
+     * @return byte to be done
+     */
+    public byte getXKoordinateOnTile(){
         return posXonTile;
     }
-    
-    public int getYKoordinateOnTile(){
+
+    /**
+     * to be done
+     * @return byte to be done
+     */
+    public byte getYKoordinateOnTile(){
         return posYonTile;
     }
 
+
+
+    /**
+     * to be done
+     */
     private class Tuple{
         private int a;
         private int b;
