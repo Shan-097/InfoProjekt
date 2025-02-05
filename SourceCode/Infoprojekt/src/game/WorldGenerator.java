@@ -10,27 +10,7 @@ public class WorldGenerator {
     /**
      * to be done
      */
-    private static final double baseProbRes0 = 0.95d;
-
-    /**
-     * to be done
-     */
-    private static final double baseProbRes1 = 0.02d;
-
-    /**
-     * to be done
-     */
-    private static final double baseProbRes2 = 0.015d;
-
-    /**
-     * to be done
-     */
-    private static final double baseProbRes3 = 0.01d;
-
-    /**
-     * to be done
-     */
-    private static final double baseProbRes4 = 0.005d;
+    private static final double[] BASE_PROBABILITIES = new double[]{0.95d, 0.02d, 0.015d, 0.01d, 0.005d};
 
     /**
      * to be done
@@ -134,35 +114,35 @@ public class WorldGenerator {
         if (iDofKnownResource == -1) {
             switch (countOfKnownTiles) {
                 case 0:
-                    probability[0] = baseProbRes0;
-                    probability[1] = baseProbRes1;
-                    probability[2] = baseProbRes2;
-                    probability[3] = baseProbRes3;
-                    probability[4] = baseProbRes4;
+                    probability[0] = BASE_PROBABILITIES[0];
+                    probability[1] = BASE_PROBABILITIES[1];
+                    probability[2] = BASE_PROBABILITIES[2];
+                    probability[3] = BASE_PROBABILITIES[3];
+                    probability[4] = BASE_PROBABILITIES[4];
                     break;
 
                 case 1:
-                    probability[0] = 1 - (1 - baseProbRes0) / 2;
-                    probability[1] = baseProbRes1 / 2;
-                    probability[2] = baseProbRes2 / 2;
-                    probability[3] = baseProbRes3 / 2;
-                    probability[4] = baseProbRes4 / 2;
+                    probability[0] = 1 - (1 - BASE_PROBABILITIES[0]) / 2;
+                    probability[1] = BASE_PROBABILITIES[1] / 2;
+                    probability[2] = BASE_PROBABILITIES[2] / 2;
+                    probability[3] = BASE_PROBABILITIES[3] / 2;
+                    probability[4] = BASE_PROBABILITIES[4] / 2;
                     break;
 
                 case 2:
-                    probability[0] = 1 - (1 - baseProbRes0) / 4;
-                    probability[1] = baseProbRes1 / 4;
-                    probability[2] = baseProbRes2 / 4;
-                    probability[3] = baseProbRes3 / 4;
-                    probability[4] = baseProbRes4 / 4;
+                    probability[0] = 1 - (1 - BASE_PROBABILITIES[0]) / 4;
+                    probability[1] = BASE_PROBABILITIES[1] / 4;
+                    probability[2] = BASE_PROBABILITIES[2] / 4;
+                    probability[3] = BASE_PROBABILITIES[3] / 4;
+                    probability[4] = BASE_PROBABILITIES[4] / 4;
                     break;
 
                 case 3:
-                    probability[0] = 1 - (1 - baseProbRes0) / 8;
-                    probability[1] = baseProbRes1 / 8;
-                    probability[2] = baseProbRes2 / 8;
-                    probability[3] = baseProbRes3 / 8;
-                    probability[4] = baseProbRes4 / 8;
+                    probability[0] = 1 - (1 - BASE_PROBABILITIES[0]) / 8;
+                    probability[1] = BASE_PROBABILITIES[1] / 8;
+                    probability[2] = BASE_PROBABILITIES[2] / 8;
+                    probability[3] = BASE_PROBABILITIES[3] / 8;
+                    probability[4] = BASE_PROBABILITIES[4] / 8;
                     break;
 
                 case 4:
@@ -173,19 +153,19 @@ public class WorldGenerator {
             double baseProbFoundRes = 0;
             switch (iDofKnownResource) {
                 case 1:
-                    baseProbFoundRes = baseProbRes1;
+                    baseProbFoundRes = BASE_PROBABILITIES[1];
                     break;
 
                 case 2:
-                    baseProbFoundRes = baseProbRes2;
+                    baseProbFoundRes = BASE_PROBABILITIES[2];
                     break;
 
                 case 3:
-                    baseProbFoundRes = baseProbRes3;
+                    baseProbFoundRes = BASE_PROBABILITIES[3];
                     break;
 
                 case 4:
-                    baseProbFoundRes = baseProbRes4;
+                    baseProbFoundRes = BASE_PROBABILITIES[4];
                     break;
             }
 

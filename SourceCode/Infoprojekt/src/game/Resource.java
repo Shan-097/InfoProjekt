@@ -12,7 +12,7 @@ public class Resource {
     /** 
      * to be done
      */
-    private static final HashMap<Integer, Resource> iDMap = new HashMap<Integer, Resource>(5);
+    private static final HashMap<Integer, Resource> ID_MAP = new HashMap<Integer, Resource>(5);
 
     /** 
      * to be done
@@ -24,11 +24,11 @@ public class Resource {
      * to be done
      */
     static {
-        iDMap.put(0, new Resource(0)); //no resource
-        iDMap.put(1, new Resource(1)); //stone
-        iDMap.put(2, new Resource(1)); //copper
-        iDMap.put(3, new Resource(1)); //iron
-        iDMap.put(4, new Resource(1)); //gold
+        ID_MAP.put(0, new Resource(0)); //no resource
+        ID_MAP.put(1, new Resource(1)); //stone
+        ID_MAP.put(2, new Resource(1)); //copper
+        ID_MAP.put(3, new Resource(1)); //iron
+        ID_MAP.put(4, new Resource(1)); //gold
     }
 
 
@@ -48,7 +48,7 @@ public class Resource {
      * @return Resource to be done
      */
     public static Resource getResourceWithID(int pResourceID){
-        return iDMap.get(pResourceID);
+        return ID_MAP.get(pResourceID);
     }
 
 
