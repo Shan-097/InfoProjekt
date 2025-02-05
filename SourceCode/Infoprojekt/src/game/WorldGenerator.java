@@ -1,10 +1,7 @@
 package game;
 
-
 import java.util.HashSet;
 import java.util.Random;
-
-
 
 /**
  * to be done
@@ -40,15 +37,12 @@ public class WorldGenerator {
      */
     private Field[][] map;
 
-
-
     /**
      * to be done
      */
     public WorldGenerator() {
         map = new Field[1000][1000];
     }
-
 
     /**
      * to be done
@@ -57,8 +51,8 @@ public class WorldGenerator {
      * @param posY to be done
      */
     public void generateTile(int posX, int posY) {
-        if (posX < 0 || posY < 0 || map.length >= posX || map[0].length >= posY) {
-            throw new IndexOutOfBoundsException();
+        if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
+            throw new IndexOutOfBoundsException("Can't generate tile outside of the field.");
         }
         if (map[posX][posY] != null) {
             return;
@@ -279,12 +273,33 @@ public class WorldGenerator {
         }
     }
 
+    /**
+     * to be done
+     * 
+     * @return Field to be done
+     */
+    public Field getField(int posX, int posY) {
+        if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
+            throw new IndexOutOfBoundsException("Can't generate tile outside of the field.");
+        }
+        return map[posX][posY];
+    }
 
     /**
-    * to be done
-    * @return Field[][] to be done
-    */
-    public Field[][] getMap() {
-        return map;
+     * to be done
+     * 
+     * @return int to be done
+     */
+    public int getXLengthMap() {
+        return map.length;
+    }
+
+    /**
+     * to be done
+     * 
+     * @return int to be done
+     */
+    public int getYLengthMap() {
+        return map[0].length;
     }
 }

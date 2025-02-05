@@ -1,10 +1,7 @@
 package game;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
-
 
 /**
  * to be done
@@ -27,16 +24,20 @@ public class GameController {
 
     /**
      * to be done
+     * min = -0.5
+     * max < 0.5
      */
-    private byte posXonTile;//max is 50, min is -50
+    private float posXonTile;
 
     /**
      * to be done
+     * min = -0.5
+     * max < 0.5
      */
-    private byte posYonTile;//max is 50, min is -50
+    private float posYonTile;
 
-    // Q W E 
-    // A   D
+    // Q W E
+    // A D
     // Y S C
     /**
      * to be done
@@ -48,8 +49,6 @@ public class GameController {
      */
     private WorldGenerator wGenerator;
 
-
-
     /**
      * to be done
      */
@@ -59,9 +58,8 @@ public class GameController {
         posXinArray = 50;
         posYinArray = 50;
         posXonTile = 0;
-        posYinArray = 0;
+        posYonTile = 0;
     }
-
 
     /**
      * to be done
@@ -72,19 +70,19 @@ public class GameController {
 
     /**
      * to be done
+     * 
      * @return ArrayList<Tuple> to be done
      */
     public ArrayList<Tuple> getStartingPoints() {
         ArrayList<Tuple> buildingList = new ArrayList<Tuple>();
-        Field[][] map = wGenerator.getMap();
-        map[0][0] = new Field(new Extractor(), null);
-        map[0][0].getBuilding().setRotation((byte) 3);
-        map[1][0] = new Field(new Smelter(), null);
-        map[1][0].getBuilding().setRotation((byte) 3);
 
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[0].length; j++) {
-                if (map[i][j] != null && map[i][j].getBuilding() != null) {
+        int mapLengthX = wGenerator.getXLengthMap();
+        int mapLengthY = wGenerator.getYLengthMap();
+
+        for (int i = 0; i < mapLengthX; i++) {
+            for (int j = 0; j < mapLengthY; j++) {
+                Field temp = wGenerator.getField(i, j);
+                if (temp != null && temp.getBuilding() != null) {
                     buildingList.add(new Tuple(i, j));
                 }
             }
@@ -94,8 +92,9 @@ public class GameController {
         for (Tuple tuple : buildingList) {
             int x = tuple.getA();
             int y = tuple.getB();
-            byte[] inputDirectionsOfBuilding = map[x][y].getBuilding().getInputDirections();
-            byte rotation = map[x][y].getBuilding().getRotation();
+            Field temp = wGenerator.getField(x, y);
+            byte[] inputDirectionsOfBuilding = temp.getBuilding().getInputDirections();
+            byte rotation = temp.getBuilding().getRotation();
             for (int i = 0; i < inputDirectionsOfBuilding.length; i++) {
                 byte direction = (byte) ((inputDirectionsOfBuilding[i] + rotation) % 4);
                 int deltaX = 0;
@@ -119,16 +118,17 @@ public class GameController {
                 }
                 x += deltaX;
                 y += deltaY;
-                if (x < 0 || x >= map.length || y < 0 || y >= map[0].length) {
+                if (x < 0 || x >= mapLengthX || y < 0 || y >= mapLengthY) {
                     continue;
                 }
-                if (map[x][y] == null || map[x][y].getBuilding() == null) {
+                Field temp2 = wGenerator.getField(x, y);
+                if (temp2 == null || temp2.getBuilding() == null) {
                     continue;
                 }
-                byte[] outputDirectionsOfOtherBuilding = map[x][y].getBuilding().getOutputDirections();
-                byte rotationOfOtherBuilding = map[x][y].getBuilding().getRotation();
-                for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++){
-                    if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction){
+                byte[] outputDirectionsOfOtherBuilding = temp2.getBuilding().getOutputDirections();
+                byte rotationOfOtherBuilding = temp2.getBuilding().getRotation();
+                for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++) {
+                    if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction) {
                         listOfStartingPoints.remove(new Tuple(x, y));
                     }
                 }
@@ -139,11 +139,110 @@ public class GameController {
 
     /**
      * to be done
+     * Q W E
+     * A _ D
+     * Y S C
+     */
+    public void movePlayer(char direction) {
+        if ("QWEADYSC".indexOf(direction) == -1) {
+            throw new IllegalArgumentException(
+                    "The supplied direction is exspected to be one of Q, W, E, A, D, Y, S or C.");
+        }
+
+        movementDirection = direction;
+        float delta = 0.1f;
+        float deltaDiagonal = (float) Math.sqrt(delta * delta / 2f);
+        switch (direction) {
+            case 'Q':
+                posXonTile -= deltaDiagonal;
+                posYonTile -= deltaDiagonal;
+                break;
+
+            case 'W':
+                posYonTile -= delta;
+                break;
+
+            case 'E':
+                posXonTile += deltaDiagonal;
+                posYonTile -= deltaDiagonal;
+                break;
+
+            case 'A':
+                posXonTile -= delta;
+                break;
+
+            case 'D':
+                posXonTile += delta;
+                break;
+
+            case 'Y':
+                posXonTile -= deltaDiagonal;
+                posYonTile += deltaDiagonal;
+                break;
+
+            case 'S':
+                posYonTile += delta;
+                break;
+
+            case 'C':
+                posXonTile += deltaDiagonal;
+                posYonTile += deltaDiagonal;
+                break;
+        }
+
+        if (posXonTile < -0.5) {
+            posXinArray--;
+            posXonTile++;
+        } else if (posXonTile >= 0.5) {
+            posXinArray++;
+            posXonTile--;
+        }
+
+        if (posYonTile < -0.5) {
+            posYinArray--;
+            posYonTile++;
+        } else if (posYonTile >= 0.5) {
+            posYinArray++;
+            posYonTile--;
+        }
+
+        int maxX = wGenerator.getXLengthMap() - 1;
+        int maxY = wGenerator.getYLengthMap() - 1;
+        if (posXinArray < 0 || (posXinArray == 0 && posXonTile < 0f)) {
+            posXinArray = 0;
+            posXonTile = 0f;
+        } else if (posXinArray > maxX || (posXinArray == maxX && posXonTile > 0f)) {
+            posXinArray = maxX;
+            posXonTile = 0f;
+        }
+
+        if (posYinArray < 0 || (posYinArray == 0 && posYonTile < 0f)) {
+            posYinArray = 0;
+            posYonTile = 0f;
+        } else if (posYinArray > maxY || (posYinArray == maxY && posYonTile > 0f)) {
+            posYinArray = maxY;
+            posYonTile = 0f;
+        }
+
+        // generate new fields if necessary
+        for (int i = -50; i <= 50; i++) {
+            for (int j = -50; j <= 50; j++) {
+                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX <= posXinArray + i || maxY <= posYinArray + j) {
+                    continue;
+                }
+                wGenerator.generateTile(posXinArray + i, posYinArray + j);
+            }
+        }
+    }
+
+    /**
+     * to be done
+     * 
      * @param item to be done
      * @return boolean to be done
      */
-    public static boolean addItemToInventory(Item item){
-        if (inventory.containsKey(item)){
+    public static boolean addItemToInventory(Item item) {
+        if (inventory.containsKey(item)) {
             if (inventory.get(item) == Integer.MAX_VALUE) {
                 return false;
             }
@@ -154,52 +253,55 @@ public class GameController {
         return true;
     }
 
-
     /**
      * to be done
+     * 
      * @return int to be done
      */
-    public int getPosX(){
+    public int getPosX() {
         return posXinArray;
     }
 
     /**
      * to be done
+     * 
      * @return int to be done
      */
-    public int getPosY(){
+    public int getPosY() {
         return posYinArray;
     }
 
     /**
      * to be done
-     * @return byte to be done
+     * 
+     * @return float to be done
      */
-    public byte getOffsetX(){
+    public float getOffsetX() {
         return posXonTile;
     }
 
     /**
      * to be done
-     * @return byte to be done
+     * 
+     * @return float to be done
      */
-    public byte getOffsetY(){
+    public float getOffsetY() {
         return posYonTile;
     }
 
     /**
      * to be done
+     * 
      * @return char to be done
      */
-    public char getDirection(){
+    public char getDirection() {
         return movementDirection;
     }
-
 
     /**
      * to be done
      */
-    private class Tuple{
+    private class Tuple {
         private int a;
         private int b;
 
@@ -217,7 +319,7 @@ public class GameController {
         }
 
         @Override
-        public boolean equals(Object obj){
+        public boolean equals(Object obj) {
             Tuple other = (Tuple) obj;
             if (a == other.getA() && b == other.getB()) {
                 return true;

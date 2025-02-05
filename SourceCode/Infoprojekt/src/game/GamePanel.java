@@ -14,6 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import main.InputHandler;
+
 
 
 /**
@@ -43,6 +45,11 @@ public class GamePanel extends JPanel implements Runnable {
     /**
      * to be done
      */
+    private GameInputHandler gameInputHandler;
+
+    /**
+     * to be done
+     */
     private BufferedImage grass;
 
 
@@ -54,9 +61,14 @@ public class GamePanel extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
         this.setDoubleBuffered(true);
         frameRate = pFr;
+        gameController = new GameController();
+        InputHandler inputHandler = new InputHandler();
+        this.addKeyListener(inputHandler);
+        this.setFocusable(true);
+        gameInputHandler = new GameInputHandler(gameController, inputHandler);
 
         try {
-            grass = ImageIO.read(new File("H:\\Informatik\\projektQ4\\MajasBranch\\Graphics\\between grass (64x64).png"));
+            grass = ImageIO.read(new File(".\\Graphics\\between grass (64x64).png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,17 +95,18 @@ public class GamePanel extends JPanel implements Runnable {
         long currentTime;
         double delta = 0;
 
-        gameController = new GameController();
         while (gameThread != null) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / frameDisplayTime;
             lastTime = currentTime;
             if (delta >= 1) {
                 // update
+                gameInputHandler.invokeMethodsFromInput();
                 gameController.update();
 
                 // draw updated
                 repaint();
+                delta--;
             }
         }
     }
