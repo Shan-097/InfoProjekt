@@ -336,24 +336,6 @@ public class GameController {
      * @return boolean to be done
      */
     public boolean saveWorld() {
-        try (FileWriter file = new FileWriter("saves/" + worldName + ".json")) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("worldName", worldName);
-            jsonObject.put("posX", posXinArray);
-            jsonObject.put("posY", posYinArray);
-
-            JSONArray tilesArray = new JSONArray();
-            for (WorldTile tile : worldMap) {
-                tilesArray.put(tile.toJSON());
-            }
-
-            jsonObject.put("worldMap", tilesArray);
-
-            file.write(jsonObject.toString(4));
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return true;
     }
 }
