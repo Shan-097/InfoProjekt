@@ -98,7 +98,7 @@ public class StartingPanel extends JPanel implements Runnable{
         add(controls);
         add(loadGame);
         try {
-            myPicture = ImageIO.read(new File("./Graphics/grass (64x64).png"));
+            myPicture = ImageIO.read(new File(".\\Graphics\\grass (64x64).png"));
             JLabel picLabel = new JLabel(new ImageIcon(myPicture));
             add(picLabel);
         } catch (IOException e1) {
