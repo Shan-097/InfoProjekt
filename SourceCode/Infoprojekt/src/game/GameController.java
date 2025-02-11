@@ -1,10 +1,10 @@
 package game;
 
-import game.WorldTile.TileValue;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * to be done
@@ -51,6 +51,11 @@ public class GameController {
      * to be done
      */
     private WorldGenerator wGenerator;
+
+    /**
+     * stores worldName in a String attribute
+     */
+    private String worldName = "testWorld";
 
     /**
      * to be done
@@ -336,6 +341,28 @@ public class GameController {
      * @return boolean to be done
      */
     public boolean saveWorld() {
-        return true;
+        try(FileWriter file = new FileWriter("saves/" + worldName + ".json")) {
+            Map<String, String> properties = new HashMap<>();
+
+            properties.put("worldName", worldName);
+            properties.put("posX", String.valueOf(posXinArray));
+            properties.put("posY", String.valueOf(posYinArray));
+            properties.put("worldMap", wGenerator.getWorldJson());
+
+            StringBuilder propertiesString = new StringBuilder("{");
+
+            for (String key : properties.keySet()) {
+                propertiesString.append("\"").append(key).append("\": \"").append(properties.get(key)).append("\",");
+            }
+
+            propertiesString.append("}");
+
+            file.write(propertiesString.toString());
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
