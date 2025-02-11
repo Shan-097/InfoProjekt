@@ -1,0 +1,17 @@
+{
+    "posX": 10,
+    "posY": 50,
+    "worldMap": [
+        {
+            "posX": 0,
+            "posY": 0,
+            "value": "copperore"
+        },
+        {
+            "posX": 1,
+            "posY": 0,
+            "value": "ironore"
+        }
+    ],
+    "worldName": "TestWorld"
+}

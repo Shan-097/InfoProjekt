@@ -1,6 +1,6 @@
 package main;
 
-
+import game.GameController;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,13 +12,10 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-
 
 
 /**
@@ -85,6 +82,13 @@ public class StartingPanel extends JPanel implements Runnable{
             public void actionPerformed(ActionEvent e){
                 App.loadGameScreen();
                 thread = null;
+            }
+        });
+        loadGame = new JButton("Save Current World");
+        loadGame.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                GameController controller = new GameController();
+                controller.saveWorld();
             }
         });
         controls = new JButton("Controls");

@@ -1,5 +1,8 @@
 package game;
 
+import game.WorldTile.TileValue;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -324,6 +327,32 @@ public class GameController {
             if (a == other.getA() && b == other.getB()) {
                 return true;
             }
+            return false;
+        }
+    }
+
+    /**
+     * to be done
+     * @return boolean to be done
+     */
+    public boolean saveWorld() {
+        try (FileWriter file = new FileWriter("saves/" + worldName + ".json")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("worldName", worldName);
+            jsonObject.put("posX", posXinArray);
+            jsonObject.put("posY", posYinArray);
+
+            JSONArray tilesArray = new JSONArray();
+            for (WorldTile tile : worldMap) {
+                tilesArray.put(tile.toJSON());
+            }
+
+            jsonObject.put("worldMap", tilesArray);
+
+            file.write(jsonObject.toString(4));
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
             return false;
         }
     }
