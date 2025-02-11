@@ -1,11 +1,11 @@
-{
-    "java.project.referencedLibraries": {
-        "include": [
-            "lib/**/*.jar",
-            "SourceCode/Infoprojekt/lib/json.jar"
-        ],
-        "exclude": [
-            "lib/json.jar"
-        ]
-    }
+{    
+    "java.home": "C:/Program Files/Java/jdk-23",
+    "javadoc-tools.generateJavadoc.isUsingPwsh": false,
+    "javadoc-tools.generateJavadoc.workspaceSourceFolder": "./SourceCode/Infoprojekt/src/",
+    "javadoc-tools.generateJavadoc.targetFolder": "./javadoc/",
+    "java.project.sourcePaths": ["SourceCode/Infoprojekt/src"],
+    "java.project.outputPath": "SourceCode/Infoprojekt/bin",
+    "java.project.referencedLibraries": [
+        "SourceCode/Infoprojekt/lib/**/*.jar"
+    ]
 }
