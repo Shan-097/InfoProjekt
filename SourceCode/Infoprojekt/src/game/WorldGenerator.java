@@ -64,12 +64,16 @@ public class WorldGenerator {
         if (rnd < probability[0]) {
             return 0;
         } else if (rnd < probability[0] + probability[1]) {
+            //System.out.println(rnd + "asoihfkjgon" + probability[0] + "    " + probability[1] + (0.95d + 0.02d));
             return 1;
         } else if (rnd < probability[0] + probability[1] + probability[2]) {
+            //System.out.println("AAAAAAAAAAAAAAAAAAAAAAAA" + rnd);
             return 2;
         } else if (rnd < probability[0] + probability[1] + probability[2] + probability[3]) {
+            //System.out.println("BBBBBBBBBBBBBBB" + rnd);
             return 3;
         } else {
+            //System.out.println("CCCCCCCCCCCCCCCC" + rnd);
             return 4;
         }
     }

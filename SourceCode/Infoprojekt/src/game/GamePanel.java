@@ -1,6 +1,5 @@
 package game;
 
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -52,6 +51,10 @@ public class GamePanel extends JPanel implements Runnable {
      */
     private BufferedImage grass;
 
+    /**
+     * to be done
+     */
+    private BufferedImage falkeLinks;
 
 
     /**
@@ -69,6 +72,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         try {
             grass = ImageIO.read(new File(".\\Graphics\\between grass (64x64).png"));
+            falkeLinks = ImageIO.read(new File(".\\Graphics\\MileniumFalkeNachLinks.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -119,7 +123,6 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
 
-        
         int posXinArray = gameController.getPosX();// tile on which player is standing, center tile Field-coords
         int posYinArray = gameController.getPosY();
 
@@ -137,7 +140,7 @@ public class GamePanel extends JPanel implements Runnable {
         int movementX;
         int movementY;
 
-        char[][] field = testField();
+        //char[][] field = testField();
 
         int frameWidth = this.getWidth(); 
         int frameHeight = this.getHeight();
@@ -150,34 +153,51 @@ public class GamePanel extends JPanel implements Runnable {
         int TileCenterX = ((frameWidth - tileSize) / 2);
         int TileCenterY = ((frameHeight - tileSize) / 2);
 
+        Field field;
+
         for(int i = 0; i<numWidth; i++){ // TODO: add exception for border of world (arrayOutOfBounds)
             for(int j = 0; j<numHeight; j++){
                 indexCurrentX = posXinArray-(numWidth / 2)+(i*1);
                 indexCurrentY = posYinArray-(numHeight / 2)+(j*1);
 
-                if(indexCurrentX == posXinArray && indexCurrentY == posYinArray){
-                    g2d.setColor(Color.YELLOW); // highlight current player square yellow
-                }
-                
-                 else if(field[indexCurrentX][indexCurrentY] == 'X'){
-                    g2d.setColor(Color.WHITE);
-                } else {
-                    g2d.setColor(Color.GRAY);
-                }
-                // lagere die coords berechnung von fillRect aus, berechne mithilfe je 1/10 square, musst wissen wo TileCenter liegt (ändere Tilecenter je nachdem)
                 movementX = (int)(TileCenterX-(gameController.getOffsetX()*tileSize)-(tileSize*(posXinArray-indexCurrentX)));
                 movementY = (int)(TileCenterY-(gameController.getOffsetY()*tileSize)-(tileSize*(posYinArray-indexCurrentY)));
 
-                g2d.drawImage(grass, movementX, movementY,null);
+                if (indexCurrentX < 0 || indexCurrentY < 0) {
+                        g2d.setColor(Color.BLUE);
+                        g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                        continue;
+                }
+
+                field = gameController.getField(indexCurrentX, indexCurrentY);
+                
+
+                
+                if(field.getResourceID() == 0){
+                    g2d.drawImage(grass, movementX, movementY,null);
+                    continue;
+                } else if (field.getResourceID() == 1){
+                    g2d.setColor(Color.GRAY);
+                } else if (field.getResourceID() == 2){
+                    g2d.setColor(new Color(142, 64, 42));
+                } else if (field.getResourceID() == 3){
+                    g2d.setColor(Color.LIGHT_GRAY);
+                } else if (field.getResourceID() == 4){
+                    g2d.setColor(Color.YELLOW);
+                }
+                g2d.fillRect(movementX, movementY, tileSize, tileSize);
+
+                
                 if(indexCurrentX == aHelp && indexCurrentY == bHelp) {
                     g2d.setColor(Color.BLUE); // paint random square blue to visualize movement
-                    g2d.fillRect(movementX, movementY, tileSize, tileSize); //find location of the square relative to player square
+                    //g2d.fillRect(movementX, movementY, tileSize, tileSize); //find location of the square relative to player square
                 }
             }
         } 
         // temp player dot
         g2d.setColor(Color.BLACK);
-        g2d.fillOval((int)(TileCenterX + (0.125*tileSize)),(int) (TileCenterY + (0.125*tileSize)), (int)(tileSize*0.75), (int)(tileSize*0.75));
+        //g2d.fillOval((int)(TileCenterX + (0.125*tileSize)),(int) (TileCenterY + (0.125*tileSize)), (int)(tileSize*0.75), (int)(tileSize*0.75));
+        g2d.drawImage(falkeLinks, (int)(TileCenterX + (0.125*tileSize)),(int) (TileCenterY + (0.125*tileSize)), null);
 
         g2d.dispose();
     }

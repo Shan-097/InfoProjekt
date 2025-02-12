@@ -59,6 +59,18 @@ public class GameController {
         posYinArray = 50;
         posXonTile = 0;
         posYonTile = 0;
+
+        int maxX = wGenerator.getXLengthMap() - 1;
+        int maxY = wGenerator.getYLengthMap() - 1;
+
+        for (int i = -50; i <= 50; i++) {
+            for (int j = -50; j <= 50; j++) {
+                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX <= posXinArray + i || maxY <= posYinArray + j) {
+                    continue;
+                }
+                wGenerator.generateTile(posXinArray + i, posYinArray + j);
+            }
+        }
     }
 
     /**
@@ -326,5 +338,9 @@ public class GameController {
             }
             return false;
         }
+    }
+
+    public Field getField(int posXinArray, int posYinArray) {
+        return wGenerator.getField(posXinArray, posYinArray);
     }
 }
