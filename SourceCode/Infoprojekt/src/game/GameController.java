@@ -54,6 +54,11 @@ public class GameController {
     /**
      * to be done
      */
+    private Building buildingToBePlaced;
+
+    /**
+     * to be done
+     */
     public GameController() {
         inventory = new HashMap<Item, Integer>();
         wGenerator = new WorldGenerator();
@@ -297,6 +302,50 @@ public class GameController {
     /**
      * to be done
      * 
+     * @param pBuilding to be done
+     */
+    public void chooseBuildingToPlace(String buildingType) {
+        switch (buildingType) {
+            case "ConveyorBelt":
+                buildingToBePlaced = new ConveyorBelt();
+                break;
+
+            case "Extractor":
+                buildingToBePlaced = new Extractor(null);
+                break;
+
+            case "Smelter":
+                buildingToBePlaced = new Smelter();
+                break;
+        }
+    }
+
+    /**
+     * to be done
+     */
+    public void cancelPlacement() {
+        buildingToBePlaced = null;
+    }
+
+    /**
+     * to be done
+     */
+    public void rotateBuilding() {
+        if (buildingToBePlaced != null) {
+            buildingToBePlaced.setRotation((byte) ((buildingToBePlaced.getRotation() + 1) % 4));
+        }
+    }
+
+    /**
+     * to be done
+     */
+    public void placeBuilding(){
+        // TODO: implement placement
+    }
+
+    /**
+     * to be done
+     * 
      * @param item to be done
      * @return boolean to be done
      */
@@ -389,6 +438,7 @@ public class GameController {
 
     /**
      * to be done
+     * 
      * @return boolean to be done
      */
     public boolean saveWorld() {

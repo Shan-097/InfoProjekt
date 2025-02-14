@@ -39,7 +39,7 @@ public class GameInputHandler {
         inputMap.put('1', "placeConveyorBelt");
         inputMap.put('2', "placeExtractor");
         inputMap.put('3', "placeSmelter");
-        inputMap.put('R', "rotateBuilding");
+        inputMap.put('r', "rotateBuilding");
         inputMap.put((char) 27, "cancelPlacement"); // esc
         inputMap.put('b', "placeBuilding");
     }
@@ -60,6 +60,18 @@ public class GameInputHandler {
         if (actions.contains("moveLeft") && actions.contains("moveRight")) {
             actions.remove("moveLeft");
             actions.remove("moveRight");
+        }
+        if (actions.contains("cancelPlacement") && actions.contains("placeConveyorBelt")) {
+            actions.remove("placeConveyorBelt");
+        }
+        if (actions.contains("cancelPlacement") && actions.contains("placeExtractor")) {
+            actions.remove("placeExtractor");
+        }
+        if (actions.contains("cancelPlacement") && actions.contains("placeSmelter")) {
+            actions.remove("placeSmelter");
+        }
+        if (actions.contains("cancelPlacement") && actions.contains("placeBuilding")) {
+            actions.remove("placeBuilding");
         }
 
         // run combinations
@@ -93,6 +105,24 @@ public class GameInputHandler {
         }
         if (actions.contains("moveRight")) {
             gameController.movePlayer('D');
+        }
+        if (actions.contains("placeConveyorBelt")) {
+            gameController.chooseBuildingToPlace("ConveyorBelt");
+        }
+        if (actions.contains("placeExtractor")) {
+            gameController.chooseBuildingToPlace("Extractor");
+        }
+        if (actions.contains("placeSmelter")) {
+            gameController.chooseBuildingToPlace("Smelter");
+        }
+        if (actions.contains("cancelPlacement")) {
+            gameController.cancelPlacement();
+        }
+        if (actions.contains("rotateBuilding")) {
+            gameController.rotateBuilding();
+        }
+        if (actions.contains("placeBuilding")) {
+            
         }
     }
 }
