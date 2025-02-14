@@ -85,6 +85,7 @@ public class StartingPanel extends JPanel implements Runnable{
         loadGame = new JButton("Save Current World");
         loadGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                System.out.println("Test");
                 GameController controller = new GameController();
                 controller.saveWorld();
             }
