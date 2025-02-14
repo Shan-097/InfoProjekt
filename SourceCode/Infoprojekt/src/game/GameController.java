@@ -158,7 +158,7 @@ public class GameController {
     public void movePlayer(char direction) {
         if ("QWEADYSC".indexOf(direction) == -1) {
             throw new IllegalArgumentException(
-                    "The supplied direction is exspected to be one of Q, W, E, A, D, Y, S or C.");
+                    "The supplied direction is expected to be one of Q, W, E, A, D, Y, S or C.");
         }
 
         movementDirection = direction;
@@ -239,7 +239,7 @@ public class GameController {
         // generate new fields if necessary
         for (int i = -50; i <= 50; i++) {
             for (int j = -50; j <= 50; j++) {
-                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX <= posXinArray + i || maxY <= posYinArray + j) {
+                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX < posXinArray + i || maxY < posYinArray + j) {
                     continue;
                 }
                 wGenerator.generateTile(posXinArray + i, posYinArray + j);
@@ -264,6 +264,16 @@ public class GameController {
         }
         return true;
     }
+
+
+    // mithilfe input-handler:
+    // wenn '1' --> rufe (1) mit spezieller Maschine auf
+    // wenn variable X != null UND 'R' (bzw. 'Esc' oder 'Enter') --> rufe (2) (bzw. (3) oder (4)) auf
+    // (1) method: platziere building --> mit z.B. '1' speicher building in variable X (mit Rotation)
+    // (2) method: rotate --> mit 'R' Eingabe rotieren
+    // (3) method: exit --> mit 'Esc' abbrechen
+    // (4) method: confirm --> mit 'Enter' building dort platzieren
+
 
     /**
      * to be done
@@ -342,5 +352,13 @@ public class GameController {
 
     public Field getField(int posXinArray, int posYinArray) {
         return wGenerator.getField(posXinArray, posYinArray);
+    }
+
+    public int getXLengthMap() {
+        return wGenerator.getXLengthMap();
+    }
+
+    public int getYLengthMap() {
+        return wGenerator.getYLengthMap();
     }
 }

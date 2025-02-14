@@ -7,14 +7,13 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import main.InputHandler;
-
 
 
 /**
@@ -22,7 +21,7 @@ import main.InputHandler;
  */
 public class GamePanel extends JPanel implements Runnable {
     /**
-     * to be done
+     * Size of 1 tile
      */
     private final int tileSize = 64;
 
@@ -46,19 +45,12 @@ public class GamePanel extends JPanel implements Runnable {
      */
     private GameInputHandler gameInputHandler;
 
-    /**
-     * to be done
-     */
-    private BufferedImage grass;
+    Dictionary<String, BufferedImage> images = new Hashtable<>();
+    Dictionary<Character, BufferedImage> falke = new Hashtable<>();
 
     /**
-     * to be done
-     */
-    private BufferedImage falkeLinks;
-
-
-    /**
-     * to be done
+     * Constuctor, setup frame, load images
+     * @param pFr Frame rate 
      */
     public GamePanel(int pFr) {
         this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
@@ -71,18 +63,19 @@ public class GamePanel extends JPanel implements Runnable {
         gameInputHandler = new GameInputHandler(gameController, inputHandler);
 
         try {
-            grass = ImageIO.read(new File(".\\Graphics\\between grass (64x64).png"));
-            falkeLinks = ImageIO.read(new File(".\\Graphics\\MileniumFalkeNachLinks.png"));
+            images.put("grass", ImageIO.read(new File(".\\Graphics\\between grass (64x64).png")));
+            images.put("stoneItem", ImageIO.read(new File(".\\Graphics\\stein.png")));
+            images.put("smelter", ImageIO.read(new File(".\\Graphics\\Cartography_Table_JE2_BE1.png")));
+            
+            falke.put('S', ImageIO.read(new File(".\\Graphics\\MileniumFalkeUnten.png")));
+            falke.put('Q', ImageIO.read(new File(".\\Graphics\\Download.jpg")));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        JLabel picLabel = new JLabel(new ImageIcon(grass));
-        add(picLabel);
     }
 
-
     /**
-     * to be done
+     * Start game thread
      */
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -126,21 +119,11 @@ public class GamePanel extends JPanel implements Runnable {
         int posXinArray = gameController.getPosX();// tile on which player is standing, center tile Field-coords
         int posYinArray = gameController.getPosY();
 
-        int posXonTile = 0;
-        int posYonTile = 0;
-
-        // temp please ignore!!
-        int aHelp = posXinArray-4;
-        int bHelp = posYinArray-4;
-        // temp
-
         int indexCurrentX;
         int indexCurrentY;
 
         int movementX;
         int movementY;
-
-        //char[][] field = testField();
 
         int frameWidth = this.getWidth(); 
         int frameHeight = this.getHeight();
@@ -155,7 +138,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         Field field;
 
-        for(int i = 0; i<numWidth; i++){ // TODO: add exception for border of world (arrayOutOfBounds)
+        int mapXLength = gameController.getXLengthMap();
+        int mapYLength = gameController.getYLengthMap();
+
+        for(int i = 0; i<numWidth; i++){ 
             for(int j = 0; j<numHeight; j++){
                 indexCurrentX = posXinArray-(numWidth / 2)+(i*1);
                 indexCurrentY = posYinArray-(numHeight / 2)+(j*1);
@@ -163,21 +149,22 @@ public class GamePanel extends JPanel implements Runnable {
                 movementX = (int)(TileCenterX-(gameController.getOffsetX()*tileSize)-(tileSize*(posXinArray-indexCurrentX)));
                 movementY = (int)(TileCenterY-(gameController.getOffsetY()*tileSize)-(tileSize*(posYinArray-indexCurrentY)));
 
-                if (indexCurrentX < 0 || indexCurrentY < 0) {
+                if (indexCurrentX < 0 || indexCurrentY < 0 || indexCurrentX >= mapXLength || indexCurrentY >= mapYLength) {
                         g2d.setColor(Color.BLUE);
                         g2d.fillRect(movementX, movementY, tileSize, tileSize);
                         continue;
                 }
 
                 field = gameController.getField(indexCurrentX, indexCurrentY);
-                
 
-                
                 if(field.getResourceID() == 0){
-                    g2d.drawImage(grass, movementX, movementY,null);
+                    g2d.drawImage(images.get("grass"), movementX, movementY,null);
                     continue;
                 } else if (field.getResourceID() == 1){
                     g2d.setColor(Color.GRAY);
+                    //g2d.drawImage(images.get("grass"), movementX, movementY,null);
+                    //g2d.drawImage(images.get("smelter"), movementX, movementY,null);
+                    //continue;
                 } else if (field.getResourceID() == 2){
                     g2d.setColor(new Color(142, 64, 42));
                 } else if (field.getResourceID() == 3){
@@ -186,36 +173,13 @@ public class GamePanel extends JPanel implements Runnable {
                     g2d.setColor(Color.YELLOW);
                 }
                 g2d.fillRect(movementX, movementY, tileSize, tileSize);
-
-                
-                if(indexCurrentX == aHelp && indexCurrentY == bHelp) {
-                    g2d.setColor(Color.BLUE); // paint random square blue to visualize movement
-                    //g2d.fillRect(movementX, movementY, tileSize, tileSize); //find location of the square relative to player square
-                }
             }
         } 
-        // temp player dot
-        g2d.setColor(Color.BLACK);
-        //g2d.fillOval((int)(TileCenterX + (0.125*tileSize)),(int) (TileCenterY + (0.125*tileSize)), (int)(tileSize*0.75), (int)(tileSize*0.75));
-        g2d.drawImage(falkeLinks, (int)(TileCenterX + (0.125*tileSize)),(int) (TileCenterY + (0.125*tileSize)), null);
+        g2d.setColor(Color.MAGENTA);
+        g2d.fillRect((int)Math.round(0.6*tileSize), (int)(frameHeight/2-2*tileSize), tileSize, tileSize*4);
 
+        // Draw player
+        g2d.drawImage(falke.get(gameController.getDirection()), TileCenterX, TileCenterY, null);
         g2d.dispose();
-    }
-
-    /**
-     * to be done
-     * @return char[][] to be done
-     */
-    private char[][] testField(){ // 2D array with checkerboard pattern to test the paint method
-        int rows = 100; 
-        int cols = 100; 
-        char[][] field = new char[rows][cols];
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                field[i][j] = (i + j) % 2 == 0 ? 'X' : 'O';
-            }
-        }        
-        return field;
     }
 }
