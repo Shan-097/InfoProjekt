@@ -36,6 +36,12 @@ public class GameInputHandler {
         inputMap.put('s', "moveDown");
         inputMap.put('a', "moveLeft");
         inputMap.put('d', "moveRight");
+        inputMap.put('1', "placeConveyorBelt");
+        inputMap.put('2', "placeExtractor");
+        inputMap.put('3', "placeSmelter");
+        inputMap.put('R', "rotateBuilding");
+        inputMap.put((char) 27, "cancelPlacement"); // esc
+        inputMap.put('b', "placeBuilding");
     }
 
     public void invokeMethodsFromInput() {
