@@ -49,6 +49,16 @@ public class ConveyorBelt extends Building {
     }
 
     
+    /**
+     * to be done
+     * @param item to be done
+     * @return Item to be done
+     */
+    @Override
+    protected Item executeFunction(Item item){
+        return item;
+    }
+
     /** 
      * to be done
      * @return HashMap<Integer, Integer> to be done
