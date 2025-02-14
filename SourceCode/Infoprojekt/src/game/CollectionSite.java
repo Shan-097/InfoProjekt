@@ -32,7 +32,6 @@ public class CollectionSite extends Building {
         COST = null;
         INPUT_DIRECTIONS = new byte[]{(byte) 0, (byte) 1, (byte) 3, (byte) 4};
         OUTPUT_DIRECTIONS = new byte[0];
-
     }
 
 
@@ -54,6 +53,15 @@ public class CollectionSite extends Building {
         return GameController.addItemToInventory(item);
     }
 
+    /**
+     * to be done
+     * @param item to be done
+     * @return Item to be done
+     */
+    @Override
+    protected Item executeFunction(Item item){
+        return item;
+    }
 
     /** 
      * to be done

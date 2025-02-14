@@ -24,6 +24,8 @@ public class Extractor extends Building {
      */
     private static final byte[] OUTPUT_DIRECTIONS;
 
+    /** */
+    private final Item itemToBeExtracted;
 
     /** 
      * to be done
@@ -43,10 +45,19 @@ public class Extractor extends Building {
     /**
      * to be done
      */
-    public Extractor() {
+    public Extractor(Item pItem) {
         super();
+        itemToBeExtracted = pItem;
     }
 
+
+    /**
+     * to be done
+     */
+    @Override
+    protected Item executeFunction(Item item){
+        return itemToBeExtracted;
+    }
     
     /** 
      * to be done
