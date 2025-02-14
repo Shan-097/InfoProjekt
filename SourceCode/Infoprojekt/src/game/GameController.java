@@ -341,7 +341,7 @@ public class GameController {
      * @return boolean to be done
      */
     public boolean saveWorld() {
-        try(FileWriter file = new FileWriter("saves/" + worldName + ".json")) {
+        try(FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {
             Map<String, String> properties = new HashMap<>();
 
             properties.put("worldName", worldName);
@@ -364,5 +364,10 @@ public class GameController {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean loadWorld() {
+
+        return true;
     }
 }
