@@ -4,4 +4,8 @@
     "javadoc-tools.generateJavadoc.targetFolder": "./javadoc/",
     "java.project.sourcePaths": ["SourceCode/Infoprojekt/src"],
     "java.project.outputPath": "SourceCode/Infoprojekt/bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "dependencies/json.jar"
+    ],
 }

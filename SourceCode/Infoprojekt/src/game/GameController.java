@@ -4,7 +4,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * to be done
@@ -342,22 +346,25 @@ public class GameController {
      */
     public boolean saveWorld() {
         try(FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {
-            Map<String, String> properties = new HashMap<>();
+            JSONObject properties = new JSONObject();
 
             properties.put("worldName", worldName);
             properties.put("posX", String.valueOf(posXinArray));
             properties.put("posY", String.valueOf(posYinArray));
-            properties.put("worldMap", wGenerator.getWorldJson());
 
-            StringBuilder propertiesString = new StringBuilder("{");
+            JSONArray outerArray = new JSONArray();
 
-            for (String key : properties.keySet()) {
-                propertiesString.append("\"").append(key).append("\": \"").append(properties.get(key)).append("\",");
+            for (Field[] row : wGenerator.getMap()) {
+                JSONArray innerArray = new JSONArray();
+                for (Field field : row) {
+                    innerArray.put(field != null ? field.toJSONObject() : JSONObject.NULL);
+                }
+                outerArray.put(innerArray);
             }
 
-            propertiesString.append("}");
+            properties.put("worldMap", outerArray);
 
-            file.write(propertiesString.toString());
+            file.write(properties.toString(4));
 
             return true;
         } catch (IOException e) {
@@ -367,7 +374,6 @@ public class GameController {
     }
 
     public boolean loadWorld() {
-
         return true;
     }
 }

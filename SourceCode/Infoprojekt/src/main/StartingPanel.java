@@ -78,8 +78,10 @@ public class StartingPanel extends JPanel implements Runnable{
         startNewGame = new JButton("Create New World");
         startNewGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                App.loadGameScreen();
-                thread = null;
+                GameController controller = new GameController();
+                controller.saveWorld();
+                //App.loadGameScreen();
+                //thread = null;
             }
         });
         loadGame = new JButton("Save Current World");

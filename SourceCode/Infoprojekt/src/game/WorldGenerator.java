@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
+import org.json.JSONArray;
+
 /**
  * to be done
  */
@@ -29,8 +31,8 @@ public class WorldGenerator {
      * to be done
      * @return String WorldMap as String (for world save in JSON File)
      */
-    public String getWorldJson() {
-        return Arrays.deepToString(map);
+    public Field[][] getMap() {
+        return map;
     }
 
     /**
