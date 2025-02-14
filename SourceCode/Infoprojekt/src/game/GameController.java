@@ -1,6 +1,5 @@
 package game;
 
-import game.WorldTile.TileValue;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -287,7 +286,7 @@ public class GameController {
         // generate new fields if necessary
         for (int i = -50; i <= 50; i++) {
             for (int j = -50; j <= 50; j++) {
-                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX <= posXinArray + i || maxY <= posYinArray + j) {
+                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX < posXinArray + i || maxY < posYinArray + j) {
                     continue;
                 }
                 wGenerator.generateTile(posXinArray + i, posYinArray + j);
