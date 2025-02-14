@@ -1,5 +1,7 @@
 package game;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -373,7 +375,32 @@ public class GameController {
         }
     }
 
-    public boolean loadWorld() {
+    
+    /** 
+     * loads all world parameters from the previously saved json file
+     * @return boolean successfully loaded or not?
+     */
+    public boolean loadWorld(String filepath) {
+        JSONObject savedObject = readJsonFile(filepath);
+
+        worldName = jsonObject.getString("worldName");
+        posXinArray = Integer.parseInt(jsonObject.getString("posX"));
+        posYinArray = Integer.parseInt(jsonObject.getString("posY"));
+        JSONArray worldMap = jsonObject.getJSONArray("worldMap");
         return true;
+    }
+
+    public static JSONObject readJsonFile(String filePath) {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line);
+            }
+            return new JSONObject(content.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
