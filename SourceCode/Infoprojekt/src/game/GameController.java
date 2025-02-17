@@ -311,7 +311,7 @@ public class GameController {
                 break;
 
             case "Extractor":
-                buildingToBePlaced = new Extractor(null);
+                buildingToBePlaced = new Extractor();
                 break;
 
             case "Smelter":
@@ -341,6 +341,23 @@ public class GameController {
      */
     public void placeBuilding(){
         // TODO: implement placement
+        if(wGenerator.getField(posXinArray, posYinArray).getBuilding() != null){
+            buildingToBePlaced = null;
+            return;
+        }
+
+        if (buildingToBePlaced.getClass() == Extractor.class) {
+            Resource resource = wGenerator.getField(posXinArray, posYinArray).getResource();
+            if (resource.getResourceID() == 0) {
+                buildingToBePlaced = null;
+                return;                
+            }
+            Extractor temp = (Extractor) buildingToBePlaced;
+            temp.setResourceToBeExtracted(resource);
+            buildingToBePlaced = temp;
+        }
+
+        wGenerator.placeBuilding(posXinArray, posYinArray, buildingToBePlaced);
     }
 
     /**

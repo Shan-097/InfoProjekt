@@ -10,7 +10,7 @@ public class WorldGenerator {
     /**
      * to be done
      */
-    private static final double[] BASE_PROBABILITIES = new double[]{0.95d, 0.02d, 0.015d, 0.01d, 0.005d};
+    private static final double[] BASE_PROBABILITIES = new double[] { 0.95d, 0.02d, 0.015d, 0.01d, 0.005d };
 
     /**
      * to be done
@@ -281,5 +281,16 @@ public class WorldGenerator {
      */
     public int getYLengthMap() {
         return map[0].length;
+    }
+
+    /**
+     * to be done
+     * 
+     * @param posX to be done
+     * @param posY to be done
+     * @param b    to be done
+     */
+    public void placeBuilding(int posX, int posY, Building b) {
+        map[posX][posY].setBuilding(b);
     }
 }
