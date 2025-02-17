@@ -122,7 +122,7 @@ public class GameInputHandler {
             gameController.rotateBuilding();
         }
         if (actions.contains("placeBuilding")) {
-            
+            gameController.placeBuilding();
         }
     }
 }

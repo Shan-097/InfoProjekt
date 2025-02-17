@@ -331,6 +331,7 @@ public class GameController {
      * to be done
      */
     public void rotateBuilding() {
+        // TODO: Implement bended conveyor belts
         if (buildingToBePlaced != null) {
             buildingToBePlaced.setRotation((byte) ((buildingToBePlaced.getRotation() + 1) % 4));
         }
@@ -340,9 +341,11 @@ public class GameController {
      * to be done
      */
     public void placeBuilding(){
-        // TODO: implement placement
         if(wGenerator.getField(posXinArray, posYinArray).getBuilding() != null){
             buildingToBePlaced = null;
+            return;
+        }
+        if (buildingToBePlaced == null) {
             return;
         }
 
@@ -421,6 +424,20 @@ public class GameController {
      */
     public char getDirection() {
         return movementDirection;
+    }
+
+    /**
+     * temp
+     */
+    public Building getBuilding(int posX, int posY){
+        return wGenerator.getField(posX, posY).getBuilding();
+    }
+
+    /**
+     * temp
+     */
+    public Resource getResource(int posX, int posY){
+        return wGenerator.getField(posX, posY).getResource();
     }
 
     /**

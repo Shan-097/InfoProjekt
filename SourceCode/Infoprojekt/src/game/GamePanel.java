@@ -169,8 +169,21 @@ public class GamePanel extends JPanel implements Runnable {
                 movementY = (int)(TileCenterY-(gameController.getOffsetY()*tileSize)-(tileSize*(posYinArray-indexCurrentY)));
 
                 g2d.drawImage(grass, movementX, movementY,null);
-                if(indexCurrentX == aHelp && indexCurrentY == bHelp) {
+                Resource r = gameController.getResource(indexCurrentX, indexCurrentY);
+                if (r.getResourceID() != 0) {
+                    g2d.setColor(Color.BLACK);
+                    g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                }
+                Building b = gameController.getBuilding(indexCurrentX, indexCurrentY);
+                if (b == null) {
+                    continue;
+                }
+                if(b.getClass() == ConveyorBelt.class) {
+                    if(b.getRotation() == 0) {
+                        g2d.setColor(Color.CYAN);
+                    } else {
                     g2d.setColor(Color.BLUE); // paint random square blue to visualize movement
+                    }
                     g2d.fillRect(movementX, movementY, tileSize, tileSize); //find location of the square relative to player square
                 }
             }
