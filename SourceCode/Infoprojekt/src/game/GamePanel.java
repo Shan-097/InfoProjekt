@@ -8,12 +8,10 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import main.InputHandler;
 
 
@@ -68,7 +66,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameInputHandler = new GameInputHandler(gameController, inputHandler);
 
         try {
-            grass = ImageIO.read(new File(".\\Graphics\\between grass (64x64).png"));
+            grass = ImageIO.read(new File("./Graphics/between grass (64x64).png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
