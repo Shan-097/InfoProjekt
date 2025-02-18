@@ -378,18 +378,28 @@ public class GameController {
     
     /** 
      * loads all world parameters from the previously saved json file
+     * @param filePath FilePath of the saved World
      * @return boolean successfully loaded or not?
      */
     public boolean loadWorld(String filepath) {
         JSONObject savedObject = readJsonFile(filepath);
 
-        worldName = jsonObject.getString("worldName");
-        posXinArray = Integer.parseInt(jsonObject.getString("posX"));
-        posYinArray = Integer.parseInt(jsonObject.getString("posY"));
-        JSONArray worldMap = jsonObject.getJSONArray("worldMap");
+        worldName = savedObject.getString("worldName");
+        posXinArray = Integer.parseInt(savedObject.getString("posX"));
+        posYinArray = Integer.parseInt(savedObject.getString("posY"));
+        JSONArray worldMap = savedObject.getJSONArray("worldMap");
+
+        System.out.println(worldName);
+        System.out.println(posXinArray);
+        System.out.println(posYinArray);
         return true;
     }
 
+    
+    /** 
+     * @param filePath FilePath of the JSON File to read from
+     * @return JSONObject Returns JSON Input File as JSONObject
+     */
     public static JSONObject readJsonFile(String filePath) {
         StringBuilder content = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {

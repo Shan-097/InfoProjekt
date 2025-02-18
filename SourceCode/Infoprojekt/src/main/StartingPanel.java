@@ -47,7 +47,12 @@ public class StartingPanel extends JPanel implements Runnable{
     private JButton controls;
 
     /**
-     * button to open the menu to load an existing saved game
+     * button to save the created game
+     */
+    private JButton saveGame;
+
+    /**
+     * button to open the menu to load an existing saved game 
      */
     private JButton loadGame;
 
@@ -78,27 +83,35 @@ public class StartingPanel extends JPanel implements Runnable{
         startNewGame = new JButton("Create New World");
         startNewGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                GameController controller = new GameController();
-                controller.saveWorld();
-                //App.loadGameScreen();
-                //thread = null;
+                //GameController controller = new GameController();
+                //controller.saveWorld();
+                App.loadGameScreen();
+                thread = null;
             }
         });
-        loadGame = new JButton("Save Current World");
-        loadGame.addActionListener(new ActionListener() {
+        saveGame = new JButton("Save Current World");
+        saveGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 System.out.println("Button pressed");
                 GameController controller = new GameController();
                 controller.saveWorld();
             }
         });
+        loadGame = new JButton("Load Saved World");
+        loadGame.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                GameController controller = new GameController();
+                controller.loadWorld("./SourceCode/Infoprojekt/saves/testWorld.json");
+            }
+        });
         controls = new JButton("Controls");
-        loadGame = new JButton("Load Existing World");
         startNewGame.setFont(new Font("Arial", Font.BOLD, 15));
+        saveGame.setFont(new Font("Arial", Font.BOLD, 15));
         loadGame.setFont(new Font("Arial", Font.BOLD, 15));
         controls.setFont(new Font("Arial", Font.BOLD, 15));
         add(startNewGame);
         add(controls);
+        add(saveGame);
         add(loadGame);
         try {
             myPicture = ImageIO.read(new File("./Graphics/grass (64x64).png"));
@@ -116,7 +129,8 @@ public class StartingPanel extends JPanel implements Runnable{
      */
     public void moveButtons(){
         startNewGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 - 45, buttonWidth, buttonHeight);
-        controls.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 + 45, buttonWidth, buttonHeight);
+        controls.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 + 90, buttonWidth, buttonHeight);
+        saveGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 + 45, buttonWidth, buttonHeight);
         loadGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
         this.validate();
         this.setVisible(true);
