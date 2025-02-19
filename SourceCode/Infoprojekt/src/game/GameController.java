@@ -38,11 +38,10 @@ public class GameController {
      */
     private float posYonTile;
 
-    // Q W E
-    // A D
-    // Y S C
     /**
-     * to be done
+     * Q W E
+     * A _ D
+     * Y S C
      */
     private char movementDirection;
 
@@ -57,7 +56,8 @@ public class GameController {
     private Building buildingToBePlaced;
 
     /**
-     * to be done
+     * Instantiates a new Object of type GameController.<br>
+     * Sets for example the starting position of the player.
      */
     public GameController() {
         inventory = new HashMap<Item, Integer>();
@@ -69,16 +69,18 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Makes the changes to the world that are directely timed by ticks.<br>
+     * E.g. moves the items on the conveyor belts.
      */
     public void update() {
         moveItems(getStartingPoints());
     }
 
     /**
-     * to be done
+     * "Walks through" the "graph" of the machines and finds the points nothing is
+     * moved away from.
      * 
-     * @return ArrayList<Tuple> to be done
+     * @return Returns the list of coordinates the found buildings are standing on.
      */
     private ArrayList<Tuple> getStartingPoints() {
         ArrayList<Tuple> buildingList = new ArrayList<Tuple>();
@@ -145,9 +147,11 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Moves the items of for example conveyor belts to the next building.<br>
+     * The movement is from the "inside outwards".
      * 
-     * @param startingPoints to be done
+     * @param startingPoints A list of coordinates of the building nothing is moved
+     *                       away from.
      */
     private void moveItems(ArrayList<Tuple> startingPoints) {
         int mapLengthX = wGenerator.getXLengthMap();
@@ -202,10 +206,13 @@ public class GameController {
     }
 
     /**
-     * to be done
-     * Q W E
-     * A _ D
+     * Moves the player in the given direction/ sets the new player position.<br>
+     * The characters encoding the movement direction are set as follows:<br>
+     * Q W E<br>
+     * A _ D<br>
      * Y S C
+     * 
+     * @param direction The direction the player is moving in.
      */
     public void movePlayer(char direction) {
         if ("QWEADYSC".indexOf(direction) == -1) {
@@ -300,9 +307,9 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Sets the building that the player plans to place next.
      * 
-     * @param pBuilding to be done
+     * @param pBuilding The type of building given by a string.
      */
     public void chooseBuildingToPlace(String buildingType) {
         switch (buildingType) {
@@ -321,14 +328,14 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Removes the chosen building to be placed next.
      */
     public void cancelPlacement() {
         buildingToBePlaced = null;
     }
 
     /**
-     * to be done
+     * Rotates the building that is planned to be placed next.
      */
     public void rotateBuilding() {
         // TODO: Implement bended conveyor belts
@@ -338,10 +345,12 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Finally places the building (if possible) that was chosen to be placed
+     * next.<br>
+     * Makes also small but necessary changes to some building types.
      */
-    public void placeBuilding(){
-        if(wGenerator.getField(posXinArray, posYinArray).getBuilding() != null){
+    public void placeBuilding() {
+        if (wGenerator.getField(posXinArray, posYinArray).getBuilding() != null) {
             buildingToBePlaced = null;
             return;
         }
@@ -353,7 +362,7 @@ public class GameController {
             Resource resource = wGenerator.getField(posXinArray, posYinArray).getResource();
             if (resource.getResourceID() == 0) {
                 buildingToBePlaced = null;
-                return;                
+                return;
             }
             Extractor temp = (Extractor) buildingToBePlaced;
             temp.setResourceToBeExtracted(resource);
@@ -364,9 +373,9 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Adds the given Item to the inventory.
      * 
-     * @param item to be done
+     * @param item The item to be added to the inventory.
      * @return boolean to be done
      */
     public static boolean addItemToInventory(Item item) {
@@ -429,14 +438,14 @@ public class GameController {
     /**
      * temp
      */
-    public Building getBuilding(int posX, int posY){
+    public Building getBuilding(int posX, int posY) {
         return wGenerator.getField(posX, posY).getBuilding();
     }
 
     /**
      * temp
      */
-    public Resource getResource(int posX, int posY){
+    public Resource getResource(int posX, int posY) {
         return wGenerator.getField(posX, posY).getResource();
     }
 
