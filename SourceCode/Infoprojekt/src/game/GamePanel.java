@@ -9,10 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Hashtable;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
 import main.InputHandler;
 
 
@@ -66,6 +64,7 @@ public class GamePanel extends JPanel implements Runnable {
             images.put("grass", ImageIO.read(new File(".\\Graphics\\between grass (64x64).png")));
             images.put("stoneItem", ImageIO.read(new File(".\\Graphics\\stein.png")));
             images.put("smelter", ImageIO.read(new File(".\\Graphics\\Cartography_Table_JE2_BE1.png")));
+            images.put("copper", ImageIO.read(new File(".\\Graphics\\CopperConveyor.png")));
             
             falke.put('S', ImageIO.read(new File(".\\Graphics\\MileniumFalkeUnten.png")));
             falke.put('Q', ImageIO.read(new File(".\\Graphics\\Download.jpg")));
