@@ -7,12 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -96,7 +93,7 @@ public class StartingPanel extends JPanel implements Runnable{
         add(controls);
         add(loadGame);
         try {
-            myPicture = ImageIO.read(new File(".\\Graphics\\grass (64x64).png"));
+            myPicture = ImageIO.read(new File("./Graphics/grass (64x64).png"));
             JLabel picLabel = new JLabel(new ImageIcon(myPicture));
             add(picLabel);
         } catch (IOException e1) {

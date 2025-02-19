@@ -61,13 +61,13 @@ public class GamePanel extends JPanel implements Runnable {
         gameInputHandler = new GameInputHandler(gameController, inputHandler);
 
         try {
-            images.put("grass", ImageIO.read(new File(".\\Graphics\\between grass (64x64).png")));
-            images.put("stoneItem", ImageIO.read(new File(".\\Graphics\\stein.png")));
-            images.put("smelter", ImageIO.read(new File(".\\Graphics\\Cartography_Table_JE2_BE1.png")));
-            images.put("copper", ImageIO.read(new File(".\\Graphics\\CopperConveyor.png")));
+            images.put("grass", ImageIO.read(new File("./Graphics/between grass (64x64).png")));
+            images.put("stoneItem", ImageIO.read(new File("./Graphics/stein.png")));
+            images.put("smelter", ImageIO.read(new File("./Graphics/Cartography_Table_JE2_BE1.png")));
+            images.put("copper", ImageIO.read(new File("./Graphics/CopperConveyor.png")));
             
-            falke.put('S', ImageIO.read(new File(".\\Graphics\\MileniumFalkeUnten.png")));
-            falke.put('Q', ImageIO.read(new File(".\\Graphics\\Download.jpg")));
+            falke.put('S', ImageIO.read(new File("./Graphics/MileniumFalkeUnten.png")));
+            falke.put('Q', ImageIO.read(new File("./Graphics/Download.jpg")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -165,7 +165,8 @@ public class GamePanel extends JPanel implements Runnable {
                     //g2d.drawImage(images.get("smelter"), movementX, movementY,null);
                     //continue;
                 } else if (field.getResourceID() == 2){
-                    g2d.setColor(new Color(142, 64, 42));
+                    g2d.drawImage(images.get("copper"), movementX, movementY,null);
+                    continue;
                 } else if (field.getResourceID() == 3){
                     g2d.setColor(Color.LIGHT_GRAY);
                 } else if (field.getResourceID() == 4){
