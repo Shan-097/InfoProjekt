@@ -66,10 +66,12 @@ public class GameController {
     public GameController() {
         inventory = new HashMap<Item, Integer>();
         wGenerator = new WorldGenerator();
-        posXinArray = 50;
-        posYinArray = 50;
+
+        posXinArray = wGenerator.getXLengthMap() / 2;
+        posYinArray = wGenerator.getYLengthMap() / 2;
         posXonTile = 0;
         posYonTile = 0;
+        movementDirection = 'S';
     }
 
     /**
