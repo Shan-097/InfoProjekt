@@ -157,41 +157,41 @@ public class WorldGenerator {
             double baseProbFoundRes = 0;
             switch (iDofKnownResource) {
                 case 1:
-                    baseProbFoundRes = BASE_PROBABILITIES[1];
+                    baseProbFoundRes = 2 * BASE_PROBABILITIES[1];
                     break;
 
                 case 2:
-                    baseProbFoundRes = BASE_PROBABILITIES[2];
+                    baseProbFoundRes = 3 * BASE_PROBABILITIES[2];
                     break;
 
                 case 3:
-                    baseProbFoundRes = BASE_PROBABILITIES[3];
+                    baseProbFoundRes =  4 * BASE_PROBABILITIES[3];
                     break;
 
                 case 4:
-                    baseProbFoundRes = BASE_PROBABILITIES[4];
+                    baseProbFoundRes = 5 * BASE_PROBABILITIES[4];
                     break;
             }
 
             switch (countOfKnownTiles - 1) {
                 case 0:
-                    probability[0] = 1 - 10 * baseProbFoundRes;
-                    probability[iDofKnownResource] = 10 * baseProbFoundRes;
+                    probability[0] = 1 - 5 * baseProbFoundRes;
+                    probability[iDofKnownResource] = 5 * baseProbFoundRes;
                     break;
 
                 case 1:
-                    probability[0] = 1 - 6 * baseProbFoundRes;
+                    probability[0] = 1 - 8 * baseProbFoundRes;
                     probability[iDofKnownResource] = 8 * baseProbFoundRes;
                     break;
 
                 case 2:
-                    probability[0] = 1 - 3 * baseProbFoundRes;
-                    probability[iDofKnownResource] = 3 * baseProbFoundRes;
+                    probability[0] = 1 - 10 * baseProbFoundRes;
+                    probability[iDofKnownResource] = 10 * baseProbFoundRes;
                     break;
 
                 case 3:
-                    probability[0] = 1 - baseProbFoundRes;
-                    probability[iDofKnownResource] = baseProbFoundRes;
+                    probability[0] = 1 - 15 * baseProbFoundRes;
+                    probability[iDofKnownResource] = 15 * baseProbFoundRes;
                     break;
             }
         }
