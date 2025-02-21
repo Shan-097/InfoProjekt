@@ -1,6 +1,5 @@
 package game;
 
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -13,8 +12,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import main.InputHandler;
-
-
 
 /**
  * to be done
@@ -50,8 +47,6 @@ public class GamePanel extends JPanel implements Runnable {
      */
     private BufferedImage grass;
 
-
-
     /**
      * to be done
      */
@@ -72,8 +67,8 @@ public class GamePanel extends JPanel implements Runnable {
         }
         JLabel picLabel = new JLabel(new ImageIcon(grass));
         add(picLabel);
+        Music.LoopMusic(".\\Music\\Wizard.wav");
     }
-
 
     /**
      * to be done
@@ -111,13 +106,13 @@ public class GamePanel extends JPanel implements Runnable {
 
     /**
      * to be done
+     * 
      * @param g to be done
      */
-    public void paintComponent(Graphics g){ // paint() oder paintComponent() ???
+    public void paintComponent(Graphics g) { // paint() oder paintComponent() ???
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D)g;
+        Graphics2D g2d = (Graphics2D) g;
 
-        
         int posXinArray = gameController.getPosX();// tile on which player is standing, center tile Field-coords
         int posYinArray = gameController.getPosY();
 
@@ -125,8 +120,8 @@ public class GamePanel extends JPanel implements Runnable {
         int posYonTile = 0;
 
         // temp please ignore!!
-        int aHelp = posXinArray-4;
-        int bHelp = posYinArray-4;
+        int aHelp = posXinArray - 4;
+        int bHelp = posYinArray - 4;
         // temp
 
         int indexCurrentX;
@@ -137,10 +132,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         char[][] field = testField();
 
-        int frameWidth = this.getWidth(); 
+        int frameWidth = this.getWidth();
         int frameHeight = this.getHeight();
 
-        // number of squares on the screen 
+        // number of squares on the screen
         int numWidth = (int) frameWidth / tileSize + 3;
         int numHeight = (int) frameHeight / tileSize + 3;
 
@@ -148,52 +143,58 @@ public class GamePanel extends JPanel implements Runnable {
         int TileCenterX = ((frameWidth - tileSize) / 2);
         int TileCenterY = ((frameHeight - tileSize) / 2);
 
-        for(int i = 0; i<numWidth; i++){ // TODO: add exception for border of world (arrayOutOfBounds)
-            for(int j = 0; j<numHeight; j++){
-                indexCurrentX = posXinArray-(numWidth / 2)+(i*1);
-                indexCurrentY = posYinArray-(numHeight / 2)+(j*1);
+        for (int i = 0; i < numWidth; i++) { // TODO: add exception for border of world (arrayOutOfBounds)
+            for (int j = 0; j < numHeight; j++) {
+                indexCurrentX = posXinArray - (numWidth / 2) + (i * 1);
+                indexCurrentY = posYinArray - (numHeight / 2) + (j * 1);
 
-                if(indexCurrentX == posXinArray && indexCurrentY == posYinArray){
+                if (indexCurrentX == posXinArray && indexCurrentY == posYinArray) {
                     g2d.setColor(Color.YELLOW); // highlight current player square yellow
                 }
-                
-                 else if(field[indexCurrentX][indexCurrentY] == 'X'){
+
+                else if (field[indexCurrentX][indexCurrentY] == 'X') {
                     g2d.setColor(Color.WHITE);
                 } else {
                     g2d.setColor(Color.GRAY);
                 }
-                // lagere die coords berechnung von fillRect aus, berechne mithilfe je 1/10 square, musst wissen wo TileCenter liegt (ändere Tilecenter je nachdem)
-                movementX = (int)(TileCenterX-(gameController.getOffsetX()*tileSize)-(tileSize*(posXinArray-indexCurrentX)));
-                movementY = (int)(TileCenterY-(gameController.getOffsetY()*tileSize)-(tileSize*(posYinArray-indexCurrentY)));
+                // lagere die coords berechnung von fillRect aus, berechne mithilfe je 1/10
+                // square, musst wissen wo TileCenter liegt (ändere Tilecenter je nachdem)
+                movementX = (int) (TileCenterX - (gameController.getOffsetX() * tileSize)
+                        - (tileSize * (posXinArray - indexCurrentX)));
+                movementY = (int) (TileCenterY - (gameController.getOffsetY() * tileSize)
+                        - (tileSize * (posYinArray - indexCurrentY)));
 
-                g2d.drawImage(grass, movementX, movementY,null);
-                if(indexCurrentX == aHelp && indexCurrentY == bHelp) {
+                g2d.drawImage(grass, movementX, movementY, null);
+                if (indexCurrentX == aHelp && indexCurrentY == bHelp) {
                     g2d.setColor(Color.BLUE); // paint random square blue to visualize movement
-                    g2d.fillRect(movementX, movementY, tileSize, tileSize); //find location of the square relative to player square
+                    g2d.fillRect(movementX, movementY, tileSize, tileSize); // find location of the square relative to
+                                                                            // player square
                 }
             }
-        } 
+        }
         // temp player dot
         g2d.setColor(Color.BLACK);
-        g2d.fillOval((int)(TileCenterX + (0.125*tileSize)),(int) (TileCenterY + (0.125*tileSize)), (int)(tileSize*0.75), (int)(tileSize*0.75));
+        g2d.fillOval((int) (TileCenterX + (0.125 * tileSize)), (int) (TileCenterY + (0.125 * tileSize)),
+                (int) (tileSize * 0.75), (int) (tileSize * 0.75));
 
         g2d.dispose();
     }
 
     /**
      * to be done
+     * 
      * @return char[][] to be done
      */
-    private char[][] testField(){ // 2D array with checkerboard pattern to test the paint method
-        int rows = 100; 
-        int cols = 100; 
+    private char[][] testField() { // 2D array with checkerboard pattern to test the paint method
+        int rows = 100;
+        int cols = 100;
         char[][] field = new char[rows][cols];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 field[i][j] = (i + j) % 2 == 0 ? 'X' : 'O';
             }
-        }        
+        }
         return field;
     }
 }
