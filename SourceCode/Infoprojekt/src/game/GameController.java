@@ -377,7 +377,7 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Removes the building on the tile the player is standing on.
      */
     public void removeBuilding() {
         wGenerator.deleteBuilding(posXinArray, posYinArray);
