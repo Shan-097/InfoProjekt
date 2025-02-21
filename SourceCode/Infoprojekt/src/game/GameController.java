@@ -6,52 +6,56 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * to be done
+ * The GameController class is the heart of the model.<br>
+ * It suplies the controller with the necessary get and set methods and connects
+ * the individual components of the model.
  */
 public class GameController {
     /**
-     * to be done
+     * The inventory of the player.<br>
+     * Stores for every item how many are in the inventory.
      */
     private static HashMap<Item, Integer> inventory;
 
     /**
-     * to be done
+     * The x coordinate of the square the player is standing on.
      */
     private int posXinArray;
 
     /**
-     * to be done
+     * The y coordinate of the square the player is standing on.
      */
     private int posYinArray;
 
     /**
-     * to be done
-     * min = -0.5
-     * max < 0.5
+     * The relative x position of the player on the tile they are standing
+     * on.<br>
+     * The value is in [-0.5, 0.5).
      */
     private float posXonTile;
 
     /**
-     * to be done
-     * min = -0.5
-     * max < 0.5
+     * The relative y position of the player on the tile they are standing
+     * on.<br>
+     * The value is in [-0.5, 0.5).
      */
     private float posYonTile;
 
     /**
-     * Q W E
-     * A _ D
-     * Y S C
+     * The movement direction of the player.<br>
+     * It's value is one of 'Q', 'W', 'E', 'A', 'D', 'Y', 'S' and 'C'. Each encoding
+     * one direction.
      */
     private char movementDirection;
 
     /**
-     * to be done
+     * The world generator object of the game controller.<br>
+     * Stores and handles the map and the generation thereof.
      */
     private WorldGenerator wGenerator;
 
     /**
-     * to be done
+     * A temporary Building object storing what the player plans to place next.
      */
     private Building buildingToBePlaced;
 
@@ -373,10 +377,10 @@ public class GameController {
     }
 
     /**
-     * Adds the given Item to the inventory.
+     * Adds the given item to the inventory.
      * 
      * @param item The item to be added to the inventory.
-     * @return boolean to be done
+     * @return Returns wheter the item has been added sucessfully or not
      */
     public static boolean addItemToInventory(Item item) {
         if (inventory.containsKey(item)) {
@@ -391,45 +395,52 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Returns the x position of the tile the player is standing on.
      * 
-     * @return int to be done
+     * @return The x coordinate
      */
     public int getPosX() {
         return posXinArray;
     }
 
     /**
-     * to be done
+     * Returns the y position of the tile the player is standing on.
      * 
-     * @return int to be done
+     * @return The y coordinate
      */
     public int getPosY() {
         return posYinArray;
     }
 
     /**
-     * to be done
+     * Returns the relative x position of the player on the tile they are standing
+     * on.
      * 
-     * @return float to be done
+     * @return The relative x position<br>
+     *         x is in [-0.5, 0.5)
      */
     public float getOffsetX() {
         return posXonTile;
     }
 
     /**
-     * to be done
+     * Returns the relative y position of the player on the tile they are standing
+     * on.
      * 
-     * @return float to be done
+     * @return The relative y position<br>
+     *         y is in [-0.5, 0.5)
      */
     public float getOffsetY() {
         return posYonTile;
     }
 
     /**
-     * to be done
+     * Returns the movement direction of the player.
      * 
-     * @return char to be done
+     * @return The movement direction<br>
+     *         Q W E<br>
+     *         A _ D<br>
+     *         Y S C
      */
     public char getDirection() {
         return movementDirection;
@@ -450,7 +461,8 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Inner class of a tuple with two elements.<br>
+     * Used for storing coordinates of a 2D space and comparing them.
      */
     private class Tuple {
         private int a;
