@@ -313,7 +313,7 @@ public class GameController {
     /**
      * Sets the building that the player plans to place next.
      * 
-     * @param pBuilding The type of building given by a string.
+     * @param buildingType The type of building given by a string.
      */
     public void chooseBuildingToPlace(String buildingType) {
         switch (buildingType) {
