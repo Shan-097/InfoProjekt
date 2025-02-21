@@ -65,7 +65,7 @@ public class GameController {
      */
     public GameController() {
         inventory = new HashMap<Item, Integer>();
-        wGenerator = new WorldGenerator();
+        wGenerator = new WorldGenerator(100, 100);
 
         posXinArray = wGenerator.getXLengthMap() / 2;
         posYinArray = wGenerator.getYLengthMap() / 2;
@@ -377,6 +377,7 @@ public class GameController {
 
         wGenerator.placeBuilding(posXinArray, posYinArray, buildingToBePlaced);
     }
+    // TODO: Implement removal of buildings.
 
     /**
      * Adds the given item to the inventory.

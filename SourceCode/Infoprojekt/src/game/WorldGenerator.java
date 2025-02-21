@@ -20,8 +20,23 @@ public class WorldGenerator {
     /**
      * to be done
      */
-    public WorldGenerator() {
-        map = new Field[1000][1000];
+    public WorldGenerator(int sizeX, int sizeY) {
+        map = new Field[sizeX][sizeY];
+        int posX = sizeX / 2;
+        int posY = sizeY / 2;
+
+        for (int i = -50; i <= 50; i++) {
+            for (int j = -50; j <= 50; j++) {
+                if (posX + i < 0 || posY + j < 0 || map.length <= posX + i || map[0].length <= posY + j) {
+                    continue;
+                }
+                this.generateTile(posX + i, posY + j);
+
+                if (i <= 1 && i >= -1 && j <= 1 && j >= -1) {
+                    map[posX + i][posY + j].setBuilding(new CollectionSite());
+                }
+            }
+        }
     }
 
     /**
