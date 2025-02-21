@@ -308,4 +308,14 @@ public class WorldGenerator {
     public void placeBuilding(int posX, int posY, Building b) {
         map[posX][posY].setBuilding(b);
     }
+
+    /**
+     * to be done
+     * 
+     * @param posX to be done
+     * @param posY to be done
+     */
+    public void deleteBuilding(int posX, int posY) {
+        map[posX][posY].setBuilding(null);
+    }
 }

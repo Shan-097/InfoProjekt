@@ -1,7 +1,5 @@
 package game;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -377,7 +375,13 @@ public class GameController {
 
         wGenerator.placeBuilding(posXinArray, posYinArray, buildingToBePlaced);
     }
-    // TODO: Implement removal of buildings.
+
+    /**
+     * to be done
+     */
+    public void removeBuilding() {
+        wGenerator.deleteBuilding(posXinArray, posYinArray);
+    }
 
     /**
      * Adds the given item to the inventory.

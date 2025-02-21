@@ -42,6 +42,7 @@ public class GameInputHandler {
         inputMap.put('r', "rotateBuilding");
         inputMap.put((char) 27, "cancelPlacement"); // esc
         inputMap.put('b', "placeBuilding");
+        inputMap.put('X', "deleteBuilding");
     }
 
     public void invokeMethodsFromInput() {
@@ -72,6 +73,10 @@ public class GameInputHandler {
         }
         if (actions.contains("cancelPlacement") && actions.contains("placeBuilding")) {
             actions.remove("placeBuilding");
+        }
+        if (actions.contains("deleteBuilding") && actions.contains("placeBuilding")) {
+            actions.remove("placeBuilding");
+            actions.remove("deleteBuilding");
         }
 
         // run combinations
@@ -123,6 +128,9 @@ public class GameInputHandler {
         }
         if (actions.contains("placeBuilding")) {
             gameController.placeBuilding();
+        }
+        if (actions.contains("deleteBuilding")){
+            gameController.removeBuilding();
         }
     }
 }
