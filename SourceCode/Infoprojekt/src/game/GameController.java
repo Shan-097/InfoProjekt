@@ -42,7 +42,7 @@ public class GameController {
     /**
      * to be done
      */
-    private char movementDirection;
+    private char movementDirection = '0';
 
     /**
      * to be done
