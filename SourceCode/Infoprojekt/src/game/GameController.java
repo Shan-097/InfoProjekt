@@ -37,7 +37,7 @@ public class GameController {
     private float posYonTile;
 
     // Q W E
-    // A D
+    // A   D
     // Y S C
     /**
      * to be done
