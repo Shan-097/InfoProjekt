@@ -1,7 +1,14 @@
 package game;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * The GameController class is the heart of the model.<br>
@@ -44,7 +51,7 @@ public class GameController {
      * It's value is one of 'Q', 'W', 'E', 'A', 'D', 'Y', 'S' and 'C'. Each encoding
      * one direction.
      */
-    private char movementDirection;
+    private char movementDirection = '0';
 
     /**
      * The world generator object of the game controller.<br>
@@ -60,6 +67,12 @@ public class GameController {
     /**
      * Instantiates a new Object of type GameController.<br>
      * Sets for example the starting position of the player.
+     * stores worldName in a String attribute
+     */
+    private String worldName = "testWorld";
+
+    /**
+     * to be done
      */
     public GameController() {
         inventory = new HashMap<Item, Integer>();
@@ -70,6 +83,18 @@ public class GameController {
         posXonTile = 0;
         posYonTile = 0;
         movementDirection = 'S';
+
+        int maxX = wGenerator.getXLengthMap() - 1;
+        int maxY = wGenerator.getYLengthMap() - 1;
+
+        for (int i = -50; i <= 50; i++) {
+            for (int j = -50; j <= 50; j++) {
+                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX <= posXinArray + i || maxY <= posYinArray + j) {
+                    continue;
+                }
+                wGenerator.generateTile(posXinArray + i, posYinArray + j);
+            }
+        }
     }
 
     /**
@@ -221,7 +246,7 @@ public class GameController {
     public void movePlayer(char direction) {
         if ("QWEADYSC".indexOf(direction) == -1) {
             throw new IllegalArgumentException(
-                    "The supplied direction is exspected to be one of Q, W, E, A, D, Y, S or C.");
+                    "The supplied direction is expected to be one of Q, W, E, A, D, Y, S or C.");
         }
 
         movementDirection = direction;
@@ -401,6 +426,16 @@ public class GameController {
         return true;
     }
 
+
+    // mithilfe input-handler:
+    // wenn '1' --> rufe (1) mit spezieller Maschine auf
+    // wenn variable X != null UND 'R' (bzw. 'Esc' oder 'Enter') --> rufe (2) (bzw. (3) oder (4)) auf
+    // (1) method: platziere building --> mit z.B. '1' speicher building in variable X (mit Rotation)
+    // (2) method: rotate --> mit 'R' Eingabe rotieren
+    // (3) method: exit --> mit 'Esc' abbrechen
+    // (4) method: confirm --> mit 'Enter' building dort platzieren
+
+
     /**
      * Returns the x position of the tile the player is standing on.
      * 
@@ -504,6 +539,70 @@ public class GameController {
      * @return to be done
      */
     public boolean saveWorld() {
+        try(FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {
+            JSONObject properties = new JSONObject();
+
+            properties.put("worldName", worldName);
+            properties.put("posX", String.valueOf(posXinArray));
+            properties.put("posY", String.valueOf(posYinArray));
+
+            JSONArray outerArray = new JSONArray();
+
+            for (Field[] row : wGenerator.getMap()) {
+                JSONArray innerArray = new JSONArray();
+                for (Field field : row) {
+                    innerArray.put(field != null ? field.toJSONObject() : JSONObject.NULL);
+                }
+                outerArray.put(innerArray);
+            }
+
+            properties.put("worldMap", outerArray);
+
+            file.write(properties.toString(4));
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    
+    /** 
+     * loads all world parameters from the previously saved json file
+     * @param filePath FilePath of the saved World
+     * @return boolean successfully loaded or not?
+     */
+    public boolean loadWorld(String filepath) {
+        JSONObject savedObject = readJsonFile(filepath);
+
+        worldName = savedObject.getString("worldName");
+        posXinArray = Integer.parseInt(savedObject.getString("posX"));
+        posYinArray = Integer.parseInt(savedObject.getString("posY"));
+        JSONArray worldMap = savedObject.getJSONArray("worldMap");
+
+        System.out.println(worldName);
+        System.out.println(posXinArray);
+        System.out.println(posYinArray);
         return true;
+    }
+
+    
+    /** 
+     * @param filePath FilePath of the JSON File to read from
+     * @return JSONObject Returns JSON Input File as JSONObject
+     */
+    public static JSONObject readJsonFile(String filePath) {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line);
+            }
+            return new JSONObject(content.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

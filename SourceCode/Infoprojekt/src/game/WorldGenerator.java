@@ -1,7 +1,10 @@
 package game;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
+
+import org.json.JSONArray;
 
 /**
  * The WorldGenerator class is responsible for generating and manipulating the
@@ -48,10 +51,18 @@ public class WorldGenerator {
     }
 
     /**
+     * to be done
+     * 
+     */
+    public Field[][] getMap() {
+        return map;
+    }
+
+    /**
      * This method generates a specified tile (Field object of the map) and then
      * collapses the wave according to very simple rules (generates other tiles that
      * should only have one value).
-     * 
+     *
      * @param posX The x coordinate of the tile to be generated.
      * @param posY The y coordinate of the tile to be generated.
      */
@@ -92,12 +103,16 @@ public class WorldGenerator {
         if (rnd < probability[0]) {
             return 0;
         } else if (rnd < probability[0] + probability[1]) {
+            //System.out.println(rnd + "asoihfkjgon" + probability[0] + "    " + probability[1] + (0.95d + 0.02d));
             return 1;
         } else if (rnd < probability[0] + probability[1] + probability[2]) {
+            //System.out.println("AAAAAAAAAAAAAAAAAAAAAAAA" + rnd);
             return 2;
         } else if (rnd < probability[0] + probability[1] + probability[2] + probability[3]) {
+            //System.out.println("BBBBBBBBBBBBBBB" + rnd);
             return 3;
         } else {
+            //System.out.println("CCCCCCCCCCCCCCCC" + rnd);
             return 4;
         }
     }
@@ -183,41 +198,41 @@ public class WorldGenerator {
             double baseProbFoundRes = 0;
             switch (iDofKnownResource) {
                 case 1:
-                    baseProbFoundRes = BASE_PROBABILITIES[1];
+                    baseProbFoundRes = 2 * BASE_PROBABILITIES[1];
                     break;
 
                 case 2:
-                    baseProbFoundRes = BASE_PROBABILITIES[2];
+                    baseProbFoundRes = 3 * BASE_PROBABILITIES[2];
                     break;
 
                 case 3:
-                    baseProbFoundRes = BASE_PROBABILITIES[3];
+                    baseProbFoundRes =  4 * BASE_PROBABILITIES[3];
                     break;
 
                 case 4:
-                    baseProbFoundRes = BASE_PROBABILITIES[4];
+                    baseProbFoundRes = 5 * BASE_PROBABILITIES[4];
                     break;
             }
 
             switch (countOfKnownTiles - 1) {
                 case 0:
-                    probability[0] = 1 - 10 * baseProbFoundRes;
-                    probability[iDofKnownResource] = 10 * baseProbFoundRes;
+                    probability[0] = 1 - 5 * baseProbFoundRes;
+                    probability[iDofKnownResource] = 5 * baseProbFoundRes;
                     break;
 
                 case 1:
-                    probability[0] = 1 - 6 * baseProbFoundRes;
+                    probability[0] = 1 - 8 * baseProbFoundRes;
                     probability[iDofKnownResource] = 8 * baseProbFoundRes;
                     break;
 
                 case 2:
-                    probability[0] = 1 - 3 * baseProbFoundRes;
-                    probability[iDofKnownResource] = 3 * baseProbFoundRes;
+                    probability[0] = 1 - 10 * baseProbFoundRes;
+                    probability[iDofKnownResource] = 10 * baseProbFoundRes;
                     break;
 
                 case 3:
-                    probability[0] = 1 - baseProbFoundRes;
-                    probability[iDofKnownResource] = baseProbFoundRes;
+                    probability[0] = 1 - 15 * baseProbFoundRes;
+                    probability[iDofKnownResource] = 15 * baseProbFoundRes;
                     break;
             }
         }
