@@ -26,9 +26,9 @@ public class Resource {
     static {
         ID_MAP.put(0, new Resource(0)); //no resource
         ID_MAP.put(1, new Resource(1)); //stone
-        ID_MAP.put(2, new Resource(1)); //copper
-        ID_MAP.put(3, new Resource(1)); //iron
-        ID_MAP.put(4, new Resource(1)); //gold
+        ID_MAP.put(2, new Resource(2)); //copper
+        ID_MAP.put(3, new Resource(3)); //iron
+        ID_MAP.put(4, new Resource(4)); //gold
     }
 
 
