@@ -1,19 +1,15 @@
 package main;
 
-
 import game.GamePanel;
-
 
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-
-
 /**
  * Main class of the programm.
  * Starts the starting screen on launch.
- * Has methods to change screen e.g. when starting a new game. 
+ * Has methods to change screen e.g. when starting a new game.
  */
 public class App {
     /**
@@ -26,51 +22,47 @@ public class App {
      */
     private final static int FRAME_RATE = 60;
 
-
-
     /**
-     * The main method loads the game upon launch of the programm. 
+     * The main method loads the game upon launch of the programm.
+     * 
      * @param args is not used but necessary
      */
     public static void main(String[] args) {
         loadStartingScreen();
     }
 
-
-
     /**
      * Empty and unused constructor of App
      */
-    public App(){
+    public App() {
     }
 
-
     /**
-     * loadStartingScreen sets the necessary values and creates 
+     * loadStartingScreen sets the necessary values and creates
      * the window for and of the starting screen
      * closing the others in the process
      */
-    public static void loadStartingScreen(){
+    public static void loadStartingScreen() {
         window = new JFrame("Keria");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         StartingPanel startingPanel = new StartingPanel(FRAME_RATE);
-        
+
         window.setContentPane(startingPanel);
         window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        window.setMinimumSize(new Dimension(500, 300));//random values, TO DO: choose better
+        window.setMinimumSize(new Dimension(500, 300));// random values, TO DO: choose better
         startingPanel.startGameThread();
     }
 
     /**
-     * loadStartingScreen sets the necessary values and creates 
-     * the window for and of the starting screen 
+     * loadStartingScreen sets the necessary values and creates
+     * the window for and of the starting screen
      * closing the others in the process
      */
-    public static void loadGameScreen(){
+    public static void loadGameScreen() {
         window.dispose();
         window = new JFrame("Keria");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,7 +73,7 @@ public class App {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        window.setMinimumSize(new Dimension(500, 300));//random values, TO DO: choose better
+        window.setMinimumSize(new Dimension(500, 300));// random values, TO DO: choose better
         gamePanel.startGameThread();
     }
 }

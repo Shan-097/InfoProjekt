@@ -65,7 +65,6 @@ public class GameController {
      */
     private String worldName = "testWorld";
 
-
     /**
      * A temporary Building object storing what the player plans to place next.
      */
@@ -534,6 +533,7 @@ public class GameController {
 
     /**
      * to be done
+     * 
      * @return to be done
      */
     public int getYLengthMap() {

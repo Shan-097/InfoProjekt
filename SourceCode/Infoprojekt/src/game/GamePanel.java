@@ -20,10 +20,10 @@ import javax.swing.JPanel;
 
 import main.InputHandler;
 
-
 /**
- * Responsible for the entirety of visual output in the main game and therefore the View-component, 
- * including drawing the map, the player and the buildings. 
+ * Responsible for the entirety of visual output in the main game and therefore
+ * the View-component,
+ * including drawing the map, the player and the buildings.
  * Updates constantly at a set rate.
  */
 public class GamePanel extends JPanel implements Runnable {
@@ -58,15 +58,17 @@ public class GamePanel extends JPanel implements Runnable {
     Dictionary<String, BufferedImage> images = new Hashtable<>();
 
     /**
-     * Dictionary to load the different rotations of the player character 
+     * Dictionary to load the different rotations of the player character
      */
     Dictionary<Character, BufferedImage> falke = new Hashtable<>();
 
     /**
      * Constructor of the GamePanel class
-     * Sets up the frame and the GameController, InputHandler and GameInputHandler to allow for interaction later.
+     * Sets up the frame and the GameController, InputHandler and GameInputHandler
+     * to allow for interaction later.
      * Loads all textures needed into their respective dictionary
-     * @param pFr Frame rate 
+     * 
+     * @param pFr Frame rate
      */
     public GamePanel(int pFr) {
         this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
@@ -84,7 +86,7 @@ public class GamePanel extends JPanel implements Runnable {
             images.put("smelter", ImageIO.read(new File("./Graphics/Cartography_Table_JE2_BE1.png")));
             images.put("copper", ImageIO.read(new File("./Graphics/CopperConveyor.png")));
             images.put("arrow", ImageIO.read(new File("./Graphics/arrow.png")));
-            
+
             falke.put('Q', ImageIO.read(new File("./Graphics/FalkeLinksOben.png")));
             falke.put('W', ImageIO.read(new File("./Graphics/FalkeOben.png")));
             falke.put('E', ImageIO.read(new File("./Graphics/FalkeRechtsOben.png")));
@@ -109,7 +111,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     /**
      * Run-method which acts as the game loop
-     * Calculates the frame time, updates game state and redraws the game 
+     * Calculates the frame time, updates game state and redraws the game
      */
     @Override
     public void run() {
@@ -142,8 +144,8 @@ public class GamePanel extends JPanel implements Runnable {
      */
     public void paintComponent(Graphics g) { // paint() oder paintComponent() ???
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D)g;
-        
+        Graphics2D g2d = (Graphics2D) g;
+
         // tile on which player is standing, center tile Field-coords
         int posXinArray = gameController.getPosX();
         int posYinArray = gameController.getPosY();
@@ -157,7 +159,7 @@ public class GamePanel extends JPanel implements Runnable {
         int width = this.getWidth();
         int height = this.getHeight();
 
-        // number of squares on the screen 
+        // number of squares on the screen
         int numWidth = (int) width / tileSize + 2;
         int numHeight = (int) height / tileSize + 2;
 
@@ -170,77 +172,79 @@ public class GamePanel extends JPanel implements Runnable {
         int mapXLength = gameController.getXLengthMap();
         int mapYLength = gameController.getYLengthMap();
 
-        for(int i = 0; i<numWidth; i++){ 
-            for(int j = 0; j<numHeight; j++){
-                indexCurrentX = posXinArray-(numWidth / 2)+i;
-                indexCurrentY = posYinArray-(numHeight / 2)+j;
+        for (int i = 0; i < numWidth; i++) {
+            for (int j = 0; j < numHeight; j++) {
+                indexCurrentX = posXinArray - (numWidth / 2) + i;
+                indexCurrentY = posYinArray - (numHeight / 2) + j;
 
-                movementX = (int)(TileCenterX-(gameController.getOffsetX()*tileSize)-(tileSize*(posXinArray-indexCurrentX)));
-                movementY = (int)(TileCenterY-(gameController.getOffsetY()*tileSize)-(tileSize*(posYinArray-indexCurrentY)));
+                movementX = (int) (TileCenterX - (gameController.getOffsetX() * tileSize)
+                        - (tileSize * (posXinArray - indexCurrentX)));
+                movementY = (int) (TileCenterY - (gameController.getOffsetY() * tileSize)
+                        - (tileSize * (posYinArray - indexCurrentY)));
 
-                if (indexCurrentX < 0 || indexCurrentY < 0 || indexCurrentX >= mapXLength || indexCurrentY >= mapYLength) {
-                        g2d.setColor(Color.BLUE);
-                        g2d.fillRect(movementX, movementY, tileSize, tileSize);
-                        continue;
+                if (indexCurrentX < 0 || indexCurrentY < 0 || indexCurrentX >= mapXLength
+                        || indexCurrentY >= mapYLength) {
+                    g2d.setColor(Color.BLUE);
+                    g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                    continue;
                 }
 
                 field = gameController.getField(indexCurrentX, indexCurrentY);
 
-                if(field.getResourceID() == 0){
-                    g2d.drawImage(images.get("grass"), movementX, movementY,null);
+                if (field.getResourceID() == 0) {
+                    g2d.drawImage(images.get("grass"), movementX, movementY, null);
                     continue;
-                } else if (field.getResourceID() == 1){
+                } else if (field.getResourceID() == 1) {
                     g2d.setColor(Color.GRAY);
-                } else if (field.getResourceID() == 2){
-                    g2d.drawImage(images.get("copper"), movementX, movementY,null);
+                } else if (field.getResourceID() == 2) {
+                    g2d.drawImage(images.get("copper"), movementX, movementY, null);
                     continue;
-                } else if (field.getResourceID() == 3){
+                } else if (field.getResourceID() == 3) {
                     g2d.setColor(Color.LIGHT_GRAY);
-                } else if (field.getResourceID() == 4){
+                } else if (field.getResourceID() == 4) {
                     g2d.setColor(Color.YELLOW);
                 }
                 g2d.fillRect(movementX, movementY, tileSize, tileSize);
             }
         }
-        
 
         g2d.setColor(Color.ORANGE);
-        g2d.fillRect((int)Math.round(0.6*tileSize), (int)(this.getHeight() / 2 - 2*tileSize), tileSize, tileSize*4);
+        g2d.fillRect((int) Math.round(0.6 * tileSize), (int) (this.getHeight() / 2 - 2 * tileSize), tileSize,
+                tileSize * 4);
 
         // Draw player
-        if(gameController.getDirection() != '0') {
+        if (gameController.getDirection() != '0') {
             g2d.drawImage(falke.get(gameController.getDirection()), TileCenterX, TileCenterY, null);
         } else {
             g2d.drawImage(falke.get('W'), TileCenterX, TileCenterY, null);
         }
-        
-        AffineTransform tx = rotateArrow(images.get("arrow"), numWidth, numHeight);
-        if(tx != null)
-            g2d.drawImage(images.get("arrow"), tx, null);
 
+        AffineTransform tx = rotateArrow(images.get("arrow"), numWidth, numHeight);
+        if (tx != null)
+            g2d.drawImage(images.get("arrow"), tx, null);
 
         // add wolken
         g2d.dispose();
     }
 
-
-
     /**
      * NEEDS TO BE MOVED TO MODEL-CLASS !!!
-     * Rotates and moves the arrow pointing 'home' (to Collection Site) using the AffineTransform data type
-     * @return AffineTransform returns the correct translation of the arrow 
+     * Rotates and moves the arrow pointing 'home' (to Collection Site) using the
+     * AffineTransform data type
+     * 
+     * @return AffineTransform returns the correct translation of the arrow
      */
     AffineTransform rotateArrow(Image arrow, int numWidth, int numHeight) {
         AffineTransform tx = new AffineTransform();
 
         int imgWidth = arrow.getWidth(null);
         int imgHeight = arrow.getHeight(null);
-        
+
         char directionHome = locateHome(numWidth, numHeight);
-        
+
         int arrowMargin = 50;
         double angle = 0;
-        
+
         int width = this.getWidth();
         int height = this.getHeight();
 
@@ -248,49 +252,49 @@ public class GamePanel extends JPanel implements Runnable {
 
         switch (directionHome) {
             case 'Q':
-                angle = Math.toRadians(315); 
+                angle = Math.toRadians(315);
                 offsetX = arrowMargin;
-                offsetY = arrowMargin;        
+                offsetY = arrowMargin;
                 break;
-            case 'W':   
+            case 'W':
                 angle = Math.toRadians(0);
-                offsetX = width/2;
+                offsetX = width / 2;
                 offsetY = arrowMargin;
                 break;
             case 'E':
-                angle = Math.toRadians(45);    
-                offsetX = width-arrowMargin;
-                offsetY = arrowMargin; 
+                angle = Math.toRadians(45);
+                offsetX = width - arrowMargin;
+                offsetY = arrowMargin;
                 break;
-            case 'A':  
-                angle = Math.toRadians(270); 
+            case 'A':
+                angle = Math.toRadians(270);
                 offsetX = arrowMargin;
-                offsetY = height/2;
+                offsetY = height / 2;
                 break;
             case 'D':
-                angle = Math.toRadians(90);   
-                offsetX = width-arrowMargin;
-                offsetY = height/2;
+                angle = Math.toRadians(90);
+                offsetX = width - arrowMargin;
+                offsetY = height / 2;
                 break;
             case 'Y':
                 angle = Math.toRadians(225);
                 offsetX = arrowMargin;
-                offsetY = height-arrowMargin;     
+                offsetY = height - arrowMargin;
                 break;
-            case 'X':   
-                angle = Math.toRadians(180);    
-                offsetX = width/2;
-                offsetY = height-arrowMargin;
+            case 'X':
+                angle = Math.toRadians(180);
+                offsetX = width / 2;
+                offsetY = height - arrowMargin;
                 break;
             case 'C':
-                angle = Math.toRadians(135);     
-                offsetX = width-arrowMargin;
-                offsetY = height-arrowMargin;
-                break;       
+                angle = Math.toRadians(135);
+                offsetX = width - arrowMargin;
+                offsetY = height - arrowMargin;
+                break;
             default:
-                break;           
+                break;
         }
-        tx.translate(offsetX - imgWidth / 2, offsetY - imgHeight / 2); 
+        tx.translate(offsetX - imgWidth / 2, offsetY - imgHeight / 2);
         tx.rotate(angle, imgWidth / 2, imgHeight / 2);
 
         if (directionHome == 'S')
@@ -303,55 +307,56 @@ public class GamePanel extends JPanel implements Runnable {
      * NEEDS TO BE MOVED TO MODEL-CLASS !!!
      * Calculates where the 'home' (or Collection Site) is relative to the player
      * 
-     * @return char returns the relative location in the form of a char according to the mapping: 
-     * Q W E
-     * A S D
-     * Y X C
-     * where each letter symbolizes the direction (e.g. 'Q' is top-left, 'C' is bottom-right)
+     * @return char returns the relative location in the form of a char according to
+     *         the mapping:
+     *         Q W E
+     *         A S D
+     *         Y X C
+     *         where each letter symbolizes the direction (e.g. 'Q' is top-left, 'C'
+     *         is bottom-right)
      */
     char locateHome(int numWidth, int numHeight) {
         // Temporary location of the Collection Site, need getter from GameController
         int xHome = 100;
         int yHome = 100;
-        
+
         int posXPlayer = gameController.getPosX();
         int posYPlayer = gameController.getPosY();
 
         byte xLocation;
         byte yLocation;
 
-        if(posXPlayer - 0.5*numWidth > xHome) 
+        if (posXPlayer - 0.5 * numWidth > xHome)
             xLocation = -1;
-        else if(posXPlayer + 0.5*numWidth < xHome) 
+        else if (posXPlayer + 0.5 * numWidth < xHome)
             xLocation = 1;
-        else 
+        else
             xLocation = 0;
 
-        if(posYPlayer - 0.5*numHeight > yHome)
+        if (posYPlayer - 0.5 * numHeight > yHome)
             yLocation = -1;
-        else if(posYPlayer + 0.5*numHeight < yHome)
+        else if (posYPlayer + 0.5 * numHeight < yHome)
             yLocation = 1;
         else
             yLocation = 0;
-        
 
-        if(xLocation == -1 && yLocation == -1)
+        if (xLocation == -1 && yLocation == -1)
             return 'Q';
-        else if(xLocation == 0 && yLocation == -1)
+        else if (xLocation == 0 && yLocation == -1)
             return 'W';
-        else if(xLocation == 1 && yLocation == -1)
+        else if (xLocation == 1 && yLocation == -1)
             return 'E';
-        else if(xLocation == -1 && yLocation == 0)
+        else if (xLocation == -1 && yLocation == 0)
             return 'A';
-        else if(xLocation == 0 && yLocation == 0)
+        else if (xLocation == 0 && yLocation == 0)
             return 'S';
-        else if(xLocation == 1 && yLocation == 0)
+        else if (xLocation == 1 && yLocation == 0)
             return 'D';
-        else if(xLocation == -1 && yLocation == 1)
+        else if (xLocation == -1 && yLocation == 1)
             return 'Y';
-        else if(xLocation == 0 && yLocation == 1)
+        else if (xLocation == 0 && yLocation == 1)
             return 'X';
-        else if(xLocation == 1 && yLocation == 1)
+        else if (xLocation == 1 && yLocation == 1)
             return 'C';
         else
             return 0;

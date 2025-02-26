@@ -1,6 +1,5 @@
 package game;
 
-
 import java.util.HashMap;
 import java.util.InputMismatchException;
 
@@ -25,8 +24,7 @@ public class ConveyorBelt extends Building {
      */
     private byte[] outputDirections;
 
-  
-    /** 
+    /**
      * to be done
      */
     static {
@@ -37,30 +35,29 @@ public class ConveyorBelt extends Building {
         COST.put(4, 1);
     }
 
-
-
     /**
      * to be done
      */
-    public ConveyorBelt(){
+    public ConveyorBelt() {
         super();
         inputDirections = new byte[] { 0 };
         outputDirections = new byte[] { 2 };
     }
 
-    
     /**
      * to be done
+     * 
      * @param item to be done
      * @return Item to be done
      */
     @Override
-    protected Item executeFunction(Item item){
+    protected Item executeFunction(Item item) {
         return item;
     }
 
-    /** 
+    /**
      * to be done
+     * 
      * @return HashMap<Integer, Integer> to be done
      */
     @Override
@@ -68,8 +65,9 @@ public class ConveyorBelt extends Building {
         return COST;
     }
 
-    /** 
+    /**
      * to be done
+     * 
      * @return byte[] to be done
      */
     @Override
@@ -77,8 +75,9 @@ public class ConveyorBelt extends Building {
         return inputDirections;
     }
 
-    /** 
+    /**
      * to be done
+     * 
      * @return byte[] to be done
      */
     @Override
@@ -86,9 +85,9 @@ public class ConveyorBelt extends Building {
         return outputDirections;
     }
 
-
-    /** 
+    /**
      * to be done
+     * 
      * @param pInputDirections to be done
      */
     public void setInputDirections(byte[] pInputDirections) {
@@ -99,8 +98,9 @@ public class ConveyorBelt extends Building {
         outputDirections = new byte[] { (byte) ((2 + pInputDirections[0]) % 4) };
     }
 
-    /** 
+    /**
      * to be done
+     * 
      * @param pOutputDirections to be done
      */
     public void setOutputDirections(byte[] pOutputDirections) {

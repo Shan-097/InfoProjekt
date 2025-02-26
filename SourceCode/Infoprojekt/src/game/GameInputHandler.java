@@ -129,7 +129,7 @@ public class GameInputHandler {
         if (actions.contains("placeBuilding")) {
             gameController.placeBuilding();
         }
-        if (actions.contains("deleteBuilding")){
+        if (actions.contains("deleteBuilding")) {
             gameController.removeBuilding();
         }
     }

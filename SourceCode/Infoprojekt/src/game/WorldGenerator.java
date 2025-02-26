@@ -191,7 +191,7 @@ public class WorldGenerator {
                     break;
 
                 case 3:
-                    baseProbFoundRes =  4 * BASE_PROBABILITIES[3];
+                    baseProbFoundRes = 4 * BASE_PROBABILITIES[3];
                     break;
 
                 case 4:
@@ -304,7 +304,7 @@ public class WorldGenerator {
      * 
      * @return to be done
      */
-    public Field[][] getMap(){
+    public Field[][] getMap() {
         return map;
     }
 

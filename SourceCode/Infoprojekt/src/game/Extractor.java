@@ -1,9 +1,6 @@
 package game;
 
-
 import java.util.HashMap;
-
-
 
 /**
  * to be done
@@ -29,7 +26,7 @@ public class Extractor extends Building {
      */
     private Item itemToBeExtracted;
 
-    /** 
+    /**
      * to be done
      */
     static {
@@ -42,8 +39,6 @@ public class Extractor extends Building {
         OUTPUT_DIRECTIONS = new byte[] { 2 };
     }
 
-
-
     /**
      * to be done
      */
@@ -51,17 +46,17 @@ public class Extractor extends Building {
         super();
     }
 
-
     /**
      * to be done
      */
     @Override
-    protected Item executeFunction(Item item){
+    protected Item executeFunction(Item item) {
         return itemToBeExtracted;
     }
-    
-    /** 
+
+    /**
      * to be done
+     * 
      * @return HashMap<Integer, Integer> to be done
      */
     @Override
@@ -69,8 +64,9 @@ public class Extractor extends Building {
         return COST;
     }
 
-    /** 
+    /**
      * to be done
+     * 
      * @return byte[] to be done
      */
     @Override
@@ -78,8 +74,9 @@ public class Extractor extends Building {
         return INPUT_DIRECTIONS;
     }
 
-    /** 
+    /**
      * to be done
+     * 
      * @return byte[] to be done
      */
     @Override
@@ -87,7 +84,7 @@ public class Extractor extends Building {
         return OUTPUT_DIRECTIONS;
     }
 
-    public void setResourceToBeExtracted(Resource pResource){
+    public void setResourceToBeExtracted(Resource pResource) {
         itemToBeExtracted = Item.getItemFromResource(pResource);
     }
 }

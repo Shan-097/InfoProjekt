@@ -15,12 +15,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
 /**
  * The class of the starting panel.
  * Controls the behavior of the window and the buttons in it.
  */
-public class StartingPanel extends JPanel implements Runnable{  
+public class StartingPanel extends JPanel implements Runnable {
     /**
      * generic width of the buttons in the starting menu
      */
@@ -47,7 +46,7 @@ public class StartingPanel extends JPanel implements Runnable{
     private JButton controls;
 
     /**
-     * button to open the menu to load an existing saved game 
+     * button to open the menu to load an existing saved game
      */
     private JButton loadGame;
 
@@ -61,15 +60,14 @@ public class StartingPanel extends JPanel implements Runnable{
      */
     private BufferedImage myPicture;
 
-
-
     /**
-     * Constructor of the starting panel. 
-     * Instantiates the buttons, adds listeners to them and 
+     * Constructor of the starting panel.
+     * Instantiates the buttons, adds listeners to them and
      * sets important values of the frame.
+     * 
      * @param pFR the desired frame rate of the starting menu
      */
-    public StartingPanel(int pFR){
+    public StartingPanel(int pFR) {
         frameRate = pFR;
         this.setLayout(null);
         this.setPreferredSize(null);
@@ -77,14 +75,14 @@ public class StartingPanel extends JPanel implements Runnable{
         this.setOpaque(true);
         startNewGame = new JButton("Create New World");
         startNewGame.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 App.loadGameScreen();
                 thread = null;
             }
         });
         loadGame = new JButton("Load Saved World");
         loadGame.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 GameController controller = new GameController();
                 controller.loadWorld("./SourceCode/Infoprojekt/saves/testWorld.json");
             }
@@ -106,14 +104,17 @@ public class StartingPanel extends JPanel implements Runnable{
         }
     }
 
-
     /**
-     * Updates the postion of the buttons so that they are centered and have the correct height and width.
+     * Updates the postion of the buttons so that they are centered and have the
+     * correct height and width.
      */
-    public void moveButtons(){
-        startNewGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 - 45, buttonWidth, buttonHeight);
-        controls.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 + 45, buttonWidth, buttonHeight);
-        loadGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
+    public void moveButtons() {
+        startNewGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 - 45,
+                buttonWidth, buttonHeight);
+        controls.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 + 45, buttonWidth,
+                buttonHeight);
+        loadGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2, buttonWidth,
+                buttonHeight);
         this.validate();
         this.setVisible(true);
     }
@@ -129,7 +130,8 @@ public class StartingPanel extends JPanel implements Runnable{
     /**
      * Executed upon starting the thread.
      * Starts the game loop.
-     * Controls the maximum frame rate and calls @moveButtons to update their position.
+     * Controls the maximum frame rate and calls @moveButtons to update their
+     * position.
      */
     @Override
     public void run() {
@@ -142,7 +144,7 @@ public class StartingPanel extends JPanel implements Runnable{
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / frameDisplayTime;
             lastTime = currentTime;
-            if(delta >= 1){
+            if (delta >= 1) {
                 repaint();
                 moveButtons();
                 delta--;
@@ -152,13 +154,15 @@ public class StartingPanel extends JPanel implements Runnable{
 
     /**
      * to be done
+     * 
      * @param g to be done
      */
-    public void paint(Graphics g){
+    public void paint(Graphics g) {
         super.paint(g);
-        Graphics2D g2d = (Graphics2D)g;
-        //g2d.drawImage(myPicture, this.getWidth() / 2, this.getHeight() / 2,null);
-        //g2d.drawImage(myPicture, this.getWidth() / 2 + 200, this.getHeight() / 2 + 200,null);
+        Graphics2D g2d = (Graphics2D) g;
+        // g2d.drawImage(myPicture, this.getWidth() / 2, this.getHeight() / 2,null);
+        // g2d.drawImage(myPicture, this.getWidth() / 2 + 200, this.getHeight() / 2 +
+        // 200,null);
         g2d.dispose();
     }
 }
