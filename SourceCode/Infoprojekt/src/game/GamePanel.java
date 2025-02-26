@@ -96,6 +96,7 @@ public class GamePanel extends JPanel implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Music.LoopMusic(".\\Music\\Wizard.wav");
     }
 
     /**
@@ -139,7 +140,7 @@ public class GamePanel extends JPanel implements Runnable {
      * 
      * @param g to be done
      */
-    public void paintComponent(Graphics g){ // paint() oder paintComponent() ???
+    public void paintComponent(Graphics g) { // paint() oder paintComponent() ???
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
         
@@ -221,6 +222,7 @@ public class GamePanel extends JPanel implements Runnable {
         // add wolken
         g2d.dispose();
     }
+
 
 
     /**
