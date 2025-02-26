@@ -400,7 +400,7 @@ public class GameController {
     /**
      * to be done
      * 
-     * @return boolean to be done
+     * @return to be done
      */
     public boolean saveWorld() {
         try (FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {

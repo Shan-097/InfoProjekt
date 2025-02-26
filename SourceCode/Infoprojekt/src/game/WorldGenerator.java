@@ -268,6 +268,15 @@ public class WorldGenerator {
     /**
      * to be done
      * 
+     * @return to be done
+     */
+    public Field[][] getMap(){
+        return map;
+    }
+
+    /**
+     * to be done
+     * 
      * @return int to be done
      */
     public int getXLengthMap() {
