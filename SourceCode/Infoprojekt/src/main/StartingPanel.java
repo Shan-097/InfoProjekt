@@ -47,11 +47,6 @@ public class StartingPanel extends JPanel implements Runnable{
     private JButton controls;
 
     /**
-     * button to save the created game
-     */
-    private JButton saveGame;
-
-    /**
      * button to open the menu to load an existing saved game 
      */
     private JButton loadGame;
