@@ -1,7 +1,14 @@
 package game;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * to be done
@@ -50,6 +57,11 @@ public class GameController {
     private WorldGenerator wGenerator;
 
     /**
+     * stores worldName in a String attribute
+     */
+    private String worldName = "testWorld";
+
+    /**
      * to be done
      */
     public GameController() {
@@ -77,7 +89,7 @@ public class GameController {
      * to be done
      */
     public void update() {
-        ArrayList<Tuple> startingPoints = getStartingPoints();
+        moveItems(getStartingPoints());
     }
 
     /**
@@ -85,7 +97,7 @@ public class GameController {
      * 
      * @return ArrayList<Tuple> to be done
      */
-    public ArrayList<Tuple> getStartingPoints() {
+    private ArrayList<Tuple> getStartingPoints() {
         ArrayList<Tuple> buildingList = new ArrayList<Tuple>();
 
         int mapLengthX = wGenerator.getXLengthMap();
@@ -147,6 +159,63 @@ public class GameController {
             }
         }
         return listOfStartingPoints;
+    }
+
+    /**
+     * to be done
+     * 
+     * @param startingPoints to be done
+     */
+    private void moveItems(ArrayList<Tuple> startingPoints) {
+        int mapLengthX = wGenerator.getXLengthMap();
+        int mapLengthY = wGenerator.getYLengthMap();
+
+        for (Tuple tuple : startingPoints) {
+            int x = tuple.getA();
+            int y = tuple.getB();
+            Building b = wGenerator.getField(x, y).getBuilding();
+            byte[] inputDirectionsOfBuilding = b.getInputDirections();
+            byte rotation = b.getRotation();
+            for (int i = 0; i < inputDirectionsOfBuilding.length; i++) {
+                byte direction = (byte) ((inputDirectionsOfBuilding[i] + rotation) % 4);
+                int deltaX = 0;
+                int deltaY = 0;
+                switch (direction) {
+                    case 0:
+                        deltaY--;
+                        break;
+
+                    case 1:
+                        deltaX++;
+                        break;
+
+                    case 2:
+                        deltaY++;
+                        break;
+
+                    case 3:
+                        deltaX--;
+                        break;
+                }
+                x += deltaX;
+                y += deltaY;
+                if (x < 0 || x >= mapLengthX || y < 0 || y >= mapLengthY) {
+                    continue;
+                }
+                Field temp2 = wGenerator.getField(x, y);
+                if (temp2 == null || temp2.getBuilding() == null) {
+                    continue;
+                }
+                Building b2 = temp2.getBuilding();
+                byte[] outputDirectionsOfOtherBuilding = b2.getOutputDirections();
+                byte rotationOfOtherBuilding = b2.getRotation();
+                for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++) {
+                    if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction) {
+                        b2.moveItemToNextBuilding(b);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -350,15 +419,75 @@ public class GameController {
         }
     }
 
-    public Field getField(int posXinArray, int posYinArray) {
-        return wGenerator.getField(posXinArray, posYinArray);
+    /**
+     * to be done
+     * @return boolean to be done
+     */
+    public boolean saveWorld() {
+        try(FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {
+            JSONObject properties = new JSONObject();
+
+            properties.put("worldName", worldName);
+            properties.put("posX", String.valueOf(posXinArray));
+            properties.put("posY", String.valueOf(posYinArray));
+
+            JSONArray outerArray = new JSONArray();
+
+            for (Field[] row : wGenerator.getMap()) {
+                JSONArray innerArray = new JSONArray();
+                for (Field field : row) {
+                    innerArray.put(field != null ? field.toJSONObject() : JSONObject.NULL);
+                }
+                outerArray.put(innerArray);
+            }
+
+            properties.put("worldMap", outerArray);
+
+            file.write(properties.toString(4));
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public int getXLengthMap() {
-        return wGenerator.getXLengthMap();
+    
+    /** 
+     * loads all world parameters from the previously saved json file
+     * @param filePath FilePath of the saved World
+     * @return boolean successfully loaded or not?
+     */
+    public boolean loadWorld(String filepath) {
+        JSONObject savedObject = readJsonFile(filepath);
+
+        worldName = savedObject.getString("worldName");
+        posXinArray = Integer.parseInt(savedObject.getString("posX"));
+        posYinArray = Integer.parseInt(savedObject.getString("posY"));
+        JSONArray worldMap = savedObject.getJSONArray("worldMap");
+
+        System.out.println(worldName);
+        System.out.println(posXinArray);
+        System.out.println(posYinArray);
+        return true;
     }
 
-    public int getYLengthMap() {
-        return wGenerator.getYLengthMap();
+    
+    /** 
+     * @param filePath FilePath of the JSON File to read from
+     * @return JSONObject Returns JSON Input File as JSONObject
+     */
+    public static JSONObject readJsonFile(String filePath) {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line);
+            }
+            return new JSONObject(content.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

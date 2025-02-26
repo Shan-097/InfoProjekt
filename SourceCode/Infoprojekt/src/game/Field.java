@@ -1,5 +1,6 @@
 package game;
 
+import org.json.JSONObject;
 
 /**
  * to be done
@@ -75,5 +76,12 @@ public class Field {
      */
     public void setBuilding(Building pBuilding) {
         building = pBuilding;
+    }
+
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("building", building);
+        jsonObject.put("resource", resource);
+        return jsonObject;
     }
 }

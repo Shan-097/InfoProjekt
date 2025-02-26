@@ -5,6 +5,7 @@
     "java.project.sourcePaths": ["SourceCode/Infoprojekt/src"],
     "java.project.outputPath": "SourceCode/Infoprojekt/bin",
     "java.project.referencedLibraries": [
-        "SourceCode/Infoprojekt/lib/**/*.jar"
-    ]
+        "lib/**/*.jar",
+        "dependencies/json.jar"
+    ],
 }
