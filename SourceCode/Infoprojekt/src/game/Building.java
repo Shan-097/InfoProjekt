@@ -4,7 +4,8 @@ package game;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-
+//TODO: Create a delay from moving into a building until it can be removed
+//=> Keep the LinkedList always at length 5 and fill it up with null 
 
 /**
  * to be done
