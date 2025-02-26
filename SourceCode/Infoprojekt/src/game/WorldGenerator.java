@@ -1,7 +1,10 @@
 package game;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
+
+import org.json.JSONArray;
 
 /**
  * to be done
@@ -22,6 +25,14 @@ public class WorldGenerator {
      */
     public WorldGenerator() {
         map = new Field[1000][1000];
+    }
+
+    /**
+     * to be done
+     * @return String WorldMap as String (for world save in JSON File)
+     */
+    public Field[][] getMap() {
+        return map;
     }
 
     /**
