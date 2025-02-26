@@ -77,7 +77,7 @@ public class GameController {
      * to be done
      */
     public void update() {
-        ArrayList<Tuple> startingPoints = getStartingPoints();
+        moveItems(getStartingPoints());
     }
 
     /**
@@ -85,7 +85,7 @@ public class GameController {
      * 
      * @return ArrayList<Tuple> to be done
      */
-    public ArrayList<Tuple> getStartingPoints() {
+    private ArrayList<Tuple> getStartingPoints() {
         ArrayList<Tuple> buildingList = new ArrayList<Tuple>();
 
         int mapLengthX = wGenerator.getXLengthMap();
@@ -147,6 +147,63 @@ public class GameController {
             }
         }
         return listOfStartingPoints;
+    }
+
+    /**
+     * to be done
+     * 
+     * @param startingPoints to be done
+     */
+    private void moveItems(ArrayList<Tuple> startingPoints) {
+        int mapLengthX = wGenerator.getXLengthMap();
+        int mapLengthY = wGenerator.getYLengthMap();
+
+        for (Tuple tuple : startingPoints) {
+            int x = tuple.getA();
+            int y = tuple.getB();
+            Building b = wGenerator.getField(x, y).getBuilding();
+            byte[] inputDirectionsOfBuilding = b.getInputDirections();
+            byte rotation = b.getRotation();
+            for (int i = 0; i < inputDirectionsOfBuilding.length; i++) {
+                byte direction = (byte) ((inputDirectionsOfBuilding[i] + rotation) % 4);
+                int deltaX = 0;
+                int deltaY = 0;
+                switch (direction) {
+                    case 0:
+                        deltaY--;
+                        break;
+
+                    case 1:
+                        deltaX++;
+                        break;
+
+                    case 2:
+                        deltaY++;
+                        break;
+
+                    case 3:
+                        deltaX--;
+                        break;
+                }
+                x += deltaX;
+                y += deltaY;
+                if (x < 0 || x >= mapLengthX || y < 0 || y >= mapLengthY) {
+                    continue;
+                }
+                Field temp2 = wGenerator.getField(x, y);
+                if (temp2 == null || temp2.getBuilding() == null) {
+                    continue;
+                }
+                Building b2 = temp2.getBuilding();
+                byte[] outputDirectionsOfOtherBuilding = b2.getOutputDirections();
+                byte rotationOfOtherBuilding = b2.getRotation();
+                for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++) {
+                    if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction) {
+                        b2.moveItemToNextBuilding(b);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -239,7 +296,7 @@ public class GameController {
         // generate new fields if necessary
         for (int i = -50; i <= 50; i++) {
             for (int j = -50; j <= 50; j++) {
-                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX <= posXinArray + i || maxY <= posYinArray + j) {
+                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX < posXinArray + i || maxY < posYinArray + j) {
                     continue;
                 }
                 wGenerator.generateTile(posXinArray + i, posYinArray + j);
