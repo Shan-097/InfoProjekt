@@ -4,7 +4,7 @@ package game;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 
-
+//TODO: Make it possible to not only rotate but bend the conveyor belt.
 
 /**
  * to be done

@@ -235,7 +235,7 @@ public class GameController {
     public void movePlayer(char direction) {
         if ("QWEADYSC".indexOf(direction) == -1) {
             throw new IllegalArgumentException(
-                    "The supplied direction is exspected to be one of Q, W, E, A, D, Y, S or C.");
+                    "The supplied direction is expected to be one of Q, W, E, A, D, Y, S or C.");
         }
 
         movementDirection = direction;
@@ -316,7 +316,7 @@ public class GameController {
         // generate new fields if necessary
         for (int i = -50; i <= 50; i++) {
             for (int j = -50; j <= 50; j++) {
-                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX < posXinArray + i || maxY < posYinArray + j) {
+                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX <= posXinArray + i || maxY <= posYinArray + j) {
                     continue;
                 }
                 wGenerator.generateTile(posXinArray + i, posYinArray + j);
@@ -510,6 +510,34 @@ public class GameController {
             }
             return false;
         }
+    }
+
+    /**
+     * to be done
+     * 
+     * @param posXinArray to be done
+     * @param posYinArray to be done
+     * @return to be done
+     */
+    public Field getField(int posXinArray, int posYinArray) {
+        return wGenerator.getField(posXinArray, posYinArray);
+    }
+
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
+    public int getXLengthMap() {
+        return wGenerator.getXLengthMap();
+    }
+
+    /**
+     * to be done
+     * @return to be done
+     */
+    public int getYLengthMap() {
+        return wGenerator.getYLengthMap();
     }
 
     /**
