@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,48 +12,51 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * to be done
+ * The GameController class is the heart of the model.<br>
+ * It suplies the controller with the necessary get and set methods and connects
+ * the individual components of the model.
  */
 public class GameController {
     /**
-     * to be done
+     * The inventory of the player.<br>
+     * Stores for every item how many are in the inventory.
      */
     private static HashMap<Item, Integer> inventory;
 
     /**
-     * to be done
+     * The x coordinate of the square the player is standing on.
      */
     private int posXinArray;
 
     /**
-     * to be done
+     * The y coordinate of the square the player is standing on.
      */
     private int posYinArray;
 
     /**
-     * to be done
-     * min = -0.5
-     * max < 0.5
+     * The relative x position of the player on the tile they are standing
+     * on.<br>
+     * The value is in [-0.5, 0.5).
      */
     private float posXonTile;
 
     /**
-     * to be done
-     * min = -0.5
-     * max < 0.5
+     * The relative y position of the player on the tile they are standing
+     * on.<br>
+     * The value is in [-0.5, 0.5).
      */
     private float posYonTile;
 
-    // Q W E
-    // A D
-    // Y S C
     /**
-     * to be done
+     * The movement direction of the player.<br>
+     * It's value is one of 'Q', 'W', 'E', 'A', 'D', 'Y', 'S' and 'C'. Each encoding
+     * one direction.
      */
     private char movementDirection;
 
     /**
-     * to be done
+     * The world generator object of the game controller.<br>
+     * Stores and handles the map and the generation thereof.
      */
     private WorldGenerator wGenerator;
 
@@ -61,29 +65,40 @@ public class GameController {
      */
     private String worldName = "testWorld";
 
+
     /**
-     * to be done
+     * A temporary Building object storing what the player plans to place next.
+     */
+    private Building buildingToBePlaced;
+
+    /**
+     * Instantiates a new Object of type GameController.<br>
+     * Sets for example the starting position of the player.
      */
     public GameController() {
         inventory = new HashMap<Item, Integer>();
-        wGenerator = new WorldGenerator();
-        posXinArray = 50;
-        posYinArray = 50;
+        wGenerator = new WorldGenerator(100, 100);
+
+        posXinArray = wGenerator.getXLengthMap() / 2;
+        posYinArray = wGenerator.getYLengthMap() / 2;
         posXonTile = 0;
         posYonTile = 0;
+        movementDirection = 'S';
     }
 
     /**
-     * to be done
+     * Makes the changes to the world that are directely timed by ticks.<br>
+     * E.g. moves the items on the conveyor belts.
      */
     public void update() {
         moveItems(getStartingPoints());
     }
 
     /**
-     * to be done
+     * "Walks through" the "graph" of the machines and finds the points nothing is
+     * moved away from.
      * 
-     * @return ArrayList<Tuple> to be done
+     * @return Returns the list of coordinates the found buildings are standing on.
      */
     private ArrayList<Tuple> getStartingPoints() {
         ArrayList<Tuple> buildingList = new ArrayList<Tuple>();
@@ -150,9 +165,11 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Moves the items of for example conveyor belts to the next building.<br>
+     * The movement is from the "inside outwards".
      * 
-     * @param startingPoints to be done
+     * @param startingPoints A list of coordinates of the building nothing is moved
+     *                       away from.
      */
     private void moveItems(ArrayList<Tuple> startingPoints) {
         int mapLengthX = wGenerator.getXLengthMap();
@@ -207,10 +224,13 @@ public class GameController {
     }
 
     /**
-     * to be done
-     * Q W E
-     * A _ D
+     * Moves the player in the given direction/ sets the new player position.<br>
+     * The characters encoding the movement direction are set as follows:<br>
+     * Q W E<br>
+     * A _ D<br>
      * Y S C
+     * 
+     * @param direction The direction the player is moving in.
      */
     public void movePlayer(char direction) {
         if ("QWEADYSC".indexOf(direction) == -1) {
@@ -305,10 +325,83 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Sets the building that the player plans to place next.
      * 
-     * @param item to be done
-     * @return boolean to be done
+     * @param buildingType The type of building given by a string.
+     */
+    public void chooseBuildingToPlace(String buildingType) {
+        switch (buildingType) {
+            case "ConveyorBelt":
+                buildingToBePlaced = new ConveyorBelt();
+                break;
+
+            case "Extractor":
+                buildingToBePlaced = new Extractor();
+                break;
+
+            case "Smelter":
+                buildingToBePlaced = new Smelter();
+                break;
+        }
+    }
+
+    /**
+     * Removes the chosen building to be placed next.
+     */
+    public void cancelPlacement() {
+        buildingToBePlaced = null;
+    }
+
+    /**
+     * Rotates the building that is planned to be placed next.
+     */
+    public void rotateBuilding() {
+        // TODO: Implement bended conveyor belts
+        if (buildingToBePlaced != null) {
+            buildingToBePlaced.setRotation((byte) ((buildingToBePlaced.getRotation() + 1) % 4));
+        }
+    }
+
+    /**
+     * Finally places the building (if possible) that was chosen to be placed
+     * next.<br>
+     * Makes also small but necessary changes to some building types.
+     */
+    public void placeBuilding() {
+        if (wGenerator.getField(posXinArray, posYinArray).getBuilding() != null) {
+            buildingToBePlaced = null;
+            return;
+        }
+        if (buildingToBePlaced == null) {
+            return;
+        }
+
+        if (buildingToBePlaced.getClass() == Extractor.class) {
+            Resource resource = wGenerator.getField(posXinArray, posYinArray).getResource();
+            if (resource.getResourceID() == 0) {
+                buildingToBePlaced = null;
+                return;
+            }
+            Extractor temp = (Extractor) buildingToBePlaced;
+            temp.setResourceToBeExtracted(resource);
+            buildingToBePlaced = temp;
+        }
+
+        wGenerator.placeBuilding(posXinArray, posYinArray, buildingToBePlaced);
+    }
+
+    /**
+     * Removes the building on the tile the player is standing on.
+     */
+    public void removeBuilding() {
+        wGenerator.deleteBuilding(posXinArray, posYinArray);
+    }
+
+    /**
+     * Adds the given item to the inventory.
+     * 
+     * @param item The item to be added to the inventory.
+     * @return Returns wheter the item has been added sucessfully or not
      */
     public static boolean addItemToInventory(Item item) {
         if (inventory.containsKey(item)) {
@@ -323,52 +416,74 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Returns the x position of the tile the player is standing on.
      * 
-     * @return int to be done
+     * @return The x coordinate
      */
     public int getPosX() {
         return posXinArray;
     }
 
     /**
-     * to be done
+     * Returns the y position of the tile the player is standing on.
      * 
-     * @return int to be done
+     * @return The y coordinate
      */
     public int getPosY() {
         return posYinArray;
     }
 
     /**
-     * to be done
+     * Returns the relative x position of the player on the tile they are standing
+     * on.
      * 
-     * @return float to be done
+     * @return The relative x position<br>
+     *         x is in [-0.5, 0.5)
      */
     public float getOffsetX() {
         return posXonTile;
     }
 
     /**
-     * to be done
+     * Returns the relative y position of the player on the tile they are standing
+     * on.
      * 
-     * @return float to be done
+     * @return The relative y position<br>
+     *         y is in [-0.5, 0.5)
      */
     public float getOffsetY() {
         return posYonTile;
     }
 
     /**
-     * to be done
+     * Returns the movement direction of the player.
      * 
-     * @return char to be done
+     * @return The movement direction<br>
+     *         Q W E<br>
+     *         A _ D<br>
+     *         Y S C
      */
     public char getDirection() {
         return movementDirection;
     }
 
     /**
-     * to be done
+     * temp
+     */
+    public Building getBuilding(int posX, int posY) {
+        return wGenerator.getField(posX, posY).getBuilding();
+    }
+
+    /**
+     * temp
+     */
+    public Resource getResource(int posX, int posY) {
+        return wGenerator.getField(posX, posY).getResource();
+    }
+
+    /**
+     * Inner class of a tuple with two elements.<br>
+     * Used for storing coordinates of a 2D space and comparing them.
      */
     private class Tuple {
         private int a;

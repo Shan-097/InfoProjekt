@@ -24,8 +24,10 @@ public class Extractor extends Building {
      */
     private static final byte[] OUTPUT_DIRECTIONS;
 
-    /** */
-    private final Item itemToBeExtracted;
+    /**
+     * to be done
+     */
+    private Item itemToBeExtracted;
 
     /** 
      * to be done
@@ -45,9 +47,8 @@ public class Extractor extends Building {
     /**
      * to be done
      */
-    public Extractor(Item pItem) {
+    public Extractor() {
         super();
-        itemToBeExtracted = pItem;
     }
 
 
@@ -84,5 +85,9 @@ public class Extractor extends Building {
     @Override
     public byte[] getOutputDirections() {
         return OUTPUT_DIRECTIONS;
+    }
+
+    public void setResourceToBeExtracted(Resource pResource){
+        itemToBeExtracted = Item.getItemFromResource(pResource);
     }
 }

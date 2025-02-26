@@ -4,31 +4,56 @@ import java.util.HashSet;
 import java.util.Random;
 
 /**
- * to be done
+ * The WorldGenerator class is responsible for generating and manipulating the
+ * map.
  */
 public class WorldGenerator {
     /**
-     * to be done
+     * Stores the base probabilities of the resources.<br>
+     * BASE_PROBABILTIES[i] is the probability of the resource with id i.<br>
+     * The sum of all entries in BASE_PROBABILITIES has to be one.
      */
-    private static final double[] BASE_PROBABILITIES = new double[]{0.95d, 0.02d, 0.015d, 0.01d, 0.005d};
+    private static final double[] BASE_PROBABILITIES = new double[] { 0.95d, 0.02d, 0.015d, 0.01d, 0.005d };
 
     /**
-     * to be done
+     * The 2D array representing the map.<br>
+     * Each entry is an object of type Field storing resources and buildings.
      */
     private Field[][] map;
 
     /**
-     * to be done
+     * The Constructor for WorldGenerator.<br>
+     * It takes the size of the map as an input and pre generates a little area.
+     *
+     * @param sizeX The number of tiles in the x dimension.
+     * @param sizeY The number of tiles in the y dimension.
      */
-    public WorldGenerator() {
-        map = new Field[1000][1000];
+    public WorldGenerator(int sizeX, int sizeY) {
+        map = new Field[sizeX][sizeY];
+        int posX = sizeX / 2;
+        int posY = sizeY / 2;
+
+        for (int i = -50; i <= 50; i++) {
+            for (int j = -50; j <= 50; j++) {
+                if (posX + i < 0 || posY + j < 0 || map.length <= posX + i || map[0].length <= posY + j) {
+                    continue;
+                }
+                this.generateTile(posX + i, posY + j);
+
+                if (i <= 1 && i >= -1 && j <= 1 && j >= -1) {
+                    map[posX + i][posY + j].setBuilding(new CollectionSite());
+                }
+            }
+        }
     }
 
     /**
-     * to be done
+     * This method generates a specified tile (Field object of the map) and then
+     * collapses the wave according to very simple rules (generates other tiles that
+     * should only have one value).
      * 
-     * @param posX to be done
-     * @param posY to be done
+     * @param posX The x coordinate of the tile to be generated.
+     * @param posY The y coordinate of the tile to be generated.
      */
     public void generateTile(int posX, int posY) {
         if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
@@ -53,10 +78,13 @@ public class WorldGenerator {
     }
 
     /**
-     * to be done
+     * Pseudo randomly selects a resource with given probabilities for the
+     * resources.<br>
+     * It is expected that 5 probabilities are given and the sum should be one.
      * 
-     * @param probability to be done
-     * @return to be done
+     * @param probability The probabilities for the resources. probability[i] is the
+     *                    probability of the resource with id i.
+     * @return Returns the id of the chosen resource.
      */
     private int generateRandomResource(double[] probability) {
         // assumes length 5
@@ -75,10 +103,12 @@ public class WorldGenerator {
     }
 
     /**
-     * to be done
+     * Chooses a resource for/ generates a specified tile according to a small set
+     * of rules.<br>
+     * If there is more then one option the resource is chosen pseudo randomly.
      * 
-     * @param posX to be done
-     * @param posY to be done
+     * @param posX The x coordinate of the tile to be generated.
+     * @param posY The y coordinate of the tile to be generated.
      */
     private void chooseResource(int posX, int posY) {
         if (map[posX][posY] != null) {
@@ -195,10 +225,12 @@ public class WorldGenerator {
     }
 
     /**
-     * to be done
+     * Generates the resource for a specified tile if there is only one
+     * possibility.<br>
+     * It recursively calls itself on neighbouring tiles.
      * 
-     * @param posX to be done
-     * @param posY to be done
+     * @param posX The x coordinate of the tile to be generated.
+     * @param posY The y coordinate of the tile to be generated.
      */
     private void collapseFunctionWave(int posX, int posY) {
         if (map[posX][posY] != null) {
@@ -254,9 +286,11 @@ public class WorldGenerator {
     }
 
     /**
-     * to be done
+     * Returns a Field specified by its coordinates.
      * 
-     * @return Field to be done
+     * @param posX The x coordinate of the tile.
+     * @param posY The y coordinate of the tile.
+     * @return The Field object of the tile.
      */
     public Field getField(int posX, int posY) {
         if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
@@ -275,20 +309,41 @@ public class WorldGenerator {
     }
 
     /**
-     * to be done
+     * Returns the width of the map.
      * 
-     * @return int to be done
+     * @return The width.
      */
     public int getXLengthMap() {
         return map.length;
     }
 
     /**
-     * to be done
+     * Returns the height of the map.
      * 
-     * @return int to be done
+     * @return The height.
      */
     public int getYLengthMap() {
         return map[0].length;
+    }
+
+    /**
+     * Sets the building of one specified tile.
+     * 
+     * @param posX The x coordinate of the tile.
+     * @param posY The y coordinate of the tile.
+     * @param b    The Building to be placed on the tile.
+     */
+    public void placeBuilding(int posX, int posY, Building b) {
+        map[posX][posY].setBuilding(b);
+    }
+
+    /**
+     * Removes the building on one specified tile.
+     * 
+     * @param posX The x coordinate of the tile.
+     * @param posY The y coordinate of the tile.
+     */
+    public void deleteBuilding(int posX, int posY) {
+        map[posX][posY].setBuilding(null);
     }
 }
