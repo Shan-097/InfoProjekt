@@ -47,7 +47,12 @@ public class StartingPanel extends JPanel implements Runnable{
     private JButton controls;
 
     /**
-     * button to open the menu to load an existing saved game
+     * button to save the created game
+     */
+    private JButton saveGame;
+
+    /**
+     * button to open the menu to load an existing saved game 
      */
     private JButton loadGame;
 
@@ -82,15 +87,14 @@ public class StartingPanel extends JPanel implements Runnable{
                 thread = null;
             }
         });
-        loadGame = new JButton("Save Current World");
+        loadGame = new JButton("Load Saved World");
         loadGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 GameController controller = new GameController();
-                controller.saveWorld();
+                controller.loadWorld("./SourceCode/Infoprojekt/saves/testWorld.json");
             }
         });
         controls = new JButton("Controls");
-        loadGame = new JButton("Load Existing World");
         startNewGame.setFont(new Font("Arial", Font.BOLD, 15));
         loadGame.setFont(new Font("Arial", Font.BOLD, 15));
         controls.setFont(new Font("Arial", Font.BOLD, 15));

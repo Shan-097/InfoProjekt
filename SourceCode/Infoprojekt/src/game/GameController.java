@@ -1,9 +1,14 @@
 package game;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * to be done
@@ -50,6 +55,11 @@ public class GameController {
      * to be done
      */
     private WorldGenerator wGenerator;
+
+    /**
+     * stores worldName in a String attribute
+     */
+    private String worldName = "testWorld";
 
     /**
      * to be done
@@ -389,9 +399,73 @@ public class GameController {
 
     /**
      * to be done
+     * 
      * @return boolean to be done
      */
     public boolean saveWorld() {
+        try (FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {
+            JSONObject properties = new JSONObject();
+
+            properties.put("worldName", worldName);
+            properties.put("posX", String.valueOf(posXinArray));
+            properties.put("posY", String.valueOf(posYinArray));
+
+            JSONArray outerArray = new JSONArray();
+
+            for (Field[] row : wGenerator.getMap()) {
+                JSONArray innerArray = new JSONArray();
+                for (Field field : row) {
+                    innerArray.put(field != null ? field.toJSONObject() : JSONObject.NULL);
+                }
+                outerArray.put(innerArray);
+            }
+
+            properties.put("worldMap", outerArray);
+
+            file.write(properties.toString(4));
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * loads all world parameters from the previously saved json file
+     * 
+     * @param filePath FilePath of the saved World
+     * @return boolean successfully loaded or not?
+     */
+    public boolean loadWorld(String filepath) {
+        JSONObject savedObject = readJsonFile(filepath);
+
+        worldName = savedObject.getString("worldName");
+        posXinArray = Integer.parseInt(savedObject.getString("posX"));
+        posYinArray = Integer.parseInt(savedObject.getString("posY"));
+        JSONArray worldMap = savedObject.getJSONArray("worldMap");
+
+        System.out.println(worldName);
+        System.out.println(posXinArray);
+        System.out.println(posYinArray);
         return true;
+    }
+
+    /**
+     * @param filePath FilePath of the JSON File to read from
+     * @return JSONObject Returns JSON Input File as JSONObject
+     */
+    public static JSONObject readJsonFile(String filePath) {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line);
+            }
+            return new JSONObject(content.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
