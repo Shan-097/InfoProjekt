@@ -3,9 +3,6 @@ package game;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-//TODO: Create a delay from moving into a building until it can be removed
-//=> Keep the LinkedList always at length 5 and fill it up with null 
-
 /**
  * to be done
  */
@@ -60,8 +57,8 @@ public abstract class Building {
     /**
      * to be done
      */
-    public void rotate(){
-        this.setRotation((byte)((getRotation() + 1) % 4));
+    public void rotate() {
+        this.setRotation((byte) ((getRotation() + 1) % 4));
     }
 
     /**
@@ -86,7 +83,7 @@ public abstract class Building {
      * 
      * @return to be done
      */
-    public abstract HashMap<Integer, Integer> getCost();
+    public abstract HashMap<Item, Integer> getCost();
 
     /**
      * to be done

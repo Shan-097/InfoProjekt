@@ -42,7 +42,7 @@ public class GameInputHandler {
         inputMap.put('r', "rotateBuilding");
         inputMap.put((char) 27, "cancelPlacement"); // esc
         inputMap.put('b', "placeBuilding");
-        inputMap.put('X', "deleteBuilding");
+        inputMap.put('x', "deleteBuilding");
     }
 
     public void invokeMethodsFromInput() {

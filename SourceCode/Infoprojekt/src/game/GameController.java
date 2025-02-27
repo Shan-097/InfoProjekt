@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -76,6 +77,14 @@ public class GameController {
      */
     public GameController() {
         inventory = new HashMap<Item, Integer>();
+        inventory.put(Item.getItemWithID(0), 0);
+        inventory.put(Item.getItemWithID(1), 0);
+        inventory.put(Item.getItemWithID(2), 0);
+        inventory.put(Item.getItemWithID(3), 0);
+        inventory.put(Item.getItemWithID(4), 0);
+        inventory.put(Item.getItemWithID(5), 0);
+        inventory.put(Item.getItemWithID(6), 0);
+        inventory.put(Item.getItemWithID(7), 0);
         wGenerator = new WorldGenerator(100, 100);
 
         posXinArray = wGenerator.getXLengthMap() / 2;
@@ -374,6 +383,13 @@ public class GameController {
             return;
         }
 
+        for (Entry<Item, Integer> cost : buildingToBePlaced.getCost().entrySet()) {
+            if (inventory.get(cost.getKey()) < cost.getValue()) {
+                buildingToBePlaced = null;
+                return;
+            }            
+        }
+
         if (buildingToBePlaced.getClass() == Extractor.class) {
             Resource resource = wGenerator.getField(posXinArray, posYinArray).getResource();
             if (resource.getResourceID() == 0) {
@@ -385,6 +401,10 @@ public class GameController {
             buildingToBePlaced = temp;
         }
 
+        for (Entry<Item, Integer> cost : buildingToBePlaced.getCost().entrySet()) {
+            inventory.replace(cost.getKey(), inventory.get(cost.getKey()) - cost.getValue());          
+        }
+
         wGenerator.placeBuilding(posXinArray, posYinArray, buildingToBePlaced);
     }
 
@@ -392,7 +412,13 @@ public class GameController {
      * Removes the building on the tile the player is standing on.
      */
     public void removeBuilding() {
-        wGenerator.deleteBuilding(posXinArray, posYinArray);
+        Building b = wGenerator.getField(posXinArray, posYinArray).getBuilding();
+        if (b != null) {
+            wGenerator.deleteBuilding(posXinArray, posYinArray);
+            for (Entry<Item, Integer> cost : b.getCost().entrySet()) {
+                inventory.replace(cost.getKey(), inventory.get(cost.getKey()) + cost.getValue());          
+            }
+        }
     }
 
     /**

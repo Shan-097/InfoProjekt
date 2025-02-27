@@ -9,7 +9,7 @@ public class CollectionSite extends Building {
     /**
      * to be done
      */
-    private static final HashMap<Integer, Integer> COST;
+    private static final HashMap<Item, Integer> COST;
 
     /**
      * to be done
@@ -53,7 +53,6 @@ public class CollectionSite extends Building {
      * @param item to be done
      * @return Item to be done
      */
-    @Override
     protected Item executeFunction(Item item) {
         return item;
     }
@@ -63,8 +62,7 @@ public class CollectionSite extends Building {
      * 
      * @return HashMap<Integer, Integer> to be done
      */
-    @Override
-    public HashMap<Integer, Integer> getCost() {
+    public HashMap<Item, Integer> getCost() {
         return COST;
     }
 
@@ -73,7 +71,6 @@ public class CollectionSite extends Building {
      * 
      * @return byte[] to be done
      */
-    @Override
     public byte[] getInputDirections() {
         return INPUT_DIRECTIONS;
     }
@@ -83,7 +80,6 @@ public class CollectionSite extends Building {
      * 
      * @return byte[] to be done
      */
-    @Override
     public byte[] getOutputDirections() {
         return OUTPUT_DIRECTIONS;
     }
