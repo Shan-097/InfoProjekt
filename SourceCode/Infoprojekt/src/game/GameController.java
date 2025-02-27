@@ -355,9 +355,8 @@ public class GameController {
      * Rotates the building that is planned to be placed next.
      */
     public void rotateBuilding() {
-        // TODO: Implement bended conveyor belts
         if (buildingToBePlaced != null) {
-            buildingToBePlaced.setRotation((byte) ((buildingToBePlaced.getRotation() + 1) % 4));
+            buildingToBePlaced.rotate();
         }
     }
 

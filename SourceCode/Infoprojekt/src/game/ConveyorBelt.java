@@ -1,9 +1,6 @@
 package game;
 
 import java.util.HashMap;
-import java.util.InputMismatchException;
-
-//TODO: Make it possible to not only rotate but bend the conveyor belt.
 
 /**
  * to be done
@@ -17,7 +14,7 @@ public class ConveyorBelt extends Building {
     /**
      * to be done
      */
-    private byte[] inputDirections;
+    private final static byte[] INPUT_DIRECTIONS;
 
     /**
      * to be done
@@ -33,6 +30,7 @@ public class ConveyorBelt extends Building {
         COST.put(2, 1);
         COST.put(3, 1);
         COST.put(4, 1);
+        INPUT_DIRECTIONS = new byte[] { 0 };
     }
 
     /**
@@ -40,7 +38,6 @@ public class ConveyorBelt extends Building {
      */
     public ConveyorBelt() {
         super();
-        inputDirections = new byte[] { 0 };
         outputDirections = new byte[] { 2 };
     }
 
@@ -72,7 +69,7 @@ public class ConveyorBelt extends Building {
      */
     @Override
     public byte[] getInputDirections() {
-        return inputDirections;
+        return INPUT_DIRECTIONS;
     }
 
     /**
@@ -87,27 +84,14 @@ public class ConveyorBelt extends Building {
 
     /**
      * to be done
-     * 
-     * @param pInputDirections to be done
      */
-    public void setInputDirections(byte[] pInputDirections) {
-        if (pInputDirections.length != 1 || pInputDirections[0] < 0 || pInputDirections[0] > 4) {
-            throw new InputMismatchException();
+    @Override
+    public void rotate() {
+        if (outputDirections[0] == 3) {
+            this.setRotation((byte) ((getRotation() + 1) % 4));
+            outputDirections[0] = 1;
+        } else {
+            outputDirections[0]++;
         }
-        inputDirections = pInputDirections;
-        outputDirections = new byte[] { (byte) ((2 + pInputDirections[0]) % 4) };
-    }
-
-    /**
-     * to be done
-     * 
-     * @param pOutputDirections to be done
-     */
-    public void setOutputDirections(byte[] pOutputDirections) {
-        if (pOutputDirections.length != 1 || pOutputDirections[0] < 0 || pOutputDirections[0] > 4
-                || pOutputDirections[0] == inputDirections[0]) {
-            throw new InputMismatchException();
-        }
-        outputDirections = pOutputDirections;
     }
 }

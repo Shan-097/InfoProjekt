@@ -84,6 +84,11 @@ public class Extractor extends Building {
         return OUTPUT_DIRECTIONS;
     }
 
+    /**
+     * to be done
+     * 
+     * @param pResource to be done
+     */
     public void setResourceToBeExtracted(Resource pResource) {
         itemToBeExtracted = Item.getItemFromResource(pResource);
     }

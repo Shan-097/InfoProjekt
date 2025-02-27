@@ -34,10 +34,14 @@ public abstract class Building {
      * @param item to be done
      */
     public boolean addItem(Item item) {
-        if (content.size() > 4) {
-            return false;
+        if (item == null) {
+            return true;
         }
-        return content.add(item);
+        if (content.getLast() == null) {
+            content.removeLast();
+            return content.add(item);
+        }
+        return false;
     }
 
     /**
@@ -46,16 +50,18 @@ public abstract class Building {
      * @param otherBuilding to be done
      */
     public void moveItemToNextBuilding(Building otherBuilding) {
-        Item temp = content.pollFirst();
-        temp = executeFunction(temp);
-        if (temp != null) {
-            content.addFirst(temp);
+        content.addFirst(executeFunction(content.pollFirst()));
+        if (otherBuilding.addItem(content.getFirst())) {
+            content.removeFirst();
+            content.addLast(null);
         }
-        if (content.size() != 0) {
-            if (otherBuilding.addItem(content.getFirst())) {
-                content.removeFirst();
-            }
-        }
+    }
+
+    /**
+     * to be done
+     */
+    public void rotate(){
+        this.setRotation((byte)((getRotation() + 1) % 4));
     }
 
     /**
