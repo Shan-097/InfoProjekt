@@ -9,7 +9,7 @@ public class Extractor extends Building {
     /**
      * to be done
      */
-    private static final HashMap<Integer, Integer> COST;
+    private static final HashMap<Item, Integer> COST;
 
     /**
      * to be done
@@ -30,11 +30,15 @@ public class Extractor extends Building {
      * to be done
      */
     static {
-        COST = new HashMap<Integer, Integer>(4);
-        COST.put(1, 1);
-        COST.put(2, 1);
-        COST.put(3, 1);
-        COST.put(4, 1);
+        COST = new HashMap<Item, Integer>(4);
+        COST.put(Item.getItemWithID(0), 0);
+        COST.put(Item.getItemWithID(1), 0);
+        COST.put(Item.getItemWithID(2), 0);
+        COST.put(Item.getItemWithID(3), 0);
+        COST.put(Item.getItemWithID(4), 0);
+        COST.put(Item.getItemWithID(5), 0);
+        COST.put(Item.getItemWithID(6), 0);
+        COST.put(Item.getItemWithID(7), 0);
         INPUT_DIRECTIONS = new byte[0];
         OUTPUT_DIRECTIONS = new byte[] { 2 };
     }
@@ -49,7 +53,6 @@ public class Extractor extends Building {
     /**
      * to be done
      */
-    @Override
     protected Item executeFunction(Item item) {
         return itemToBeExtracted;
     }
@@ -59,8 +62,7 @@ public class Extractor extends Building {
      * 
      * @return HashMap<Integer, Integer> to be done
      */
-    @Override
-    public HashMap<Integer, Integer> getCost() {
+    public HashMap<Item, Integer> getCost() {
         return COST;
     }
 
@@ -69,7 +71,6 @@ public class Extractor extends Building {
      * 
      * @return byte[] to be done
      */
-    @Override
     public byte[] getInputDirections() {
         return INPUT_DIRECTIONS;
     }
@@ -79,7 +80,6 @@ public class Extractor extends Building {
      * 
      * @return byte[] to be done
      */
-    @Override
     public byte[] getOutputDirections() {
         return OUTPUT_DIRECTIONS;
     }
