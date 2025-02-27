@@ -1,10 +1,12 @@
 package main;
 
 import game.GamePanel;
+import hotKey.HotKeyPanel;
 
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * Main class of the programm.
@@ -15,7 +17,7 @@ public class App {
     /**
      * JFrame object that holds the currently open window.
      */
-    private static JFrame window;
+    private static JFrame window = new JFrame();
 
     /**
      * Specifies the frame rate of the programm.
@@ -43,18 +45,20 @@ public class App {
      * closing the others in the process
      */
     public static void loadStartingScreen() {
-        window = new JFrame("Keria");
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        window.dispose();
         StartingPanel startingPanel = new StartingPanel(FRAME_RATE);
-
-        window.setContentPane(startingPanel);
-        window.pack();
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
-        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        window.setMinimumSize(new Dimension(500, 300));// random values, TO DO: choose better
+        setStandardProperties(startingPanel);
         startingPanel.startGameThread();
+    }
+
+    /**
+     * to be done
+     */
+    public static void loadHotKeyScreen() {
+        window.dispose();
+        HotKeyPanel hotKeyPanel = new HotKeyPanel(FRAME_RATE);
+        setStandardProperties(hotKeyPanel);
+        hotKeyPanel.startGameThread();
     }
 
     /**
@@ -64,16 +68,24 @@ public class App {
      */
     public static void loadGameScreen() {
         window.dispose();
+        GamePanel gamePanel = new GamePanel(FRAME_RATE);
+        setStandardProperties(gamePanel);
+        gamePanel.startGameThread();
+    }
+
+    /**
+     * to be done
+     * 
+     * @param panel to be done
+     */
+    private static void setStandardProperties(JPanel panel){
         window = new JFrame("Keria");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        GamePanel gamePanel = new GamePanel(FRAME_RATE);
-        window.add(gamePanel);
+        window.add(panel);
         window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.setMinimumSize(new Dimension(500, 300));// random values, TO DO: choose better
-        gamePanel.startGameThread();
     }
 }
