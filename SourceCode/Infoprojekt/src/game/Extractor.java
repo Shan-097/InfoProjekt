@@ -86,14 +86,6 @@ public class Extractor extends Building {
 
     /**
      * to be done
-     */
-    @Override
-    public void rotate(){
-        this.setRotation((byte)((getRotation() + 1) % 4));
-    }
-
-    /**
-     * to be done
      * 
      * @param pResource to be done
      */

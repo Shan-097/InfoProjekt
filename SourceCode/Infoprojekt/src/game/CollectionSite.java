@@ -87,12 +87,4 @@ public class CollectionSite extends Building {
     public byte[] getOutputDirections() {
         return OUTPUT_DIRECTIONS;
     }
-
-    /**
-     * to be done
-     */
-    @Override
-    public void rotate(){
-        this.setRotation((byte)((getRotation() + 1) % 4));
-    }
 }
