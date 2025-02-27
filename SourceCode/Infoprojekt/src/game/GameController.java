@@ -412,7 +412,13 @@ public class GameController {
      * Removes the building on the tile the player is standing on.
      */
     public void removeBuilding() {
-        wGenerator.deleteBuilding(posXinArray, posYinArray);
+        Building b = wGenerator.getField(posXinArray, posYinArray).getBuilding();
+        if (b != null) {
+            wGenerator.deleteBuilding(posXinArray, posYinArray);
+            for (Entry<Item, Integer> cost : b.getCost().entrySet()) {
+                inventory.replace(cost.getKey(), inventory.get(cost.getKey()) + cost.getValue());          
+            }
+        }
     }
 
     /**
