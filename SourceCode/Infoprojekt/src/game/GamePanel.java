@@ -82,8 +82,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         try {
             images.put("grass", ImageIO.read(new File("./Graphics/between grass (64x64).png")));
-            images.put("stoneItem", ImageIO.read(new File("./Graphics/stein.png")));
-            images.put("smelter", ImageIO.read(new File("./Graphics/Cartography_Table_JE2_BE1.png")));
+            images.put("stoneItem", ImageIO.read(new File("./Graphics/Stein.png")));
             images.put("copper", ImageIO.read(new File("./Graphics/CopperConveyor.png")));
             images.put("arrow", ImageIO.read(new File("./Graphics/arrow.png")));
 
