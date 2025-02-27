@@ -84,6 +84,19 @@ public class Extractor extends Building {
         return OUTPUT_DIRECTIONS;
     }
 
+    /**
+     * to be done
+     */
+    @Override
+    public void rotate(){
+        this.setRotation((byte)((getRotation() + 1) % 4));
+    }
+
+    /**
+     * to be done
+     * 
+     * @param pResource to be done
+     */
     public void setResourceToBeExtracted(Resource pResource) {
         itemToBeExtracted = Item.getItemFromResource(pResource);
     }

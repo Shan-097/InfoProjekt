@@ -98,6 +98,11 @@ public abstract class Building {
 
     /**
      * to be done
+     */
+    public abstract void rotate();
+
+    /**
+     * to be done
      * 
      * @param pRotation to be done
      */
