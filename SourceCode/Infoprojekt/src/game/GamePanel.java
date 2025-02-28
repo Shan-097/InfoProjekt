@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -85,6 +86,8 @@ public class GamePanel extends JPanel implements Runnable {
             images.put("stoneItem", ImageIO.read(new File("./Graphics/Stein.png")));
             images.put("copper", ImageIO.read(new File("./Graphics/CopperConveyor.png")));
             images.put("arrow", ImageIO.read(new File("./Graphics/arrow.png")));
+            images.put("conveyorLinks", ImageIO.read(new File("./Graphics/ConveyerBelt-links.png")));
+            images.put("preview", ImageIO.read(new File("./Graphics/Bauen Preview.png")));
 
             falke.put('Q', ImageIO.read(new File("./Graphics/FalkeLinksOben.png")));
             falke.put('W', ImageIO.read(new File("./Graphics/FalkeOben.png")));
@@ -135,6 +138,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    // Image newImage = yourImage.getScaledInstance(newWidth, newHeight,
+    // Image.SCALE_DEFAULT);
+
     /**
      * Repaints the panel
      * Always keeps player centered and redraws the background to imitate movement
@@ -159,8 +165,8 @@ public class GamePanel extends JPanel implements Runnable {
         int height = this.getHeight();
 
         // number of squares on the screen
-        int numWidth = (int) width / tileSize + 2;
-        int numHeight = (int) height / tileSize + 2;
+        int numWidth = (int) width / tileSize + 3;
+        int numHeight = (int) height / tileSize + 3;
 
         // Coordinates of topleft corner of the player square
         int TileCenterX = ((width - tileSize) / 2);
@@ -181,6 +187,7 @@ public class GamePanel extends JPanel implements Runnable {
                 movementY = (int) (TileCenterY - (gameController.getOffsetY() * tileSize)
                         - (tileSize * (posYinArray - indexCurrentY)));
 
+                // Color the outside of the map blue
                 if (indexCurrentX < 0 || indexCurrentY < 0 || indexCurrentX >= mapXLength
                         || indexCurrentY >= mapYLength) {
                     g2d.setColor(Color.BLUE);
@@ -192,20 +199,91 @@ public class GamePanel extends JPanel implements Runnable {
 
                 if (field.getResourceID() == 0) {
                     g2d.drawImage(images.get("grass"), movementX, movementY, null);
-                    continue;
                 } else if (field.getResourceID() == 1) {
                     g2d.setColor(Color.GRAY);
+                    g2d.fillRect(movementX, movementY, tileSize, tileSize);
                 } else if (field.getResourceID() == 2) {
                     g2d.drawImage(images.get("copper"), movementX, movementY, null);
-                    continue;
                 } else if (field.getResourceID() == 3) {
                     g2d.setColor(Color.LIGHT_GRAY);
+                    g2d.fillRect(movementX, movementY, tileSize, tileSize);
                 } else if (field.getResourceID() == 4) {
                     g2d.setColor(Color.YELLOW);
+                    g2d.fillRect(movementX, movementY, tileSize, tileSize);
                 }
-                g2d.fillRect(movementX, movementY, tileSize, tileSize);
+
+                // Draw the buildings
+                if (field.getBuilding() != null) {
+                    if (field.getBuilding().getClass() == CollectionSite.class) {
+                        g2d.setColor(Color.BLACK);
+                        g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                    } else if (field.getBuilding().getClass() == ConveyorBelt.class) {
+                        g2d.setColor(Color.MAGENTA);
+                        g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                    } else if (field.getBuilding().getClass() == Extractor.class) {
+                        g2d.setColor(Color.CYAN);
+                        g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                    } else if (field.getBuilding().getClass() == Smelter.class) {
+                        g2d.setColor(Color.RED);
+                        g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                    }
+                }
+
+                // Draw the building preview
+                if (gameController.getBuildingToBePlaced() != null && indexCurrentX == posXinArray
+                        && indexCurrentY == posYinArray) {
+                    g2d.setColor(new Color(255, 255, 255, 157));
+                    g2d.fillRect(100 - 64, 100 - 64, 64 * 3, 64 * 3);
+                    if (gameController.getBuildingToBePlaced().getClass() == ConveyorBelt.class) {
+                        g2d.drawImage(images.get("conveyorLinks"), 100, 100, null);
+                    } else if (gameController.getBuildingToBePlaced().getClass() == Extractor.class) {
+
+                    } else if (gameController.getBuildingToBePlaced().getClass() == Smelter.class) {
+
+                    }
+                    g2d.drawImage(images.get("preview"), movementX, movementY, null);
+                }
             }
         }
+
+        // Place buildings: Figure out which one is 'to be placed'
+        if (gameController.getBuildingToBePlaced() != null) {
+            if (gameController.getBuildingToBePlaced().getClass() == ConveyorBelt.class) {
+                g2d.setColor(Color.MAGENTA);
+                g2d.fillRect(0, 0, tileSize, tileSize);
+            } else if (gameController.getBuildingToBePlaced().getClass() == Extractor.class) {
+                switch (gameController.getBuildingToBePlaced().getRotation()) {
+                    case 0:
+                        g2d.setColor(Color.GREEN);
+                        break;
+                    case 1:
+                        g2d.setColor(Color.CYAN);
+                        break;
+                    case 2:
+                        g2d.setColor(Color.BLUE);
+                        break;
+                    case 3:
+                        g2d.setColor(Color.PINK);
+                }
+                // g2d.setColor(Color.CYAN);
+                g2d.fillRect(100, 100, tileSize, tileSize);
+
+                g2d.setColor(Color.CYAN);
+                g2d.fillRect(0, 0, tileSize, tileSize);
+            } else if (gameController.getBuildingToBePlaced().getClass() == Smelter.class) {
+                g2d.setColor(Color.RED);
+                g2d.fillRect(100, 100, tileSize, tileSize);
+
+                g2d.setColor(Color.RED);
+                g2d.fillRect(0, 0, tileSize, tileSize);
+            }
+        }
+
+        // Building: array von input, array von output (bytes)
+        // 0
+        // 3 1
+        // 2
+        //
 
         g2d.setColor(Color.ORANGE);
         g2d.fillRect((int) Math.round(0.6 * tileSize), (int) (this.getHeight() / 2 - 2 * tileSize), tileSize,
@@ -316,8 +394,8 @@ public class GamePanel extends JPanel implements Runnable {
      */
     char locateHome(int numWidth, int numHeight) {
         // Temporary location of the Collection Site, need getter from GameController
-        int xHome = 100;
-        int yHome = 100;
+        int xHome = gameController.getXLengthMap() / 2;
+        int yHome = gameController.getYLengthMap() / 2;
 
         int posXPlayer = gameController.getPosX();
         int posYPlayer = gameController.getPosY();

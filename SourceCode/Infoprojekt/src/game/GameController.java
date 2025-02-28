@@ -387,7 +387,7 @@ public class GameController {
             if (inventory.get(cost.getKey()) < cost.getValue()) {
                 buildingToBePlaced = null;
                 return;
-            }            
+            }
         }
 
         if (buildingToBePlaced.getClass() == Extractor.class) {
@@ -402,7 +402,7 @@ public class GameController {
         }
 
         for (Entry<Item, Integer> cost : buildingToBePlaced.getCost().entrySet()) {
-            inventory.replace(cost.getKey(), inventory.get(cost.getKey()) - cost.getValue());          
+            inventory.replace(cost.getKey(), inventory.get(cost.getKey()) - cost.getValue());
         }
 
         wGenerator.placeBuilding(posXinArray, posYinArray, buildingToBePlaced);
@@ -413,10 +413,10 @@ public class GameController {
      */
     public void removeBuilding() {
         Building b = wGenerator.getField(posXinArray, posYinArray).getBuilding();
-        if (b != null) {
+        if (b != null && b.getClass() != ConveyorBelt.class) {
             wGenerator.deleteBuilding(posXinArray, posYinArray);
             for (Entry<Item, Integer> cost : b.getCost().entrySet()) {
-                inventory.replace(cost.getKey(), inventory.get(cost.getKey()) + cost.getValue());          
+                inventory.replace(cost.getKey(), inventory.get(cost.getKey()) + cost.getValue());
             }
         }
     }
@@ -492,17 +492,12 @@ public class GameController {
     }
 
     /**
-     * temp
+     * to be done
+     * 
+     * @return to be done
      */
-    public Building getBuilding(int posX, int posY) {
-        return wGenerator.getField(posX, posY).getBuilding();
-    }
-
-    /**
-     * temp
-     */
-    public Resource getResource(int posX, int posY) {
-        return wGenerator.getField(posX, posY).getResource();
+    public Building getBuildingToBePlaced() {
+        return buildingToBePlaced;
     }
 
     /**
