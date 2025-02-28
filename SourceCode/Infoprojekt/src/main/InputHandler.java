@@ -2,7 +2,10 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map.Entry;
 
 /**
  * The class of the Input handler implementing Keylistener.
@@ -38,6 +41,10 @@ public class InputHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         char key = e.getKeyChar();
+        //'\u0027' esc, '\u0032' space, '\u0127' delete
+        if (!(Character.isLetterOrDigit(key) || key == 27 || key == 32 || key == 127)) {
+            return;
+        }
         if (keysPressed.containsKey(key)) {
             keysPressed.replace(key, true);
         } else {
@@ -74,4 +81,18 @@ public class InputHandler implements KeyListener {
         return false;
     }
 
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
+    public LinkedList<Character> getPressedCharacters(){
+        LinkedList<Character> pressed = new LinkedList<Character>();
+        for (Entry<Character, Boolean> entry : keysPressed.entrySet()) {
+            if (entry.getValue()) {
+                pressed.add(entry.getKey());
+            }
+        }
+        return pressed;
+    }
 }

@@ -5,13 +5,17 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import main.App;
+import main.InputHandler;
+import main.LoadStoreHotKeys;
 
 public class HotKeyPanel extends JPanel implements Runnable {
     /**
@@ -30,6 +34,11 @@ public class HotKeyPanel extends JPanel implements Runnable {
     private final int frameRate;
 
     /**
+     * to be done
+     */
+    private HotKeyInputHandler hotKeyInputHandler;
+
+    /**
      * button to return to main menu
      */
     private JButton returnToMainMenu;
@@ -42,7 +51,14 @@ public class HotKeyPanel extends JPanel implements Runnable {
     /**
      * to be done
      */
-    private HashMap<Integer, JTextField> actions;
+    private HashMap<String, JLabel> actions;
+
+    /**
+     * to be done
+     */
+    private String nameOfActionToChange;
+
+    private HashMap<String, Character> inputMap;
 
     /**
      * thread that keeps the game running
@@ -58,10 +74,14 @@ public class HotKeyPanel extends JPanel implements Runnable {
      */
     public HotKeyPanel(int pFR) {
         frameRate = pFR;
+        InputHandler inputHandler = new InputHandler();
+        addKeyListener(inputHandler);
+        hotKeyInputHandler = new HotKeyInputHandler(inputHandler);
         this.setLayout(null);
         this.setPreferredSize(null);
         this.setDoubleBuffered(true);
         this.setOpaque(true);
+        this.setFocusable(true);
         returnToMainMenu = new JButton("return to main menu");
         returnToMainMenu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -70,18 +90,50 @@ public class HotKeyPanel extends JPanel implements Runnable {
             }
         });
         returnToMainMenu.setFont(new Font("Arial", Font.BOLD, 15));
-
-        actions.put(0, new JTextField("move up:"));
-
         add(returnToMainMenu);
+
+        inputMap = LoadStoreHotKeys.loadHotKeys();
+
+        actions = new HashMap<String, JLabel>(11);
+        buttons = new HashMap<String, JButton>(11);
+        JButton temp;
+        for (Entry<String, Character> inputMapping : inputMap.entrySet()) {
+            JLabel textField = new JLabel(inputMapping.getKey() + ":");
+            textField.setFont(new Font("Arial", Font.BOLD, 15));
+            add(textField);
+            actions.put(inputMapping.getKey(), textField);
+
+            temp = new JButton(String.valueOf(charToHumanReadableString(inputMapping.getValue())));
+            temp.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    changeKeyOf(inputMapping.getKey());
+                }
+            });
+            temp.setFont(new Font("Arial", Font.BOLD, 15));
+            temp.setRequestFocusEnabled(false);
+            add(temp);
+            buttons.put(inputMapping.getKey(), temp);
+        }
     }
 
     /**
      * Updates the postion of the buttons so that they are centered and have the
      * correct height and width.
      */
-    public void moveGraphicElements() {
+    public void updateGraphicElements() {
         returnToMainMenu.setBounds(10, 10, buttonWidth, buttonHeight);
+
+        int actionCount = actions.size();
+        int height = this.getHeight();
+        int width = this.getWidth();
+        int i = 0;
+        for (String key : inputMap.keySet()) {
+            JLabel textField = actions.get(key);
+            textField.setBounds(width / 2 - 135, (height - (actionCount - i * 2) * 30 + 5) / 2, 150, 25);
+            JButton button = buttons.get(key);
+            button.setBounds(width / 2 + 15, (height - (actionCount - i * 2) * 30 + 5) / 2, 120, 25);
+            i++;
+        }
         this.validate();
         this.setVisible(true);
     }
@@ -112,10 +164,43 @@ public class HotKeyPanel extends JPanel implements Runnable {
             delta += (currentTime - lastTime) / frameDisplayTime;
             lastTime = currentTime;
             if (delta >= 1) {
+                checkForNewKey();
+                updateGraphicElements();
                 repaint();
-                moveGraphicElements();
                 delta--;
             }
+        }
+    }
+
+    private void checkForNewKey() {
+        Character pressed = hotKeyInputHandler.getPressedChar();
+        if (pressed != null  && nameOfActionToChange != null) {
+            if (inputMap.containsValue(pressed)) {
+                nameOfActionToChange = null;
+                return;
+            }
+            inputMap.replace(nameOfActionToChange, pressed);
+            buttons.get(nameOfActionToChange).setText(charToHumanReadableString(pressed));
+            nameOfActionToChange = null;
+            LoadStoreHotKeys.storeHotKeys(inputMap);
+        }
+    }
+
+    private void changeKeyOf(String action) {
+        nameOfActionToChange = action;
+    }
+
+    private String charToHumanReadableString(char c){
+        //'\u0027' esc, '\u0032' space, '\u0127' delete
+        switch ((int) c) {
+            case 27:
+                return "escape";
+            case 32:
+                return "space";
+            case 127:
+                return "delete";
+            default:
+                return String.valueOf((char) c);
         }
     }
 
