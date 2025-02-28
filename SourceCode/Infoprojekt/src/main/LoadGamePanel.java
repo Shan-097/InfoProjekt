@@ -7,14 +7,47 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class LoadGamePanel extends JPanel implements Runnable {
-    private final int buttonWidth = 230;
-    private final int buttonHeight = 35;
+    
+    /**
+     * to be done
+     */
+    private final int frameRate;
+
+    /**
+     * to be done
+     */
     private String selectedFilePath;
+
+    /**
+     * to be done
+     */
     private JList<String> fileList;
+
+    /**
+     * to be done
+     */
     private DefaultListModel<String> listModel;
+
+    /**
+     * to be done
+     */
     private JButton loadSelectedGame;
 
-    public LoadGamePanel() {
+    /**
+     * to be done
+     */
+    private Thread thread;
+
+    /**
+     * Constructor of the load game panel.
+     * Instantiates the buttons, adds listeners to them and
+     * sets important values of the frame.
+     * 
+     * @param pFR the desired frame rate of the saves menu
+     */
+    public LoadGamePanel(int pFR) {
+        this.frameRate = pFR;
+
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(400, 300));
         this.setDoubleBuffered(true);
@@ -42,8 +75,11 @@ public class LoadGamePanel extends JPanel implements Runnable {
         add(loadSelectedGame, BorderLayout.SOUTH);
     }
 
+    /**
+     * to be done
+     */
     private void loadFileList() {
-        File saveFolder = new File("saves");
+        File saveFolder = new File("SourceCode/Infoprojekt/saves");
         if (saveFolder.exists() && saveFolder.isDirectory()) {
             File[] files = saveFolder.listFiles();
             if (files != null) {
@@ -52,6 +88,30 @@ public class LoadGamePanel extends JPanel implements Runnable {
                         listModel.addElement(file.getName());
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Executed upon starting the thread.
+     * Starts the game loop.
+     * Controls the maximum frame rate and calls @moveButtons to update their
+     * position.
+     */
+    @Override
+    public void run() {
+        double frameDisplayTime = 1000000000 / frameRate;
+        long lastTime = System.nanoTime();
+        long currentTime;
+        double delta = 0;
+
+        while (thread != null) {
+            currentTime = System.nanoTime();
+            delta += (currentTime - lastTime) / frameDisplayTime;
+            lastTime = currentTime;
+            if (delta >= 1) {
+                repaint();
+                delta--;
             }
         }
     }

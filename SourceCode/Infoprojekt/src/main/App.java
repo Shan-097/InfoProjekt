@@ -1,9 +1,7 @@
 package main;
 
 import game.GamePanel;
-
 import java.awt.Dimension;
-
 import javax.swing.JFrame;
 
 /**
@@ -46,7 +44,7 @@ public class App {
         window = new JFrame("Keria");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        StartingPanel startingPanel = new StartingPanel(FRAME_RATE);
+        StartingPanel startingPanel = new StartingPanel(FRAME_RATE, window);
 
         window.setContentPane(startingPanel);
         window.pack();
