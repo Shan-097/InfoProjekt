@@ -1,6 +1,5 @@
 package main;
 
-import game.GameController;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -83,8 +82,10 @@ public class StartingPanel extends JPanel implements Runnable {
         loadGame = new JButton("Load Saved World");
         loadGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GameController controller = new GameController();
-                controller.loadWorld("./SourceCode/Infoprojekt/saves/testWorld.json");
+                LoadGamePanel panel = new LoadGamePanel();
+                
+                // GameController controller = new GameController();
+                // controller.loadWorld("./SourceCode/Infoprojekt/saves/testWorld.json");
             }
         });
         controls = new JButton("Controls");
