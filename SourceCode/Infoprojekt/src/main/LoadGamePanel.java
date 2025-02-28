@@ -1,10 +1,10 @@
 package main;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import javax.swing.*;
 
 public class LoadGamePanel extends JPanel implements Runnable {
     
@@ -59,6 +59,8 @@ public class LoadGamePanel extends JPanel implements Runnable {
         JScrollPane scrollPane = new JScrollPane(fileList);
         
         loadFileList();
+
+        // add button to go back to menu
 
         loadSelectedGame = new JButton("Load Selected World");
         loadSelectedGame.setFont(new Font("Arial", Font.BOLD, 15));
