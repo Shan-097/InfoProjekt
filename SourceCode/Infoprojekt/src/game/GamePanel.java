@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -97,7 +98,10 @@ public class GamePanel extends JPanel implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Music.LoopMusic(".\\Music\\Wizard.wav");
+        String[] music = {".\\Music\\Wizard.wav", ".\\Music\\Sound 1.wav", ""};
+        Random random = new Random();
+        String RandomMusic = music[random.nextInt(music.length)];
+        Music.LoopMusic(RandomMusic);
     }
 
     /**

@@ -1,6 +1,8 @@
 package main;
 
 import game.GameController;
+import game.Music;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -102,6 +104,7 @@ public class StartingPanel extends JPanel implements Runnable {
             System.out.println("aaaaa");
             e1.printStackTrace();
         }
+        Music.LoopMusic(".\\Music\\mainmenu.wav");
     }
 
     /**
