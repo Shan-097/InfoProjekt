@@ -1,18 +1,23 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
+
 import java.util.Dictionary;
 import java.util.Hashtable;
+
 import javax.imageio.ImageIO;
+
 import javax.swing.JPanel;
+
 import main.InputHandler;
 
 /**
@@ -92,7 +97,7 @@ public class GamePanel extends JPanel implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Music.LoopMusic("./Music/Wizard.wav");
+        Music.LoopMusic(".\\Music\\Wizard.wav");
     }
 
     /**

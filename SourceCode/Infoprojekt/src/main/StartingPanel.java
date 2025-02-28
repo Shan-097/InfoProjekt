@@ -1,5 +1,6 @@
 package main;
 
+import game.GameController;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,7 +12,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -61,21 +61,14 @@ public class StartingPanel extends JPanel implements Runnable {
     private BufferedImage myPicture;
 
     /**
-     * to be done
-     */
-    private JFrame window;
-
-    /**
      * Constructor of the starting panel.
      * Instantiates the buttons, adds listeners to them and
      * sets important values of the frame.
      * 
      * @param pFR the desired frame rate of the starting menu
-     * @param window to be done
      */
-    public StartingPanel(int pFR, JFrame window) {
-        this.frameRate = pFR;
-        this.window = window;
+    public StartingPanel(int pFR) {
+        frameRate = pFR;
         this.setLayout(null);
         this.setPreferredSize(null);
         this.setDoubleBuffered(true);
@@ -90,9 +83,8 @@ public class StartingPanel extends JPanel implements Runnable {
         loadGame = new JButton("Load Saved World");
         loadGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                showLoadGamePanel();
-                // GameController controller = new GameController();
-                // controller.loadWorld("./SourceCode/Infoprojekt/saves/testWorld.json");
+                GameController controller = new GameController();
+                controller.loadWorld("./SourceCode/Infoprojekt/saves/testWorld.json");
             }
         });
         controls = new JButton("Controls");
@@ -110,16 +102,6 @@ public class StartingPanel extends JPanel implements Runnable {
             System.out.println("aaaaa");
             e1.printStackTrace();
         }
-    }
-
-    /**
-     * shows an instance of the load game panel on the screen
-     */
-    public void showLoadGamePanel() {
-        LoadGamePanel loadGamePanel = new LoadGamePanel(frameRate);
-        window.setContentPane(loadGamePanel);
-        window.revalidate();
-        window.repaint();
     }
 
     /**

@@ -590,7 +590,7 @@ public class GameController {
 
             properties.put("worldMap", outerArray);
 
-            file.write(properties.toString(1));
+            file.write(properties.toString(4));
 
             return true;
         } catch (IOException e) {
