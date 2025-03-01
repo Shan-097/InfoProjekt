@@ -191,13 +191,13 @@ public class HotKeyPanel extends JPanel implements Runnable {
     }
 
     private String charToHumanReadableString(char c){
-        //'\u0027' esc, '\u0032' space, '\u0127' delete
-        switch ((int) c) {
-            case 27:
+        //'\u001B' esc, '\u0020' space, '\u007F' delete
+        switch (c) {
+            case '\u001B':
                 return "escape";
-            case 32:
+            case '\u0020':
                 return "space";
-            case 127:
+            case '\u007F':
                 return "delete";
             default:
                 return String.valueOf((char) c);

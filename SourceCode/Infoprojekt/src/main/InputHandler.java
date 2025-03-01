@@ -48,8 +48,8 @@ public class InputHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         char key = e.getKeyChar();
-        //'\u0027' esc, '\u0032' space, '\u0127' delete
-        if (!(Character.isLetterOrDigit(key) || key == 27 || key == 32 || key == 127)) {
+        //'\u001B' esc, '\u0020' space, '\u007F' delete
+        if ((!Character.isLetterOrDigit(key)) && "\u001B\u0020\u007F".indexOf(key) == -1) {
             return;
         }
         if (keysToIgnoreUntilReleased.contains(key)) {
