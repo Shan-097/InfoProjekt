@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- * to be done
+ * Abstract class Building defines the necessary methods
  */
 public abstract class Building {
     /**
