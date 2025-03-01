@@ -1,15 +1,19 @@
 package main;
 
 import game.GameController;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -88,6 +92,11 @@ public class StartingPanel extends JPanel implements Runnable {
             }
         });
         controls = new JButton("Controls");
+        controls.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                App.loadHotKeyScreen();
+            }
+        });
         startNewGame.setFont(new Font("Arial", Font.BOLD, 15));
         loadGame.setFont(new Font("Arial", Font.BOLD, 15));
         controls.setFont(new Font("Arial", Font.BOLD, 15));

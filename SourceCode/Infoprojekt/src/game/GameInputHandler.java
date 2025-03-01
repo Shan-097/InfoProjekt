@@ -2,8 +2,10 @@ package game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import main.InputHandler;
+import main.LoadStoreHotKeys;
 
 /**
  * to be done
@@ -17,7 +19,12 @@ public class GameInputHandler {
     /**
      * to be done
      */
-    private HashMap<Character, String> inputMap;
+    private HashMap<String, Character> inputMap;
+
+    /**
+     * to be done
+     */
+    private HashMap<Character, String> reversedInputMap;
 
     /**
      * to be done
@@ -31,25 +38,18 @@ public class GameInputHandler {
         gameController = pGC;
         inputHandler = pIH;
 
-        inputMap = new HashMap<Character, String>();
-        inputMap.put('w', "moveUp");
-        inputMap.put('s', "moveDown");
-        inputMap.put('a', "moveLeft");
-        inputMap.put('d', "moveRight");
-        inputMap.put('1', "placeConveyorBelt");
-        inputMap.put('2', "placeExtractor");
-        inputMap.put('3', "placeSmelter");
-        inputMap.put('r', "rotateBuilding");
-        inputMap.put((char) 27, "cancelPlacement"); // esc
-        inputMap.put('b', "placeBuilding");
-        inputMap.put('x', "deleteBuilding");
+        inputMap = LoadStoreHotKeys.loadHotKeys();
+        reversedInputMap = new HashMap<Character, String>();
+        for (Entry<String, Character> inputMapping : inputMap.entrySet()) {
+            reversedInputMap.put(inputMapping.getValue(), inputMapping.getKey());
+        }
     }
 
     public void invokeMethodsFromInput() {
         ArrayList<String> actions = new ArrayList<String>();
-        for (Character c : inputMap.keySet()) {
+        for (Character c : reversedInputMap.keySet()) {
             if (inputHandler.keyIsPressed(c)) {
-                actions.add(inputMap.get(c));
+                actions.add(reversedInputMap.get(c));
             }
         }
 
@@ -125,6 +125,7 @@ public class GameInputHandler {
         }
         if (actions.contains("rotateBuilding")) {
             gameController.rotateBuilding();
+            inputHandler.ignoreKeyUntilReleased(inputMap.get("rotateBuilding"));
         }
         if (actions.contains("placeBuilding")) {
             gameController.placeBuilding();

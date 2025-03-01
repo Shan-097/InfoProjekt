@@ -2,7 +2,11 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Map.Entry;
 
 /**
  * The class of the Input handler implementing Keylistener.
@@ -10,14 +14,20 @@ import java.util.HashMap;
  * pressed.
  */
 public class InputHandler implements KeyListener {
+    /**
+     * to be done
+     */
     private HashMap<Character, Boolean> keysPressed;
+
+    private HashSet<Character> keysToIgnoreUntilReleased;
 
     /**
      * Standard constructor of the InnputHandler.
      * Only instantiates the collection.
      */
     public InputHandler() {
-        keysPressed = new HashMap<Character, Boolean>();
+        keysPressed = new HashMap<Character, Boolean>(55);
+        keysToIgnoreUntilReleased = new HashSet<Character>(1);
     }
 
     /**
@@ -38,6 +48,13 @@ public class InputHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         char key = e.getKeyChar();
+        //'\u001B' esc, '\u0020' space, '\u007F' delete
+        if ((!Character.isLetterOrDigit(key)) && "\u001B\u0020\u007F".indexOf(key) == -1) {
+            return;
+        }
+        if (keysToIgnoreUntilReleased.contains(key)) {
+            return;
+        }
         if (keysPressed.containsKey(key)) {
             keysPressed.replace(key, true);
         } else {
@@ -56,9 +73,8 @@ public class InputHandler implements KeyListener {
         char key = e.getKeyChar();
         if (keysPressed.containsKey(key)) {
             keysPressed.replace(key, false);
-        } else {
-            keysPressed.put(key, false);
         }
+        keysToIgnoreUntilReleased.remove(key);
     }
 
     /**
@@ -74,4 +90,25 @@ public class InputHandler implements KeyListener {
         return false;
     }
 
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
+    public LinkedList<Character> getPressedCharacters(){
+        LinkedList<Character> pressed = new LinkedList<Character>();
+        for (Entry<Character, Boolean> entry : keysPressed.entrySet()) {
+            if (entry.getValue()) {
+                pressed.add(entry.getKey());
+            }
+        }
+        return pressed;
+    }
+
+    public void ignoreKeyUntilReleased(Character c){
+        if (keysPressed.containsKey(c)) {
+            keysPressed.replace(c, false);
+        }
+        keysToIgnoreUntilReleased.add(c);
+    }
 }
