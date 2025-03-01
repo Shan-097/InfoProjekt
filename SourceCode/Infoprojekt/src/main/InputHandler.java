@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
@@ -13,14 +14,20 @@ import java.util.Map.Entry;
  * pressed.
  */
 public class InputHandler implements KeyListener {
+    /**
+     * to be done
+     */
     private HashMap<Character, Boolean> keysPressed;
+
+    private HashSet<Character> keysToIgnoreUntilReleased;
 
     /**
      * Standard constructor of the InnputHandler.
      * Only instantiates the collection.
      */
     public InputHandler() {
-        keysPressed = new HashMap<Character, Boolean>();
+        keysPressed = new HashMap<Character, Boolean>(55);
+        keysToIgnoreUntilReleased = new HashSet<Character>(1);
     }
 
     /**
@@ -45,6 +52,9 @@ public class InputHandler implements KeyListener {
         if (!(Character.isLetterOrDigit(key) || key == 27 || key == 32 || key == 127)) {
             return;
         }
+        if (keysToIgnoreUntilReleased.contains(key)) {
+            return;
+        }
         if (keysPressed.containsKey(key)) {
             keysPressed.replace(key, true);
         } else {
@@ -63,9 +73,8 @@ public class InputHandler implements KeyListener {
         char key = e.getKeyChar();
         if (keysPressed.containsKey(key)) {
             keysPressed.replace(key, false);
-        } else {
-            keysPressed.put(key, false);
         }
+        keysToIgnoreUntilReleased.remove(key);
     }
 
     /**
@@ -94,5 +103,12 @@ public class InputHandler implements KeyListener {
             }
         }
         return pressed;
+    }
+
+    public void ignoreKeyUntilReleased(Character c){
+        if (keysPressed.containsKey(c)) {
+            keysPressed.replace(c, false);
+        }
+        keysToIgnoreUntilReleased.add(c);
     }
 }

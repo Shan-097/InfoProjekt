@@ -19,7 +19,12 @@ public class GameInputHandler {
     /**
      * to be done
      */
-    private HashMap<Character, String> inputMap;
+    private HashMap<String, Character> inputMap;
+
+    /**
+     * to be done
+     */
+    private HashMap<Character, String> reversedInputMap;
 
     /**
      * to be done
@@ -33,18 +38,18 @@ public class GameInputHandler {
         gameController = pGC;
         inputHandler = pIH;
 
-        HashMap<String, Character> reversedInputmap = LoadStoreHotKeys.loadHotKeys();
-        inputMap = new HashMap<Character, String>();
-        for (Entry<String, Character> inputMapping : reversedInputmap.entrySet()) {
-            inputMap.put(inputMapping.getValue(), inputMapping.getKey());
+        inputMap = LoadStoreHotKeys.loadHotKeys();
+        reversedInputMap = new HashMap<Character, String>();
+        for (Entry<String, Character> inputMapping : inputMap.entrySet()) {
+            reversedInputMap.put(inputMapping.getValue(), inputMapping.getKey());
         }
     }
 
     public void invokeMethodsFromInput() {
         ArrayList<String> actions = new ArrayList<String>();
-        for (Character c : inputMap.keySet()) {
+        for (Character c : reversedInputMap.keySet()) {
             if (inputHandler.keyIsPressed(c)) {
-                actions.add(inputMap.get(c));
+                actions.add(reversedInputMap.get(c));
             }
         }
 
@@ -120,6 +125,7 @@ public class GameInputHandler {
         }
         if (actions.contains("rotateBuilding")) {
             gameController.rotateBuilding();
+            inputHandler.ignoreKeyUntilReleased(inputMap.get("rotateBuilding"));
         }
         if (actions.contains("placeBuilding")) {
             gameController.placeBuilding();
