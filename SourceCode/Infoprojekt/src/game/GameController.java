@@ -376,7 +376,6 @@ public class GameController {
      */
     public void placeBuilding() {
         if (wGenerator.getField(posXinArray, posYinArray).getBuilding() != null) {
-            buildingToBePlaced = null;
             return;
         }
         if (buildingToBePlaced == null) {
@@ -385,7 +384,6 @@ public class GameController {
 
         for (Entry<Item, Integer> cost : buildingToBePlaced.getCost().entrySet()) {
             if (inventory.get(cost.getKey()) < cost.getValue()) {
-                buildingToBePlaced = null;
                 return;
             }            
         }
@@ -393,7 +391,6 @@ public class GameController {
         if (buildingToBePlaced.getClass() == Extractor.class) {
             Resource resource = wGenerator.getField(posXinArray, posYinArray).getResource();
             if (resource.getResourceID() == 0) {
-                buildingToBePlaced = null;
                 return;
             }
             Extractor temp = (Extractor) buildingToBePlaced;
