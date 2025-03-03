@@ -73,7 +73,7 @@ public class App {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        window.setMinimumSize(new Dimension(500, 300));// random values, TO DO: choose better
+        window.setMinimumSize(new Dimension(900, 500));// random values, TO DO: choose better
         gamePanel.startGameThread();
     }
 }

@@ -10,8 +10,6 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.IOException;
-
-import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -81,26 +79,39 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         gameInputHandler = new GameInputHandler(gameController, inputHandler);
 
+        // Load images into dictionary
         try {
+            images.put("player", ImageIO.read(new File("./Graphics/FalkeOben.png")));
             images.put("grass", ImageIO.read(new File("./Graphics/between grass (64x64).png")));
             images.put("stoneItem", ImageIO.read(new File("./Graphics/Stein.png")));
             images.put("copper", ImageIO.read(new File("./Graphics/CopperConveyor.png")));
             images.put("arrow", ImageIO.read(new File("./Graphics/arrow.png")));
-            images.put("conveyorLinks", ImageIO.read(new File("./Graphics/ConveyerBelt-links.png")));
             images.put("preview", ImageIO.read(new File("./Graphics/Bauen Preview.png")));
 
-            falke.put('Q', ImageIO.read(new File("./Graphics/FalkeLinksOben.png")));
-            falke.put('W', ImageIO.read(new File("./Graphics/FalkeOben.png")));
-            falke.put('E', ImageIO.read(new File("./Graphics/FalkeRechtsOben.png")));
-            falke.put('A', ImageIO.read(new File("./Graphics/FalkeLinks.png")));
-            falke.put('D', ImageIO.read(new File("./Graphics/FalkeRechts.png")));
-            falke.put('Y', ImageIO.read(new File("./Graphics/FalkeLinksUnten.png")));
-            falke.put('S', ImageIO.read(new File("./Graphics/FalkeUnten.png")));
-            falke.put('C', ImageIO.read(new File("./Graphics/FalkeRechtsUnten.png")));
+            images.put("conveyorUP", ImageIO.read(new File("./Graphics/ConveyerBelt-oben.png")));
+            images.put("conveyorLEFT", ImageIO.read(new File("./Graphics/ConveyerBelt-links.png")));
+            images.put("conveyorDOWN", ImageIO.read(new File("./Graphics/ConveyerBelt-unten.png")));
+            images.put("conveyorRIGHT", ImageIO.read(new File("./Graphics/ConveyerBelt-rechts.png")));
+
+            // MISSING 4 versions (inverse of each) !!! [or: remove arrow on corner conveyor --> reuse these 4]
+            images.put("conveyorUPtoRIGHT", ImageIO.read(new File("./Graphics/conveyorUPtoRIGHT.png")));
+            images.put("conveyorRIGHTtoDOWN", ImageIO.read(new File("./Graphics/conveyorRIGHTtoDOWN.png")));
+            images.put("conveyorDOWNtoLEFT", ImageIO.read(new File("./Graphics/conveyorDOWNtoLEFT.png")));
+            images.put("conveyorLEFTtoUP", ImageIO.read(new File("./Graphics/conveyorLEFTtoUP.png")));
+
+            images.put("extractorUP", ImageIO.read(new File("./Graphics/faceUP.png")));
+            images.put("extractorLEFT", ImageIO.read(new File("./Graphics/faceLEFT.png")));
+            images.put("extractorDOWN", ImageIO.read(new File("./Graphics/faceDOWN.png")));
+            images.put("extractorRIGHT", ImageIO.read(new File("./Graphics/faceRIGHT.png")));
+
+            images.put("smelterUP", ImageIO.read(new File("./Graphics/faceUP.png")));
+            images.put("smelterLEFT", ImageIO.read(new File("./Graphics/faceLEFT.png")));
+            images.put("smelterDOWN", ImageIO.read(new File("./Graphics/faceDOWN.png")));
+            images.put("smelterRIGHT", ImageIO.read(new File("./Graphics/faceRIGHT.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Music.LoopMusic(".\\Music\\Wizard.wav");
+        //Music.LoopMusic(".\\Music\\Wizard.wav");
     }
 
     /**
@@ -138,8 +149,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    // Image newImage = yourImage.getScaledInstance(newWidth, newHeight,
-    // Image.SCALE_DEFAULT);
+
+    // Image newImage = yourImage.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
+
 
     /**
      * Repaints the panel
@@ -151,7 +163,7 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        // tile on which player is standing, center tile Field-coords
+        // tile on which player is standing, center tile Field-coordinates
         int posXinArray = gameController.getPosX();
         int posYinArray = gameController.getPosY();
 
@@ -182,21 +194,18 @@ public class GamePanel extends JPanel implements Runnable {
                 indexCurrentX = posXinArray - (numWidth / 2) + i;
                 indexCurrentY = posYinArray - (numHeight / 2) + j;
 
-                movementX = (int) (TileCenterX - (gameController.getOffsetX() * tileSize)
-                        - (tileSize * (posXinArray - indexCurrentX)));
-                movementY = (int) (TileCenterY - (gameController.getOffsetY() * tileSize)
-                        - (tileSize * (posYinArray - indexCurrentY)));
+                movementX = (int) (TileCenterX - (gameController.getOffsetX() * tileSize) - (tileSize * (posXinArray - indexCurrentX)));
+                movementY = (int) (TileCenterY - (gameController.getOffsetY() * tileSize) - (tileSize * (posYinArray - indexCurrentY)));
 
                 // Color the outside of the map blue
-                if (indexCurrentX < 0 || indexCurrentY < 0 || indexCurrentX >= mapXLength
-                        || indexCurrentY >= mapYLength) {
+                if (indexCurrentX < 0 || indexCurrentY < 0 || indexCurrentX >= mapXLength || indexCurrentY >= mapYLength) {
                     g2d.setColor(Color.BLUE);
                     g2d.fillRect(movementX, movementY, tileSize, tileSize);
                     continue;
                 }
 
+                // Draw the resources for each field
                 field = gameController.getField(indexCurrentX, indexCurrentY);
-
                 if (field.getResourceID() == 0) {
                     g2d.drawImage(images.get("grass"), movementX, movementY, null);
                 } else if (field.getResourceID() == 1) {
@@ -211,7 +220,7 @@ public class GamePanel extends JPanel implements Runnable {
                     g2d.setColor(Color.YELLOW);
                     g2d.fillRect(movementX, movementY, tileSize, tileSize);
                 }
-
+                
                 // Draw the buildings
                 if (field.getBuilding() != null) {
                     if (field.getBuilding().getClass() == CollectionSite.class) {
@@ -229,78 +238,134 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
 
-                // Draw the building preview
-                if (gameController.getBuildingToBePlaced() != null && indexCurrentX == posXinArray
-                        && indexCurrentY == posYinArray) {
-                    g2d.setColor(new Color(255, 255, 255, 157));
-                    g2d.fillRect(100 - 64, 100 - 64, 64 * 3, 64 * 3);
-                    if (gameController.getBuildingToBePlaced().getClass() == ConveyorBelt.class) {
-                        g2d.drawImage(images.get("conveyorLinks"), 100, 100, null);
-                    } else if (gameController.getBuildingToBePlaced().getClass() == Extractor.class) {
-
-                    } else if (gameController.getBuildingToBePlaced().getClass() == Smelter.class) {
-
-                    }
+                // Draw the building highlight preview
+                if (gameController.getBuildingToBePlaced() != null && indexCurrentX == posXinArray && indexCurrentY == posYinArray) {
                     g2d.drawImage(images.get("preview"), movementX, movementY, null);
                 }
             }
         }
 
-        // Place buildings: Figure out which one is 'to be placed'
+
+        // Draw the preview of the building about to be placed
         if (gameController.getBuildingToBePlaced() != null) {
+            
+            g2d.setColor(new Color(90, 160, 255, 130));
+            int borderWidth = 20;
+            g2d.fillRect(0 + borderWidth, 0, width - 2*borderWidth, borderWidth);           
+            g2d.fillRect(0 + borderWidth, height - borderWidth, width - 2*borderWidth, borderWidth);  
+            g2d.fillRect(0, 0, borderWidth, height);            
+            g2d.fillRect(width - borderWidth, 0, borderWidth, height);   
+
+            g2d.setColor(new Color(255,255,255, 157));
+            g2d.fillRect(100-64, 100-64, 64*3, 64*3);
             if (gameController.getBuildingToBePlaced().getClass() == ConveyorBelt.class) {
+                switch (gameController.getBuildingToBePlaced().getRotation()) {
+                    case 0:
+                        g2d.drawImage(images.get("conveyorUP"), 100, 100, null);
+                        break;
+                    case 1: 
+                        g2d.drawImage(images.get("conveyorRIGHT"), 100, 100, null);
+                        break;
+                    case 2:
+                        g2d.drawImage(images.get("conveyorDOWN"), 100, 100, null);
+                        break;
+                    case 3: 
+                        g2d.drawImage(images.get("conveyorLEFT"), 100, 100, null);
+                }
                 g2d.setColor(Color.MAGENTA);
-                g2d.fillRect(0, 0, tileSize, tileSize);
+                //g2d.fillRect(0, 0, tileSize, tileSize);
             } else if (gameController.getBuildingToBePlaced().getClass() == Extractor.class) {
                 switch (gameController.getBuildingToBePlaced().getRotation()) {
                     case 0:
-                        g2d.setColor(Color.GREEN);
+                        g2d.drawImage(images.get("extractorUP"), 100, 100, null);
                         break;
-                    case 1:
-                        g2d.setColor(Color.CYAN);
+                    case 1: 
+                        g2d.drawImage(images.get("extractorRIGHT"), 100, 100, null);
                         break;
                     case 2:
-                        g2d.setColor(Color.BLUE);
+                        g2d.drawImage(images.get("extractorDOWN"), 100, 100, null);
                         break;
-                    case 3:
-                        g2d.setColor(Color.PINK);
-                }
-                // g2d.setColor(Color.CYAN);
-                g2d.fillRect(100, 100, tileSize, tileSize);
-
+                    case 3: 
+                        g2d.drawImage(images.get("extractorLEFT"), 100, 100, null);
+                }             
                 g2d.setColor(Color.CYAN);
-                g2d.fillRect(0, 0, tileSize, tileSize);
+                //g2d.fillRect(0, 0, tileSize, tileSize);
             } else if (gameController.getBuildingToBePlaced().getClass() == Smelter.class) {
+                switch (gameController.getBuildingToBePlaced().getRotation()) {
+                    case 0:
+                        g2d.drawImage(images.get("smelterUP"), 100, 100, null);
+                        break;
+                    case 1: 
+                        g2d.drawImage(images.get("smelterRIGHT"), 100, 100, null);
+                        break;
+                    case 2:
+                        g2d.drawImage(images.get("smelterDOWN"), 100, 100, null);
+                        break;
+                    case 3: 
+                        g2d.drawImage(images.get("smelterLEFT"), 100, 100, null);
+                }
                 g2d.setColor(Color.RED);
-                g2d.fillRect(100, 100, tileSize, tileSize);
-
-                g2d.setColor(Color.RED);
-                g2d.fillRect(0, 0, tileSize, tileSize);
+                //g2d.fillRect(0, 0, tileSize, tileSize);
             }
         }
 
-        // Building: array von input, array von output (bytes)
-        // 0
-        // 3 1
-        // 2
-        //
 
+        // Building: array von input, array von output (bytes) 
+        //   0
+        // 3   1  
+        //   2
+        // 
+
+
+        // Draw the sidebar
         g2d.setColor(Color.ORANGE);
         g2d.fillRect((int) Math.round(0.6 * tileSize), (int) (this.getHeight() / 2 - 2 * tileSize), tileSize,
                 tileSize * 4);
 
-        // Draw player
-        if (gameController.getDirection() != '0') {
-            g2d.drawImage(falke.get(gameController.getDirection()), TileCenterX, TileCenterY, null);
+
+        // Draw the player [IN EIGENE METHODE AUSLAGERN???]
+        if (gameController.getDirection() != '0') {    
+            AffineTransform playerTX = new AffineTransform();
+            char dir = gameController.getDirection();
+            double angle = 0;    
+            switch(dir) {
+                case 'E':
+                    angle = Math.toRadians(45);
+                    break;
+                case 'D':
+                    angle = Math.toRadians(90);
+                    break;
+                case 'C':
+                    angle = Math.toRadians(135);
+                    break;
+                case 'S':
+                    angle = Math.toRadians(180);
+                    break;
+                case 'Y':
+                    angle = Math.toRadians(225);
+                    break;
+                case 'A':
+                    angle = Math.toRadians(270);
+                    break;
+                case 'Q':
+                    angle = Math.toRadians(315);
+            }
+            playerTX.translate(width/2 - images.get("player").getWidth() / 2, height/2 - images.get("player").getHeight() / 2);
+            playerTX.rotate(angle, images.get("player").getWidth() / 2, images.get("player").getHeight() / 2);
+            
+            g2d.drawImage(images.get("player"), playerTX, null);
         } else {
-            g2d.drawImage(falke.get('W'), TileCenterX, TileCenterY, null);
+            g2d.drawImage(images.get("player"), TileCenterX, TileCenterY, null);
         }
 
+
+        // Draw the arrow
         AffineTransform tx = rotateArrow(images.get("arrow"), numWidth, numHeight);
         if (tx != null)
             g2d.drawImage(images.get("arrow"), tx, null);
 
-        // add wolken
+
+        // add wolken?
         g2d.dispose();
     }
 
@@ -403,6 +468,7 @@ public class GamePanel extends JPanel implements Runnable {
         byte xLocation;
         byte yLocation;
 
+        // Check where the Collection Site is relative to Player
         if (posXPlayer - 0.5 * numWidth > xHome)
             xLocation = -1;
         else if (posXPlayer + 0.5 * numWidth < xHome)
@@ -417,6 +483,7 @@ public class GamePanel extends JPanel implements Runnable {
         else
             yLocation = 0;
 
+        // Return direction as char 
         if (xLocation == -1 && yLocation == -1)
             return 'Q';
         else if (xLocation == 0 && yLocation == -1)

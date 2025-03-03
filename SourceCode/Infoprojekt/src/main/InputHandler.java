@@ -6,14 +6,14 @@ import java.util.HashMap;
 
 /**
  * The class of the Input handler implementing Keylistener.
- * Every Object has a collection of all keys with wether or not they are
+ * Every Object has a collection of all keys with whether or not they are
  * pressed.
  */
 public class InputHandler implements KeyListener {
     private HashMap<Character, Boolean> keysPressed;
 
     /**
-     * Standard constructor of the InnputHandler.
+     * Standard constructor of the InputHandler.
      * Only instantiates the collection.
      */
     public InputHandler() {
