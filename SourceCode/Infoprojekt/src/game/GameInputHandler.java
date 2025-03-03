@@ -19,12 +19,17 @@ public class GameInputHandler {
     /**
      * to be done
      */
-    private HashMap<String, Character> inputMap;
+    private HashMap<Character, String> reversedInputMapNormal;
 
     /**
      * to be done
      */
-    private HashMap<Character, String> reversedInputMap;
+    private HashMap<Character, String> reversedInputMapNotHoldable;
+
+    /**
+     * to be done
+     */
+    private HashMap<Character, String> reversedInputMapHoldable;
 
     /**
      * to be done
@@ -38,18 +43,37 @@ public class GameInputHandler {
         gameController = pGC;
         inputHandler = pIH;
 
-        inputMap = LoadStoreHotKeys.loadHotKeys();
-        reversedInputMap = new HashMap<Character, String>();
-        for (Entry<String, Character> inputMapping : inputMap.entrySet()) {
-            reversedInputMap.put(inputMapping.getValue(), inputMapping.getKey());
+        HashMap<String, HashMap<String, Character>> inputMaps = LoadStoreHotKeys.loadHotKeys();
+
+        reversedInputMapNormal = new HashMap<Character, String>();
+        for (Entry<String, Character> inputMapping : inputMaps.get("normal").entrySet()) {
+            reversedInputMapNormal.put(inputMapping.getValue(), inputMapping.getKey());
+        }
+        reversedInputMapNotHoldable = new HashMap<Character, String>();
+        for (Entry<String, Character> inputMapping : inputMaps.get("not_holdable").entrySet()) {
+            reversedInputMapNotHoldable.put(inputMapping.getValue(), inputMapping.getKey());
+        }
+        reversedInputMapHoldable = new HashMap<Character, String>();
+        for (Entry<String, Character> inputMapping : inputMaps.get("holdable").entrySet()) {
+            reversedInputMapHoldable.put(inputMapping.getValue(), inputMapping.getKey());
         }
     }
 
     public void invokeMethodsFromInput() {
         ArrayList<String> actions = new ArrayList<String>();
-        for (Character c : reversedInputMap.keySet()) {
+        for (Character c : reversedInputMapNormal.keySet()) {
             if (inputHandler.keyIsPressed(c)) {
-                actions.add(reversedInputMap.get(c));
+                actions.add(reversedInputMapNormal.get(c));
+            }
+        }
+        for (Character c : reversedInputMapNotHoldable.keySet()) {
+            if (inputHandler.keyIsHold(c)) {
+                actions.add(reversedInputMapNotHoldable.get(c));
+            }
+        }
+        for (Character c : reversedInputMapHoldable.keySet()) {
+            if (inputHandler.keyIsClicked(c)) {
+                actions.add(reversedInputMapHoldable.get(c));
             }
         }
 
@@ -125,7 +149,6 @@ public class GameInputHandler {
         }
         if (actions.contains("rotateBuilding")) {
             gameController.rotateBuilding();
-            inputHandler.ignoreKeyUntilReleased(inputMap.get("rotateBuilding"));
         }
         if (actions.contains("placeBuilding")) {
             gameController.placeBuilding();

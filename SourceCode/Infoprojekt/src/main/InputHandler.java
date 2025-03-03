@@ -3,10 +3,8 @@ package main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Map.Entry;
 
 /**
  * The class of the Input handler implementing Keylistener.
@@ -17,8 +15,11 @@ public class InputHandler implements KeyListener {
     /**
      * to be done
      */
-    private HashMap<Character, Boolean> keysPressed;
+    private HashSet<Character> keysDown;
 
+    /**
+     * to be done
+     */
     private HashSet<Character> keysToIgnoreUntilReleased;
 
     /**
@@ -26,27 +27,17 @@ public class InputHandler implements KeyListener {
      * Only instantiates the collection.
      */
     public InputHandler() {
-        keysPressed = new HashMap<Character, Boolean>(55);
-        keysToIgnoreUntilReleased = new HashSet<Character>(1);
+        keysDown = new HashSet<Character>(55);
+        keysToIgnoreUntilReleased = new HashSet<Character>(2);
     }
 
     /**
-     * Is not used but has to be implemented
-     * 
-     * @param e The KeyEvent
-     */
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-    /**
-     * Sets the boolean wheter the key is typed or not to true or adds the entry to
-     * the collection.
+     * Adds the char of the KeyEvent to the collection of pressed keys.
      * 
      * @param e The registered KeyEvent
      */
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyTyped(KeyEvent e) {
         char key = e.getKeyChar();
         //'\u001B' esc, '\u0020' space, '\u007F' delete
         if ((!Character.isLetterOrDigit(key)) && "\u001B\u0020\u007F".indexOf(key) == -1) {
@@ -55,11 +46,18 @@ public class InputHandler implements KeyListener {
         if (keysToIgnoreUntilReleased.contains(key)) {
             return;
         }
-        if (keysPressed.containsKey(key)) {
-            keysPressed.replace(key, true);
-        } else {
-            keysPressed.put(key, true);
+        if (!keysDown.contains(key)) {
+            keysDown.add(key);
         }
+    }
+
+    /**
+     * Is not used but has to be implemented.
+     * 
+     * @param e The registered KeyEvent
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
     }
 
     /**
@@ -71,9 +69,7 @@ public class InputHandler implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         char key = e.getKeyChar();
-        if (keysPressed.containsKey(key)) {
-            keysPressed.replace(key, false);
-        }
+        keysDown.remove(key);
         keysToIgnoreUntilReleased.remove(key);
     }
 
@@ -84,8 +80,32 @@ public class InputHandler implements KeyListener {
      * @return boolean True if pressed otherwise false
      */
     public boolean keyIsPressed(char c) {
-        if (keysPressed.containsKey(c)) {
-            return keysPressed.get(c);
+        return keysDown.contains(c);
+    }
+
+    /**
+     * to be done
+     * @param c to be done
+     * @return to be done
+     */
+    public boolean keyIsHold(Character c){
+        if(keysDown.contains(c)) {
+            keysDown.remove(c);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * to be done
+     * @param c to be done
+     * @return to be done
+     */
+    public boolean keyIsClicked(Character c){
+        if(keysDown.contains(c)) {
+            keysToIgnoreUntilReleased.add(c);
+            keysDown.remove(c);
+            return true;
         }
         return false;
     }
@@ -97,18 +117,7 @@ public class InputHandler implements KeyListener {
      */
     public LinkedList<Character> getPressedCharacters(){
         LinkedList<Character> pressed = new LinkedList<Character>();
-        for (Entry<Character, Boolean> entry : keysPressed.entrySet()) {
-            if (entry.getValue()) {
-                pressed.add(entry.getKey());
-            }
-        }
+        pressed.addAll(keysDown);
         return pressed;
-    }
-
-    public void ignoreKeyUntilReleased(Character c){
-        if (keysPressed.containsKey(c)) {
-            keysPressed.replace(c, false);
-        }
-        keysToIgnoreUntilReleased.add(c);
     }
 }

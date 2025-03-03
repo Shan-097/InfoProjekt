@@ -1,1 +1,1 @@
-{"cancelPlacement":"\u001b","placeConveyorBelt":"1","deleteBuilding":"x","placeExtractor":"2","placeSmelter":"3","moveRight":"d","moveLeft":"a","rotateBuilding":"r","moveDown":"s","placeBuilding":"b","moveUp":"w"}
+{"normal":{"moveRight":"d","moveLeft":"a","moveDown":"s","moveUp":"w"},"holdable":{"moveRight":"d","moveLeft":"a","moveDown":"s","moveUp":"w"},"not_holdable":{"cancelPlacement":"\u001b","placeConveyorBelt":"1","placeExtractor":"2","placeSmelter":"3","rotateBuilding":"r"}}
