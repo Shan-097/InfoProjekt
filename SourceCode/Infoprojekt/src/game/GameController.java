@@ -537,29 +537,31 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Returns the specified Field object of the map.
      * 
-     * @param posXinArray to be done
-     * @param posYinArray to be done
-     * @return to be done
+     * @param posXinArray The x coordinate in the map
+     * @param posYinArray The y coordinate in the map
+     * @return The Field object
      */
     public Field getField(int posXinArray, int posYinArray) {
         return wGenerator.getField(posXinArray, posYinArray);
     }
 
     /**
-     * to be done
+     * Returns how many fields are in one line of the map.<br>
+     * Aquivalent to the length of the array.
      * 
-     * @return to be done
+     * @return The length
      */
     public int getXLengthMap() {
         return wGenerator.getXLengthMap();
     }
 
     /**
-     * to be done
+     * Returns how many fields are in one column of the map.<br>
+     * Aquivalent to the length of the array.
      * 
-     * @return to be done
+     * @return The length
      */
     public int getYLengthMap() {
         return wGenerator.getYLengthMap();
@@ -620,6 +622,8 @@ public class GameController {
     }
 
     /**
+     * to be done
+     * 
      * @param filePath FilePath of the JSON File to read from
      * @return JSONObject Returns JSON Input File as JSONObject
      */

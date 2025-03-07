@@ -8,11 +8,12 @@ import main.InputHandler;
 import main.LoadStoreHotKeys;
 
 /**
- * to be done
+ * The GameInputHandler calls the methods that have to be invoked because of
+ * player input.
  */
 public class GameInputHandler {
     /**
-     * to be done
+     * The InputHandler object of the GameInputHandler.
      */
     private InputHandler inputHandler;
 
@@ -27,7 +28,7 @@ public class GameInputHandler {
     private HashMap<Character, String> reversedInputMap;
 
     /**
-     * to be done
+     * The GameController object of the game.
      */
     private GameController gameController;
 

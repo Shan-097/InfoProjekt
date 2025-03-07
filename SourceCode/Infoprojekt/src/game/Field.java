@@ -48,36 +48,36 @@ public class Field {
     }
 
     /**
-     * to be done
+     * Returns the building on this field.
      * 
-     * @return Building to be done
+     * @return The building on this field
      */
     public Building getBuilding() {
         return building;
     }
 
     /**
-     * to be done
+     * Returns the resource object of the vein of this field.
      * 
-     * @return Resource to be done
+     * @return The resource on this field
      */
     public Resource getResource() {
         return resource;
     }
 
     /**
-     * to be done
+     * Returns the id of the resource of the vein of this field.
      * 
-     * @return int to be done
+     * @return The id of the resource
      */
     public int getResourceID() {
         return resource.getResourceID();
     }
 
     /**
-     * to be done
+     * Sets the building of the field.
      * 
-     * @param pBuilding to be done
+     * @param pBuilding The new building
      */
     public void setBuilding(Building pBuilding) {
         building = pBuilding;
