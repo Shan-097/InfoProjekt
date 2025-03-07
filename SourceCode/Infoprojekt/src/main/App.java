@@ -51,7 +51,7 @@ public class App {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        window.setMinimumSize(new Dimension(500, 300));// random values, TO DO: choose better
+        window.setMinimumSize(new Dimension(500, 300)); // random values, TO DO: choose better
         startingPanel.startGameThread();
     }
 
@@ -60,12 +60,12 @@ public class App {
      * the window for and of the starting screen
      * closing the others in the process
      */
-    public static void loadGameScreen() {
+    public static void loadGameScreen(String worldPath) {
         window.dispose();
         window = new JFrame("Keria");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        GamePanel gamePanel = new GamePanel(FRAME_RATE);
+        GamePanel gamePanel = new GamePanel(FRAME_RATE, worldPath);
         window.add(gamePanel);
         window.pack();
         window.setLocationRelativeTo(null);

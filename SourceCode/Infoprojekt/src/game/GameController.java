@@ -74,8 +74,9 @@ public class GameController {
     /**
      * Instantiates a new Object of type GameController.<br>
      * Sets for example the starting position of the player.
+     * @param pFilePath to be done
      */
-    public GameController() {
+    public GameController(String pFilePath) {
         inventory = new HashMap<Item, Integer>();
         inventory.put(Item.getItemWithID(0), 0);
         inventory.put(Item.getItemWithID(1), 0);
@@ -85,7 +86,27 @@ public class GameController {
         inventory.put(Item.getItemWithID(5), 0);
         inventory.put(Item.getItemWithID(6), 0);
         inventory.put(Item.getItemWithID(7), 0);
-        wGenerator = new WorldGenerator(100, 100);
+
+        if(pFilePath != null) {
+            JSONObject savedWorld = loadWorld(pFilePath);
+            JSONArray worldMap = savedWorld.getJSONArray("worldMap");
+
+            int rows = worldMap.length();
+            int cols = worldMap.getJSONArray(0).length();
+            Field[][] fieldArray = new Field[rows][cols];
+    
+            for (int i = 0; i < rows; i++) {
+                JSONArray rowArray = worldMap.getJSONArray(i);
+                for (int j = 0; j < cols; j++) {
+                    fieldArray[i][j] = new Field(new Building(), new Resource(rowArray.getJSONObject(j).getJSONObject("resource").getInt("resourceID")));
+                    // rowArray.getJSONObject(j)
+                }
+            }
+
+            wGenerator = new WorldGenerator(posXinArray, movementDirection, fieldArray);
+        } else {
+            wGenerator = new WorldGenerator(100, 100, null);
+        }
 
         posXinArray = wGenerator.getXLengthMap() / 2;
         posYinArray = wGenerator.getYLengthMap() / 2;
@@ -605,18 +626,25 @@ public class GameController {
      * @param filePath FilePath of the saved World
      * @return boolean successfully loaded or not?
      */
-    public boolean loadWorld(String filepath) {
+    private JSONObject loadWorld(String filepath) {
         JSONObject savedObject = readJsonFile(filepath);
 
-        worldName = savedObject.getString("worldName");
+        /*worldName = savedObject.getString("worldName");
         posXinArray = Integer.parseInt(savedObject.getString("posX"));
         posYinArray = Integer.parseInt(savedObject.getString("posY"));
         JSONArray worldMap = savedObject.getJSONArray("worldMap");
 
-        System.out.println(worldName);
-        System.out.println(posXinArray);
-        System.out.println(posYinArray);
-        return true;
+        int rows = worldMap.length();
+        int cols = worldMap.getJSONArray(0).length();
+
+        for (int i = 0; i < rows; i++) {
+            JSONArray rowArray = worldMap.getJSONArray(i);
+            for (int j = 0; j < cols; j++) {
+                System.out.println(rowArray.get(j));
+            }
+        }*/
+
+        return savedObject;
     }
 
     /**

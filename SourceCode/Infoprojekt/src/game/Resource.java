@@ -2,6 +2,8 @@ package game;
 
 import java.util.HashMap;
 
+import org.json.JSONObject;
+
 /**
  * to be done
  */
@@ -32,7 +34,7 @@ public class Resource {
      * 
      * @param pResourceID to be done
      */
-    private Resource(int pResourceID) {
+    protected Resource(int pResourceID) {
         resourceID = pResourceID;
     }
 
@@ -53,5 +55,11 @@ public class Resource {
      */
     public int getResourceID() {
         return resourceID;
+    }
+
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("resourceID", resourceID);
+        return jsonObject;
     }
 }

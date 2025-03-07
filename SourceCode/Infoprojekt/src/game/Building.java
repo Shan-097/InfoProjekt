@@ -3,6 +3,9 @@ package game;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * to be done
  */
@@ -106,5 +109,13 @@ public abstract class Building {
      */
     public void setRotation(byte pRotation) {
         rotation = pRotation;
+    }
+
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("rotation", rotation);
+        jsonObject.put("content", new JSONArray(content));
+
+        return jsonObject;
     }
 }

@@ -3,6 +3,8 @@ package game;
 import java.util.HashSet;
 import java.util.Random;
 
+import org.json.JSONArray;
+
 /**
  * The WorldGenerator class is responsible for generating and manipulating the
  * map.
@@ -28,23 +30,23 @@ public class WorldGenerator {
      * @param sizeX The number of tiles in the x dimension.
      * @param sizeY The number of tiles in the y dimension.
      */
-    public WorldGenerator(int sizeX, int sizeY) {
-        map = new Field[sizeX][sizeY];
-        int posX = sizeX / 2;
-        int posY = sizeY / 2;
-
-        for (int i = -50; i <= 50; i++) {
-            for (int j = -50; j <= 50; j++) {
-                if (posX + i < 0 || posY + j < 0 || map.length <= posX + i || map[0].length <= posY + j) {
-                    continue;
-                }
-                this.generateTile(posX + i, posY + j);
-
-                if (i <= 1 && i >= -1 && j <= 1 && j >= -1) {
-                    map[posX + i][posY + j].setBuilding(new CollectionSite());
+    public WorldGenerator(int sizeX, int sizeY, Field[][] worldMap) {
+            map = new Field[sizeX][sizeY];
+            int posX = sizeX / 2;
+            int posY = sizeY / 2;
+    
+            for (int i = -50; i <= 50; i++) {
+                for (int j = -50; j <= 50; j++) {
+                    if (posX + i < 0 || posY + j < 0 || map.length <= posX + i || map[0].length <= posY + j) {
+                        continue;
+                    }
+                    this.generateTile(posX + i, posY + j);
+    
+                    if (i <= 1 && i >= -1 && j <= 1 && j >= -1) {
+                        map[posX + i][posY + j].setBuilding(new CollectionSite());
+                    }
                 }
             }
-        }
     }
 
     /**

@@ -67,8 +67,9 @@ public class LoadGamePanel extends JPanel implements Runnable {
         loadSelectedGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (!fileList.isSelectionEmpty()) {
-                    selectedFilePath = "saves/" + fileList.getSelectedValue();
+                    selectedFilePath = "SourceCode/Infoprojekt/saves/" + fileList.getSelectedValue();
                     System.out.println("Selected file: " + selectedFilePath);
+                    App.loadGameScreen(selectedFilePath);
                 }
             }
         });
@@ -83,7 +84,7 @@ public class LoadGamePanel extends JPanel implements Runnable {
     private void loadFileList() {
         File saveFolder = new File("SourceCode/Infoprojekt/saves");
         if (saveFolder.exists() && saveFolder.isDirectory()) {
-            File[] files = saveFolder.listFiles();
+            File[] files = saveFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".json"));
             if (files != null) {
                 for (File file : files) {
                     if (file.isFile()) {
@@ -92,7 +93,7 @@ public class LoadGamePanel extends JPanel implements Runnable {
                 }
             }
         }
-    }
+    }    
 
     /**
      * Executed upon starting the thread.

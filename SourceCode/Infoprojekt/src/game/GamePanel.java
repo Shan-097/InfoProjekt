@@ -48,6 +48,11 @@ public class GamePanel extends JPanel implements Runnable {
     private GameInputHandler gameInputHandler;
 
     /**
+     * to be done
+     */
+    private String worldFilePath;
+
+    /**
      * Dictionary to load the textures displayed in the game (e.g. grass, buildings)
      */
     Dictionary<String, BufferedImage> images = new Hashtable<>();
@@ -65,11 +70,15 @@ public class GamePanel extends JPanel implements Runnable {
      * 
      * @param pFr Frame rate
      */
-    public GamePanel(int pFr) {
+    public GamePanel(int pFr, String pFilePath) {
         this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
         this.setDoubleBuffered(true);
         frameRate = pFr;
-        gameController = new GameController();
+        worldFilePath = pFilePath;
+        gameController = new GameController(pFilePath);
+        //if(pFilePath != null) {
+        //    gameController.loadWorld(worldFilePath);
+        //}
         InputHandler inputHandler = new InputHandler();
         this.addKeyListener(inputHandler);
         this.setFocusable(true);
