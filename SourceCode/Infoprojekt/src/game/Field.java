@@ -3,24 +3,26 @@ package game;
 import org.json.JSONObject;
 
 /**
- * to be done
+ * The Field class wraps the two classes Building and Resource together.<br>
+ * Every Object of type Field represents the state of a field of the map.
  */
 public class Field {
     /**
-     * to be done
+     * The Building on the tile.
      */
     private Building building;
 
     /**
-     * to be done
+     * The resource vein of the tile.<br>
+     * null represents not generated yet.
      */
     private Resource resource;
 
     /**
-     * to be done
+     * The constructor for a field if both the resource and building are known.
      * 
-     * @param pBuilding to be done
-     * @param pResource to be done
+     * @param pBuilding The building on the new field.
+     * @param pResource The resource vein of the new field.
      */
     public Field(Building pBuilding, Resource pResource) {
         building = pBuilding;
@@ -28,18 +30,18 @@ public class Field {
     }
 
     /**
-     * to be done
+     * The constructor for a field when only the resource is known.
      * 
-     * @param pResource to be done
+     * @param pResource The resource vein of the new field.
      */
     public Field(Resource pResource) {
         resource = pResource;
     }
 
     /**
-     * to be done
+     * The constructor for a field when only the resource id is known.
      * 
-     * @param pResourceID to be done
+     * @param pResourceID The id of the resource of the vein of the new field.
      */
     public Field(int pResourceID) {
         resource = Resource.getResourceWithID(pResourceID);
