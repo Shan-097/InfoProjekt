@@ -405,7 +405,13 @@ public class GameController {
         wGenerator.placeBuilding(posXinArray, posYinArray, buildingToBePlaced);
         
         //maybe remove this part
-        if (buildingToBePlaced.getClass() != ConveyorBelt.class) {
+        if (buildingToBePlaced.getClass() == ConveyorBelt.class) {
+            ConveyorBelt temp = new ConveyorBelt();
+            while (temp.getOutputDirections()[0] != buildingToBePlaced.getOutputDirections()[0]) {
+                temp.rotate();
+            }
+            temp.setRotation(buildingToBePlaced.getRotation());
+        } else {
             buildingToBePlaced = null;
         }
     }
