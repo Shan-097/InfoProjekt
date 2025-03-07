@@ -111,6 +111,10 @@ public abstract class Building {
         rotation = pRotation;
     }
 
+    /**
+     * to be done
+     * @return
+     */
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("rotation", rotation);
