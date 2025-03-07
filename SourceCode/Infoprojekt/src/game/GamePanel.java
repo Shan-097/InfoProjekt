@@ -11,10 +11,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
-
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import main.InputHandler;
@@ -55,11 +58,7 @@ public class GamePanel extends JPanel implements Runnable {
      * Dictionary to load the textures displayed in the game (e.g. grass, buildings)
      */
     Dictionary<String, BufferedImage> images = new Hashtable<>();
-
-    /**
-     * Dictionary to load the different rotations of the player character
-     */
-    Dictionary<Character, BufferedImage> falke = new Hashtable<>();
+    Dictionary<String, String> imgPaths = new Hashtable<>();
 
     /**
      * Constructor of the GamePanel class
@@ -80,41 +79,67 @@ public class GamePanel extends JPanel implements Runnable {
         gameInputHandler = new GameInputHandler(gameController, inputHandler);
 
         // Load images into dictionary
-        try {
-            images.put("player", ImageIO.read(new File("./Graphics/FalkeOben.png")));
-            images.put("grass", ImageIO.read(new File("./Graphics/between grass (64x64).png")));
-            images.put("stoneItem", ImageIO.read(new File("./Graphics/Stein.png")));
-            images.put("copper", ImageIO.read(new File("./Graphics/CopperConveyor.png")));
-            images.put("arrow", ImageIO.read(new File("./Graphics/arrow.png")));
-            images.put("preview", ImageIO.read(new File("./Graphics/Bauen Preview.png")));
+        // Misc
+        imgPaths.put("player", "./Graphics/FalkeOben.png");
+        imgPaths.put("grass", "./Graphics/between grass (64x64).png");
+        imgPaths.put("stoneItem", "./Graphics/Stein.png");
+        imgPaths.put("copper", "./Graphics/GoldOre.png");
+        imgPaths.put("arrow", "./Graphics/arrow.png");
+        imgPaths.put("preview", "./Graphics/Bauen Preview.png");
 
-            images.put("conveyorUP", ImageIO.read(new File("./Graphics/ConveyerBelt-oben.png")));
-            images.put("conveyorLEFT", ImageIO.read(new File("./Graphics/ConveyerBelt-links.png")));
-            images.put("conveyorDOWN", ImageIO.read(new File("./Graphics/ConveyerBelt-unten.png")));
-            images.put("conveyorRIGHT", ImageIO.read(new File("./Graphics/ConveyerBelt-rechts.png")));
+        // Conveyor belts
+        imgPaths.put("conveyorUP", "./Graphics/ConveyerBelt-oben.png");
+        imgPaths.put("conveyorLEFT", "./Graphics/ConveyerBelt-links.png");
+        imgPaths.put("conveyorDOWN", "./Graphics/ConveyerBelt-unten.png");
+        imgPaths.put("conveyorRIGHT", "./Graphics/ConveyerBelt-rechts.png");
 
-            // MISSING 4 versions (inverse of each) !!! [or: remove arrow on corner conveyor --> reuse these 4]
-            images.put("conveyorUPtoRIGHT", ImageIO.read(new File("./Graphics/conveyorUPtoRIGHT.png")));
-            images.put("conveyorRIGHTtoDOWN", ImageIO.read(new File("./Graphics/conveyorRIGHTtoDOWN.png")));
-            images.put("conveyorDOWNtoLEFT", ImageIO.read(new File("./Graphics/conveyorDOWNtoLEFT.png")));
-            images.put("conveyorLEFTtoUP", ImageIO.read(new File("./Graphics/conveyorLEFTtoUP.png")));
+        // Corner conveyor belts
+        imgPaths.put("conveyorUPtoRIGHT", "./Graphics/conveyorUPtoRIGHT.png");
+        imgPaths.put("conveyorRIGHTtoDOWN", "./Graphics/conveyorRIGHTtoDOWN.png");
+        imgPaths.put("conveyorDOWNtoLEFT", "./Graphics/conveyorDOWNtoLEFT.png");
+        imgPaths.put("conveyorLEFTtoUP", "./Graphics/conveyorLEFTtoUP.png");
+        imgPaths.put("conveyorRIGHTtoUP", "./Graphics/conveyorRIGHTtoUP.png");
+        imgPaths.put("conveyorDOWNtoRIGHT", "./Graphics/conveyorDOWNtoRIGHT.png");
+        imgPaths.put("conveyorLEFTtoDOWN", "./Graphics/conveyorLEFTtoDOWN.png");
+        imgPaths.put("conveyorUPtoLEFT", "./Graphics/conveyorUPtoLEFT.png");
 
-            images.put("extractorUP", ImageIO.read(new File("./Graphics/faceUP.png")));
-            images.put("extractorLEFT", ImageIO.read(new File("./Graphics/faceLEFT.png")));
-            images.put("extractorDOWN", ImageIO.read(new File("./Graphics/faceDOWN.png")));
-            images.put("extractorRIGHT", ImageIO.read(new File("./Graphics/faceRIGHT.png")));
+        // Extractors
+        imgPaths.put("extractorUP", "./Graphics/drill.png");
+        imgPaths.put("extractorLEFT", "./Graphics/faceLEFT.png");
+        imgPaths.put("extractorDOWN", "./Graphics/drill.png");
+        imgPaths.put("extractorRIGHT", "./Graphics/faceRIGHT.png");
 
-            images.put("smelterUP", ImageIO.read(new File("./Graphics/faceUP.png")));
-            images.put("smelterLEFT", ImageIO.read(new File("./Graphics/faceLEFT.png")));
-            images.put("smelterDOWN", ImageIO.read(new File("./Graphics/faceDOWN.png")));
-            images.put("smelterRIGHT", ImageIO.read(new File("./Graphics/faceRIGHT.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
+        // Smelters
+        imgPaths.put("smelterUP", "./Graphics/faceUP.png");
+        imgPaths.put("smelterLEFT", "./Graphics/faceLEFT.png");
+        imgPaths.put("smelterDOWN", "./Graphics/faceDOWN.png");
+        imgPaths.put("smelterRIGHT", "./Graphics/faceRIGHT.png");
+
+        // Collection Sites
+        // imgPaths.put("collectionSiteQ", "./Graphics/collectionSiteQ.jpg");
+        // imgPaths.put("collectionSiteW", "./Graphics/collectionSiteW.jpg");
+        // imgPaths.put("collectionSiteE", "./Graphics/collectionSiteE.jpg");
+        // imgPaths.put("collectionSiteA", "./Graphics/collectionSiteA.jpg");
+        // imgPaths.put("collectionSiteS", "./Graphics/collectionSiteS.jpg");
+        // imgPaths.put("collectionSiteD", "./Graphics/collectionSiteD.jpg");
+        // imgPaths.put("collectionSiteY", "./Graphics/collectionSiteY.jpg");
+        // imgPaths.put("collectionSiteX", "./Graphics/collectionSiteX.jpg");
+        // imgPaths.put("collectionSiteC", "./Graphics/collectionSiteC.jpg");
+
+        Enumeration<String> keys = imgPaths.keys();
+        while (keys.hasMoreElements()) {
+            String key = keys.nextElement();
+            try {
+                images.put(key, ImageIO.read(new File(imgPaths.get(key))));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
         //Music.LoopMusic(".\\Music\\Wizard.wav");
     }
 
-    /**
+    /**^
      * Start game thread
      */
     public void startGameThread() {
@@ -159,7 +184,7 @@ public class GamePanel extends JPanel implements Runnable {
      * 
      * @param g to be done
      */
-    public void paintComponent(Graphics g) { // paint() oder paintComponent() ???
+    public void paintComponent(Graphics g) { 
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
@@ -223,18 +248,69 @@ public class GamePanel extends JPanel implements Runnable {
                 
                 // Draw the buildings
                 if (field.getBuilding() != null) {
+                    byte rotation = field.getBuilding().getRotation();
                     if (field.getBuilding().getClass() == CollectionSite.class) {
-                        g2d.setColor(Color.BLACK);
-                        g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                        switch (rotation) {
+                            case 1:
+                                g2d.drawImage(images.get("extractorUP"), movementX, movementY, null);
+                                break;
+                            case 2: 
+                                g2d.drawImage(images.get("collectionSiteSide"), movementX, movementY, null);
+                                break;
+                            case 3:
+                                g2d.drawImage(images.get("extractorDOWN"), movementX, movementY, null);
+                                break;
+                            case 4: 
+                                g2d.drawImage(images.get("collectionSiteSide"), movementX, movementY, null);
+                                break;
+                            case 5: 
+                                g2d.drawImage(images.get("collectionSiteMid"), movementX, movementY, null);
+                                break;
+                            case 6: 
+                                g2d.drawImage(images.get("collectionSiteSide"), movementX, movementY, null);
+                                break;
+                            case 7: 
+                                g2d.drawImage(images.get("extractorLEFT"), movementX, movementY, null);
+                                break;
+                            case 8: 
+                                g2d.drawImage(images.get("collectionSiteSide"), movementX, movementY, null);
+                                break;
+                            case 9: 
+                                g2d.drawImage(images.get("extractorLEFT"), movementX, movementY, null);
+                        }
                     } else if (field.getBuilding().getClass() == ConveyorBelt.class) {
-                        g2d.setColor(Color.MAGENTA);
-                        g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                        g2d.drawImage(images.get(rotateConveyorBelt(field.getBuilding().getRotation(), field.getBuilding().getOutputDirections()[0])), movementX, movementY, null);
                     } else if (field.getBuilding().getClass() == Extractor.class) {
-                        g2d.setColor(Color.CYAN);
-                        g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                        switch (rotation) {
+                            case 0:
+                                g2d.drawImage(images.get("extractorUP"), movementX, movementY, null);
+                                break;
+                            case 1: 
+                                g2d.drawImage(images.get("extractorRIGHT"), movementX, movementY, null);
+                                break;
+                            case 2:
+                                g2d.drawImage(images.get("extractorDOWN"), movementX, movementY, null);
+                                break;
+                            case 3: 
+                                g2d.drawImage(images.get("extractorLEFT"), movementX, movementY, null);
+                        }
+                        g2d.drawImage(images.get("extractorUP"), movementX, movementY, null);
                     } else if (field.getBuilding().getClass() == Smelter.class) {
                         g2d.setColor(Color.RED);
                         g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                        switch (rotation) {
+                            case 0:
+                                g2d.drawImage(images.get("smelterUP"), movementX, movementY, null);
+                                break;
+                            case 1: 
+                                g2d.drawImage(images.get("smelterRIGHT"), movementX, movementY, null);
+                                break;
+                            case 2:
+                                g2d.drawImage(images.get("smelterDOWN"), movementX, movementY, null);
+                                break;
+                            case 3: 
+                                g2d.drawImage(images.get("smelterLEFT"), movementX, movementY, null);
+                        }
                     }
                 }
 
@@ -248,7 +324,6 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Draw the preview of the building about to be placed
         if (gameController.getBuildingToBePlaced() != null) {
-            
             g2d.setColor(new Color(90, 160, 255, 130));
             int borderWidth = 20;
             g2d.fillRect(0 + borderWidth, 0, width - 2*borderWidth, borderWidth);           
@@ -256,56 +331,39 @@ public class GamePanel extends JPanel implements Runnable {
             g2d.fillRect(0, 0, borderWidth, height);            
             g2d.fillRect(width - borderWidth, 0, borderWidth, height);   
 
+            int previewCoords = 100;
             g2d.setColor(new Color(255,255,255, 157));
             g2d.fillRect(100-64, 100-64, 64*3, 64*3);
             if (gameController.getBuildingToBePlaced().getClass() == ConveyorBelt.class) {
-                switch (gameController.getBuildingToBePlaced().getRotation()) {
-                    case 0:
-                        g2d.drawImage(images.get("conveyorUP"), 100, 100, null);
-                        break;
-                    case 1: 
-                        g2d.drawImage(images.get("conveyorRIGHT"), 100, 100, null);
-                        break;
-                    case 2:
-                        g2d.drawImage(images.get("conveyorDOWN"), 100, 100, null);
-                        break;
-                    case 3: 
-                        g2d.drawImage(images.get("conveyorLEFT"), 100, 100, null);
-                }
-                g2d.setColor(Color.MAGENTA);
-                //g2d.fillRect(0, 0, tileSize, tileSize);
+                g2d.drawImage(images.get(rotateConveyorBelt(gameController.getBuildingToBePlaced().getRotation(), gameController.getBuildingToBePlaced().getOutputDirections()[0])), previewCoords, previewCoords, null);
             } else if (gameController.getBuildingToBePlaced().getClass() == Extractor.class) {
                 switch (gameController.getBuildingToBePlaced().getRotation()) {
                     case 0:
-                        g2d.drawImage(images.get("extractorUP"), 100, 100, null);
+                        g2d.drawImage(images.get("extractorUP"), previewCoords, previewCoords, null);
                         break;
                     case 1: 
-                        g2d.drawImage(images.get("extractorRIGHT"), 100, 100, null);
+                        g2d.drawImage(images.get("extractorRIGHT"), previewCoords, previewCoords, null);
                         break;
                     case 2:
-                        g2d.drawImage(images.get("extractorDOWN"), 100, 100, null);
+                        g2d.drawImage(images.get("extractorDOWN"), previewCoords, previewCoords, null);
                         break;
                     case 3: 
-                        g2d.drawImage(images.get("extractorLEFT"), 100, 100, null);
+                        g2d.drawImage(images.get("extractorLEFT"), previewCoords, previewCoords, null);
                 }             
-                g2d.setColor(Color.CYAN);
-                //g2d.fillRect(0, 0, tileSize, tileSize);
             } else if (gameController.getBuildingToBePlaced().getClass() == Smelter.class) {
                 switch (gameController.getBuildingToBePlaced().getRotation()) {
                     case 0:
-                        g2d.drawImage(images.get("smelterUP"), 100, 100, null);
+                        g2d.drawImage(images.get("smelterUP"), previewCoords, previewCoords, null);
                         break;
                     case 1: 
-                        g2d.drawImage(images.get("smelterRIGHT"), 100, 100, null);
+                        g2d.drawImage(images.get("smelterRIGHT"), previewCoords, previewCoords, null);
                         break;
                     case 2:
-                        g2d.drawImage(images.get("smelterDOWN"), 100, 100, null);
+                        g2d.drawImage(images.get("smelterDOWN"), previewCoords, previewCoords, null);
                         break;
                     case 3: 
-                        g2d.drawImage(images.get("smelterLEFT"), 100, 100, null);
+                        g2d.drawImage(images.get("smelterLEFT"), previewCoords, previewCoords, null);
                 }
-                g2d.setColor(Color.RED);
-                //g2d.fillRect(0, 0, tileSize, tileSize);
             }
         }
 
@@ -365,8 +423,11 @@ public class GamePanel extends JPanel implements Runnable {
             g2d.drawImage(images.get("arrow"), tx, null);
 
 
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(width - 50 - 256, height - 50 - 100, 256, 100);
+
+
         // add wolken?
-        g2d.dispose();
     }
 
     /**
@@ -504,5 +565,53 @@ public class GamePanel extends JPanel implements Runnable {
             return 'C';
         else
             return 0;
+    }
+
+    public String rotateConveyorBelt(byte input, byte output) {
+        
+        if (input == 0 && output == 1)
+            return "conveyorUPtoLEFT";
+
+        else if (input == 0 && output == 2)
+            return "conveyorDOWN";
+
+        else if (input == 0 && output == 3)
+            return "conveyorUPtoRIGHT";
+
+
+
+
+        else if (input == 1 && output == 1)
+            return "conveyorRIGHTtoDOWN";
+
+        else if (input == 1 && output == 2)
+            return "conveyorLEFT";
+
+        else if (input == 1 && output == 3)
+            return "conveyorRIGHTtoUP";
+
+
+
+
+        else if (input == 2 && output == 1)
+            return "conveyorDOWNtoLEFT";
+
+        else if (input == 2 && output == 2)
+            return "conveyorUP";
+
+        else if (input == 2 && output == 3)
+            return "conveyorDOWNtoRIGHT";
+
+
+        else if (input == 3 && output == 1)
+            return "conveyorLEFTtoUP";
+
+        else if (input == 3 && output == 2)
+            return "conveyorRIGHT";
+
+        else if (input == 3 && output == 3)
+            return "conveyorLEFTtoDOWN";
+
+        return null;
     }
 }

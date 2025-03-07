@@ -41,7 +41,9 @@ public class WorldGenerator {
                 this.generateTile(posX + i, posY + j);
 
                 if (i <= 1 && i >= -1 && j <= 1 && j >= -1) {
-                    map[posX + i][posY + j].setBuilding(new CollectionSite());
+                    CollectionSite temp = new CollectionSite();
+                    temp.setRotation((byte)(5+3*j+i));
+                    map[posX + i][posY + j].setBuilding(temp);
                 }
             }
         }

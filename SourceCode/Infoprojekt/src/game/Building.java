@@ -2,6 +2,7 @@ package game;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * to be done
@@ -22,7 +23,10 @@ public abstract class Building {
      */
     public Building() {
         rotation = 0;
+        //content = new LinkedList<Item>(List.of(null,null,null,null,null));
         content = new LinkedList<Item>();
+        for (int i = 0; i < 5; i++) 
+            content.add(null);
     }
 
     /**

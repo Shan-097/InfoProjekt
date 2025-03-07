@@ -4,6 +4,7 @@ import game.GameController;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -23,12 +24,12 @@ public class StartingPanel extends JPanel implements Runnable {
     /**
      * generic width of the buttons in the starting menu
      */
-    private final int buttonWidth = 230;
+    private final int buttonWidth = 200;
 
     /**
      * generic height of the buttons in the starting menu
      */
-    private final int buttonHeight = 35;
+    private final int buttonHeight = 50;
 
     /**
      * desired frame rate of the game, it can't be higher but can drop under load
@@ -60,6 +61,8 @@ public class StartingPanel extends JPanel implements Runnable {
      */
     private BufferedImage myPicture;
 
+    private Image imgBackground;
+
     /**
      * Constructor of the starting panel.
      * Instantiates the buttons, adds listeners to them and
@@ -72,36 +75,50 @@ public class StartingPanel extends JPanel implements Runnable {
         this.setLayout(null);
         this.setPreferredSize(null);
         this.setDoubleBuffered(true);
-        this.setOpaque(true);
-        startNewGame = new JButton("Create New World");
+        this.setOpaque(false);
+
+        Image imgButton1;
+        Image imgButton2;
+        Image imgButton3;
+     
+        startNewGame = new JButton();        
+        loadGame = new JButton(); 
+        controls = new JButton();       
+
+        try {   
+            imgButton1 = ImageIO.read(new File("./Graphics/button1.png"));
+            imgButton1 = imgButton1.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_DEFAULT);
+            imgButton2 = ImageIO.read(new File("./Graphics/button2.png"));
+            imgButton2 = imgButton2.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_DEFAULT);
+            imgButton3 = ImageIO.read(new File("./Graphics/button3.png"));
+            imgButton3 = imgButton3.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_DEFAULT);
+
+            startNewGame.setIcon(new ImageIcon(imgButton1));
+            loadGame.setIcon(new ImageIcon(imgButton2));
+            controls.setIcon(new ImageIcon(imgButton3));
+
+            imgBackground = ImageIO.read(new File("./Graphics/hintergrundbild(latest).png"));
+            imgBackground = imgBackground.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_DEFAULT);
+            //this.drawImage(imgBackground);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
         startNewGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 App.loadGameScreen();
                 thread = null;
             }
         });
-        loadGame = new JButton("Load Saved World");
         loadGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GameController controller = new GameController();
                 controller.loadWorld("./SourceCode/Infoprojekt/saves/testWorld.json");
             }
         });
-        controls = new JButton("Controls");
-        startNewGame.setFont(new Font("Arial", Font.BOLD, 15));
-        loadGame.setFont(new Font("Arial", Font.BOLD, 15));
-        controls.setFont(new Font("Arial", Font.BOLD, 15));
         add(startNewGame);
         add(controls);
         add(loadGame);
-        try {
-            myPicture = ImageIO.read(new File("./Graphics/grass (64x64).png"));
-            JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-            add(picLabel);
-        } catch (IOException e1) {
-            System.out.println("aaaaa");
-            e1.printStackTrace();
-        }
     }
 
     /**
@@ -109,12 +126,9 @@ public class StartingPanel extends JPanel implements Runnable {
      * correct height and width.
      */
     public void moveButtons() {
-        startNewGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 - 45,
-                buttonWidth, buttonHeight);
-        controls.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 + 45, buttonWidth,
-                buttonHeight);
-        loadGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2, buttonWidth,
-                buttonHeight);
+        startNewGame.setBounds((this.getWidth() - buttonWidth) / 2, (int) ((this.getHeight() - buttonHeight) / 2 - 1.1*buttonHeight), buttonWidth, buttonHeight);
+        controls.setBounds((this.getWidth() - buttonWidth) / 2, (int) ((this.getHeight() - buttonHeight) / 2 + 1.1*buttonHeight), buttonWidth, buttonHeight);
+        loadGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
         this.validate();
         this.setVisible(true);
     }
@@ -157,12 +171,14 @@ public class StartingPanel extends JPanel implements Runnable {
      * 
      * @param g to be done
      */
-    public void paint(Graphics g) {
-        super.paint(g);
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); // Call this first!
+
         Graphics2D g2d = (Graphics2D) g;
-        // g2d.drawImage(myPicture, this.getWidth() / 2, this.getHeight() / 2,null);
-        // g2d.drawImage(myPicture, this.getWidth() / 2 + 200, this.getHeight() / 2 +
-        // 200,null);
-        g2d.dispose();
+
+        if (imgBackground != null) {
+            g2d.drawImage(imgBackground, 0, 0, getWidth(), getHeight(), null);  
+        }
     }
 }

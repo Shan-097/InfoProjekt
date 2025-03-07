@@ -18,6 +18,7 @@ public class GameInputHandler {
      * to be done
      */
     private HashMap<Character, String> inputMap;
+    private HashMap<Character, String> actionMap;
 
     /**
      * to be done
@@ -36,13 +37,15 @@ public class GameInputHandler {
         inputMap.put('s', "moveDown");
         inputMap.put('a', "moveLeft");
         inputMap.put('d', "moveRight");
-        inputMap.put('1', "placeConveyorBelt");
-        inputMap.put('2', "placeExtractor");
-        inputMap.put('3', "placeSmelter");
-        inputMap.put('r', "rotateBuilding");
-        inputMap.put((char) 27, "cancelPlacement"); // esc
-        inputMap.put('b', "placeBuilding");
-        inputMap.put('x', "deleteBuilding");
+        
+        actionMap = new HashMap<Character, String>();
+        actionMap.put('1', "placeConveyorBelt");
+        actionMap.put('2', "placeExtractor");
+        actionMap.put('3', "placeSmelter"); 
+        actionMap.put('r', "rotateBuilding");
+        actionMap.put((char) 27, "cancelPlacement"); // esc
+        actionMap.put('b', "placeBuilding");
+        actionMap.put('x', "deleteBuilding");
     }
 
     public void invokeMethodsFromInput() {
@@ -51,6 +54,11 @@ public class GameInputHandler {
             if (inputHandler.keyIsPressed(c)) {
                 actions.add(inputMap.get(c));
             }
+        }
+
+        for (Character c : actionMap.keySet()) {
+            if (inputHandler.keyWasTyped(c))
+                actions.add(actionMap.get(c));
         }
 
         // check for illegal combinations and remove them

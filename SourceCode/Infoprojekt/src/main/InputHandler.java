@@ -11,6 +11,7 @@ import java.util.HashMap;
  */
 public class InputHandler implements KeyListener {
     private HashMap<Character, Boolean> keysPressed;
+    private HashMap<Character, Boolean> keysTyped;
 
     /**
      * Standard constructor of the InputHandler.
@@ -18,6 +19,7 @@ public class InputHandler implements KeyListener {
      */
     public InputHandler() {
         keysPressed = new HashMap<Character, Boolean>();
+        keysTyped = new HashMap<Character, Boolean>();
     }
 
     /**
@@ -27,6 +29,7 @@ public class InputHandler implements KeyListener {
      */
     @Override
     public void keyTyped(KeyEvent e) {
+        keysTyped.put(e.getKeyChar(), true);
     }
 
     /**
@@ -71,6 +74,16 @@ public class InputHandler implements KeyListener {
         if (keysPressed.containsKey(c)) {
             return keysPressed.get(c);
         }
+        return false;
+    }
+
+    public boolean keyWasTyped(char c) {
+        if (keysTyped.containsKey(c))
+        {
+            keysTyped.remove(c);
+            return true;
+        }
+
         return false;
     }
 
