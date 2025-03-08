@@ -3,12 +3,16 @@ package game;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.sound.sampled.Clip;
+
 import main.InputHandler;
 
 /**
  * to be done
  */
 public class GameInputHandler {
+   
+
     /**
      * to be done
      */
@@ -43,6 +47,8 @@ public class GameInputHandler {
         inputMap.put((char) 27, "cancelPlacement"); // esc
         inputMap.put('b', "placeBuilding");
         inputMap.put('x', "deleteBuilding");
+        inputMap.put('+', "increaseVolume");
+        inputMap.put('-', "decreaseVolume");
     }
 
     public void invokeMethodsFromInput() {
@@ -77,6 +83,10 @@ public class GameInputHandler {
         if (actions.contains("deleteBuilding") && actions.contains("placeBuilding")) {
             actions.remove("placeBuilding");
             actions.remove("deleteBuilding");
+        }
+        if (actions.contains("decreaseVolume") && actions.contains("increaseVolume")) {
+            actions.remove("decreaseVolume");
+            actions.remove("increaseVolume");
         }
 
         // run combinations
@@ -131,6 +141,13 @@ public class GameInputHandler {
         }
         if (actions.contains("deleteBuilding")) {
             gameController.removeBuilding();
+        }
+        if (actions.contains("increaseVolume")) {
+            Music.setVolumeHigher();
+        }
+        if (actions.contains("decreaseVolume")) { 
+            Music.setVolumeLower();
+
         }
     }
 }

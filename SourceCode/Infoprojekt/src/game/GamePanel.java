@@ -21,6 +21,10 @@ import javax.swing.JPanel;
 
 import main.InputHandler;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 /**
  * Responsible for the entirety of visual output in the main game and therefore
  * the View-component,
@@ -98,11 +102,15 @@ public class GamePanel extends JPanel implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String[] music = {".\\Music\\Wizard.wav", ".\\Music\\Sound 1.wav", ""};
-        Random random = new Random();
-        String RandomMusic = music[random.nextInt(music.length)];
-        Music.LoopMusic(RandomMusic);
+        Music.stopMusic();
+        Music.SpawnMusic(".\\Music\\spawn sound.wav");
+        Music.stopMusic();
+        
+        
+        Music.LoopMusic(".\\Music\\Hintergrund.wav");
+        
     }
+    
 
     /**
      * Start game thread
