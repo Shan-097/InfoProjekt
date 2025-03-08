@@ -411,6 +411,7 @@ public class GameController {
                 temp.rotate();
             }
             temp.setRotation(buildingToBePlaced.getRotation());
+            buildingToBePlaced = temp;
         } else {
             buildingToBePlaced = null;
         }

@@ -80,6 +80,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Load images into dictionary
         // Misc
+        imgPaths.put("sideBar", "./Graphics/sidebar.png");
         imgPaths.put("player", "./Graphics/FalkeOben.png");
         imgPaths.put("grass", "./Graphics/between grass (64x64).png");
         imgPaths.put("stoneItem", "./Graphics/Stein.png");
@@ -376,9 +377,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 
         // Draw the sidebar
-        g2d.setColor(Color.ORANGE);
-        g2d.fillRect((int) Math.round(0.6 * tileSize), (int) (this.getHeight() / 2 - 2 * tileSize), tileSize,
-                tileSize * 4);
+        int border = 30;
+        g2d.drawImage(images.get("sideBar"),(int) Math.round(0.6 * tileSize), (int) (this.getHeight() / 2 - 2 * tileSize),null); // Draw sidebar Image
+        g2d.drawImage(images.get("conveyorUP"), (int) Math.round(0.6 * tileSize)+ border/2,(int) (this.getHeight() / 2 - 2 * tileSize)+ border/2, null); // Draw Buildings inside
 
 
         // Draw the player [IN EIGENE METHODE AUSLAGERN???]
