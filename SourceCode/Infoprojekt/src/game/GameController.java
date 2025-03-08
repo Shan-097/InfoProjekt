@@ -574,6 +574,15 @@ public class GameController {
      * 
      * @return to be done
      */
+    public HashMap<Item, Integer> getInventory() {
+        return inventory;
+    }
+
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
     public boolean saveWorld() {
         try (FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {
             JSONObject properties = new JSONObject();

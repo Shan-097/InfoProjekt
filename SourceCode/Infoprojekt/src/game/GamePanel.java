@@ -12,12 +12,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import main.InputHandler;
@@ -60,6 +60,8 @@ public class GamePanel extends JPanel implements Runnable {
     Dictionary<String, BufferedImage> images = new Hashtable<>();
     Dictionary<String, String> imgPaths = new Hashtable<>();
 
+    Dictionary<Item, JLabel> resourceLabels = new Hashtable<>();
+
     /**
      * Constructor of the GamePanel class
      * Sets up the frame and the GameController, InputHandler and GameInputHandler
@@ -83,10 +85,14 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("sideBar", "./Graphics/sidebar.png");
         imgPaths.put("player", "./Graphics/FalkeOben.png");
         imgPaths.put("grass", "./Graphics/between grass (64x64).png");
-        imgPaths.put("stoneItem", "./Graphics/Stein.png");
-        imgPaths.put("copper", "./Graphics/GoldOre.png");
         imgPaths.put("arrow", "./Graphics/arrow.png");
         imgPaths.put("preview", "./Graphics/Bauen Preview.png");
+
+        // Items
+        imgPaths.put("gold", "./Graphics/GoldConveyor.png");
+        imgPaths.put("iron", "./Graphics/IronConveyor.png");
+        imgPaths.put("stone", "./Graphics/StoneConveyor.png");
+        imgPaths.put("copper", "./Graphics/CopperConveyor.png");
 
         // Conveyor belts
         imgPaths.put("conveyorUP", "./Graphics/ConveyerBelt-oben.png");
@@ -105,13 +111,13 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("conveyorUPtoLEFT", "./Graphics/conveyorUPtoLEFT.png");
 
         // Extractors
-        imgPaths.put("extractorUP", "./Graphics/drill.png");
-        imgPaths.put("extractorLEFT", "./Graphics/faceLEFT.png");
+        imgPaths.put("extractorUP", "./Graphics/drillTop.png");
+        imgPaths.put("extractorLEFT", "./Graphics/drillLeft.png");
         imgPaths.put("extractorDOWN", "./Graphics/drill.png");
-        imgPaths.put("extractorRIGHT", "./Graphics/faceRIGHT.png");
+        imgPaths.put("extractorRIGHT", "./Graphics/drillRIGHT.png");
 
         // Smelters
-        imgPaths.put("smelterUP", "./Graphics/faceUP.png");
+        imgPaths.put("smelterUP", "./Graphics/Furnace final.png");
         imgPaths.put("smelterLEFT", "./Graphics/faceLEFT.png");
         imgPaths.put("smelterDOWN", "./Graphics/faceDOWN.png");
         imgPaths.put("smelterRIGHT", "./Graphics/faceRIGHT.png");
@@ -137,6 +143,15 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
+        HashMap<Item, Integer> tempResources = gameController.getInventory();
+        for (Entry<Item, Integer> entry : tempResources.entrySet()) {
+            JLabel temp = new JLabel(""+entry.getValue());
+            resourceLabels.put(entry.getKey(), temp);
+            add(resourceLabels.get(entry.getKey()));
+        }
+        
+        
+    
         //Music.LoopMusic(".\\Music\\Wizard.wav");
     }
 
@@ -295,10 +310,7 @@ public class GamePanel extends JPanel implements Runnable {
                             case 3: 
                                 g2d.drawImage(images.get("extractorLEFT"), movementX, movementY, null);
                         }
-                        g2d.drawImage(images.get("extractorUP"), movementX, movementY, null);
                     } else if (field.getBuilding().getClass() == Smelter.class) {
-                        g2d.setColor(Color.RED);
-                        g2d.fillRect(movementX, movementY, tileSize, tileSize);
                         switch (rotation) {
                             case 0:
                                 g2d.drawImage(images.get("smelterUP"), movementX, movementY, null);
@@ -426,6 +438,28 @@ public class GamePanel extends JPanel implements Runnable {
 
         g2d.setColor(Color.BLACK);
         g2d.fillRect(width - 50 - 256, height - 50 - 100, 256, 100);
+
+
+
+        // Draw resource count
+        g2d.setColor(new Color(255,255,255,127));
+        g2d.fillRect(width - 180, 30, 150, 270);
+
+
+
+        HashMap<Item, Integer> tempResources = gameController.getInventory();
+        for (Entry<Item, Integer> entry : tempResources.entrySet()) {
+            JLabel temp = resourceLabels.get(entry.getKey());
+            temp.setText(""+entry.getValue());
+            //temp.setLocation(, );
+
+        } 
+
+
+
+        
+        //label1.setIcon(null);
+
 
 
         // add wolken?
@@ -581,7 +615,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 
-
         else if (input == 1 && output == 1)
             return "conveyorRIGHTtoDOWN";
 
@@ -593,7 +626,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 
-
         else if (input == 2 && output == 1)
             return "conveyorDOWNtoLEFT";
 
@@ -602,6 +634,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         else if (input == 2 && output == 3)
             return "conveyorDOWNtoRIGHT";
+
 
 
         else if (input == 3 && output == 1)
