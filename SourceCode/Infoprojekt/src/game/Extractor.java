@@ -1,6 +1,7 @@
 package game;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * The extractor is a building for item extraction from resource tiles.
@@ -51,6 +52,17 @@ public class Extractor extends Building {
     }
 
     /**
+     * The constructor of Extractor for cloning an object.
+     * 
+     * @param rotation The rotation
+     * @param inventory The inventory
+     */
+    private Extractor(byte rotation, LinkedList<Item> inventory, Item pItemToBeExtracted) {
+        super(rotation, inventory);
+        itemToBeExtracted = pItemToBeExtracted;
+    }
+
+    /**
      * This method creates items as its function and therefor returns the item the
      * extractor is extracting.<br>
      * The parameter is not used but has to exist.
@@ -68,7 +80,7 @@ public class Extractor extends Building {
      * @return The cost of this building.
      */
     public HashMap<Item, Integer> getCost() {
-        return COST;
+        return (HashMap<Item, Integer>) COST.clone();
     }
 
     /**
@@ -77,7 +89,7 @@ public class Extractor extends Building {
      * @return The input directions.
      */
     public byte[] getInputDirections() {
-        return INPUT_DIRECTIONS;
+        return INPUT_DIRECTIONS.clone();
     }
 
     /**
@@ -86,15 +98,31 @@ public class Extractor extends Building {
      * @return The output directions.
      */
     public byte[] getOutputDirections() {
-        return OUTPUT_DIRECTIONS;
+        return OUTPUT_DIRECTIONS.clone();
     }
 
     /**
      * Sets the item that this extractor should extract from the given resource.
      * 
      * @param pResource The resource of the item that is to be extracted.
+     * @throws IllegalArgumentException to be done
      */
-    public void setResourceToBeExtracted(Resource pResource) {
-        itemToBeExtracted = Item.getItemFromResource(pResource);
+    public void setResourceToBeExtracted(Resource pResource) throws IllegalArgumentException {
+        try {
+            itemToBeExtracted = Item.getItemFromResource(pResource);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
+    }
+
+    /**
+     * Clones the object so that the original can't be modified but the values can
+     * still be used.<br>
+     * 
+     * @return The cloned building
+     */
+    @Override
+    public Building clone(){
+        return new Extractor(this.getRotation(), this.getInventory(), this.itemToBeExtracted);
     }
 }

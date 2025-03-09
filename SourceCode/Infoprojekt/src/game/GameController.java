@@ -74,18 +74,23 @@ public class GameController {
     /**
      * Instantiates a new Object of type GameController.<br>
      * Sets for example the starting position of the player.
+     * 
+     * @throws IllegalArgumentException to be done
      */
-    public GameController() {
+    public GameController() throws IllegalArgumentException {
         inventory = new HashMap<Item, Integer>();
-        inventory.put(Item.getItemWithID(0), 0);
-        inventory.put(Item.getItemWithID(1), 0);
-        inventory.put(Item.getItemWithID(2), 0);
-        inventory.put(Item.getItemWithID(3), 0);
-        inventory.put(Item.getItemWithID(4), 0);
-        inventory.put(Item.getItemWithID(5), 0);
-        inventory.put(Item.getItemWithID(6), 0);
-        inventory.put(Item.getItemWithID(7), 0);
-        wGenerator = new WorldGenerator(100, 100);
+        for (int i = 0; i < 8; i++) {
+            try {
+                inventory.put(Item.getItemWithID(i), 0);
+            } catch (IllegalArgumentException e) {
+            }
+        }
+
+        try {
+            wGenerator = new WorldGenerator(101, 101);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
 
         posXinArray = wGenerator.getXLengthMap() / 2;
         posYinArray = wGenerator.getYLengthMap() / 2;
@@ -116,7 +121,13 @@ public class GameController {
 
         for (int i = 0; i < mapLengthX; i++) {
             for (int j = 0; j < mapLengthY; j++) {
-                Field temp = wGenerator.getField(i, j);
+                Field temp;
+                try {
+                    temp = wGenerator.getField(i, j);
+                } catch (IllegalArgumentException e) {
+                    continue;
+                }
+
                 if (temp != null && temp.getBuilding() != null) {
                     buildingList.add(new Tuple(i, j));
                 }
@@ -127,9 +138,21 @@ public class GameController {
         for (Tuple tuple : buildingList) {
             int x = tuple.getA();
             int y = tuple.getB();
-            Field temp = wGenerator.getField(x, y);
-            byte[] inputDirectionsOfBuilding = temp.getBuilding().getInputDirections();
-            byte rotation = temp.getBuilding().getRotation();
+            Field temp;
+            try {
+                temp = wGenerator.getField(x, y);
+            } catch (IllegalArgumentException e) {
+                continue;
+            }
+            byte[] inputDirectionsOfBuilding;
+            byte rotation;
+            try {
+                inputDirectionsOfBuilding = temp.getBuilding().getInputDirections();
+                rotation = temp.getBuilding().getRotation();
+            } catch (NullPointerException e) {
+                continue;
+            }
+
             for (int i = 0; i < inputDirectionsOfBuilding.length; i++) {
                 byte direction = (byte) ((inputDirectionsOfBuilding[i] + rotation) % 4);
                 int deltaX = 0;
@@ -153,10 +176,12 @@ public class GameController {
                 }
                 x += deltaX;
                 y += deltaY;
-                if (x < 0 || x >= mapLengthX || y < 0 || y >= mapLengthY) {
+                Field temp2;
+                try {
+                    temp2 = wGenerator.getField(x, y);
+                } catch (IllegalArgumentException e) {
                     continue;
                 }
-                Field temp2 = wGenerator.getField(x, y);
                 if (temp2 == null || temp2.getBuilding() == null) {
                     continue;
                 }
@@ -178,15 +203,24 @@ public class GameController {
      * 
      * @param startingPoints A list of coordinates of the building nothing is moved
      *                       away from.
+     * @throws IllegalArgumentException to be done
      */
-    private void moveItems(ArrayList<Tuple> startingPoints) {
-        int mapLengthX = wGenerator.getXLengthMap();
-        int mapLengthY = wGenerator.getYLengthMap();
+    private void moveItems(ArrayList<Tuple> startingPoints) throws IllegalArgumentException {
+        if (startingPoints == null) {
+            throw new IllegalArgumentException("The list of coordinates is null.");
+        }
 
         for (Tuple tuple : startingPoints) {
             int x = tuple.getA();
             int y = tuple.getB();
-            Building b = wGenerator.getField(x, y).getBuilding();
+            Building b;
+            try {
+                b = wGenerator.getField(x, y).getBuilding();
+            } catch (IllegalArgumentException e) {
+                continue;
+            } catch (NullPointerException e) {
+                continue;
+            }
             byte[] inputDirectionsOfBuilding = b.getInputDirections();
             byte rotation = b.getRotation();
             for (int i = 0; i < inputDirectionsOfBuilding.length; i++) {
@@ -212,10 +246,12 @@ public class GameController {
                 }
                 x += deltaX;
                 y += deltaY;
-                if (x < 0 || x >= mapLengthX || y < 0 || y >= mapLengthY) {
+                Field temp2;
+                try {
+                    temp2 = wGenerator.getField(x, y);
+                } catch (IllegalArgumentException e) {
                     continue;
                 }
-                Field temp2 = wGenerator.getField(x, y);
                 if (temp2 == null || temp2.getBuilding() == null) {
                     continue;
                 }
@@ -239,8 +275,9 @@ public class GameController {
      * Y S C
      * 
      * @param direction The direction the player is moving in.
+     * @throws IllegalArgumentException to be done
      */
-    public void movePlayer(char direction) {
+    public void movePlayer(char direction) throws IllegalArgumentException {
         if ("QWEADYSC".indexOf(direction) == -1) {
             throw new IllegalArgumentException(
                     "The supplied direction is expected to be one of Q, W, E, A, D, Y, S or C.");
@@ -324,10 +361,11 @@ public class GameController {
         // generate new fields if necessary
         for (int i = -50; i <= 50; i++) {
             for (int j = -50; j <= 50; j++) {
-                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX <= posXinArray + i || maxY <= posYinArray + j) {
+                try {
+                    wGenerator.generateTile(posXinArray + i, posYinArray + j);
+                } catch (IllegalArgumentException e) {
                     continue;
                 }
-                wGenerator.generateTile(posXinArray + i, posYinArray + j);
             }
         }
     }
@@ -336,21 +374,26 @@ public class GameController {
      * Sets the building that the player plans to place next.
      * 
      * @param buildingType The type of building given by a string.
+     * @throws IllegalArgumentException to be done
      */
-    public void chooseBuildingToPlace(String buildingType) {
+    public void chooseBuildingToPlace(String buildingType) throws IllegalArgumentException {
+        if (buildingType == null) {
+            throw new IllegalArgumentException("The given builting type is null.");
+        }
         switch (buildingType) {
             case "ConveyorBelt":
                 buildingToBePlaced = new ConveyorBelt();
-                break;
+                return;
 
             case "Extractor":
                 buildingToBePlaced = new Extractor();
-                break;
+                return;
 
             case "Smelter":
                 buildingToBePlaced = new Smelter();
-                break;
+                return;
         }
+        throw new IllegalArgumentException("The given builting type is not known.");
     }
 
     /**
@@ -375,7 +418,15 @@ public class GameController {
      * Makes also small but necessary changes to some building types.
      */
     public void placeBuilding() {
-        if (wGenerator.getField(posXinArray, posYinArray).getBuilding() != null) {
+        try {
+            if (wGenerator.getField(posXinArray, posYinArray).getBuilding() != null) {
+                return;
+            }
+        } catch (IllegalArgumentException e) {
+            posXinArray = wGenerator.getXLengthMap() / 2;
+            posYinArray = wGenerator.getYLengthMap() / 2;
+            posXonTile = 0;
+            posYonTile = 0;
             return;
         }
         if (buildingToBePlaced == null) {
@@ -385,35 +436,52 @@ public class GameController {
         for (Entry<Item, Integer> cost : buildingToBePlaced.getCost().entrySet()) {
             if (inventory.get(cost.getKey()) < cost.getValue()) {
                 return;
-            }            
+            }
         }
 
         if (buildingToBePlaced.getClass() == Extractor.class) {
             Resource resource = wGenerator.getField(posXinArray, posYinArray).getResource();
-            if (resource.getResourceID() == 0) {
+            if (resource == null || resource.getResourceID() == 0) {
                 return;
             }
             Extractor temp = (Extractor) buildingToBePlaced;
-            temp.setResourceToBeExtracted(resource);
+            try {
+                temp.setResourceToBeExtracted(resource);
+            } catch (IllegalArgumentException e) {
+                return;
+            }
             buildingToBePlaced = temp;
         }
 
         for (Entry<Item, Integer> cost : buildingToBePlaced.getCost().entrySet()) {
-            inventory.replace(cost.getKey(), inventory.get(cost.getKey()) - cost.getValue());          
+            inventory.replace(cost.getKey(), inventory.get(cost.getKey()) - cost.getValue());
         }
 
-        wGenerator.placeBuilding(posXinArray, posYinArray, buildingToBePlaced);
+        try {
+            wGenerator.placeBuilding(posXinArray, posYinArray, buildingToBePlaced);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
     }
 
     /**
      * Removes the building on the tile the player is standing on.
      */
     public void removeBuilding() {
-        Building b = wGenerator.getField(posXinArray, posYinArray).getBuilding();
+        Building b;
+        try {
+            b = wGenerator.getField(posXinArray, posYinArray).getBuilding();
+        } catch (IllegalArgumentException e) {
+            posXinArray = wGenerator.getXLengthMap() / 2;
+            posYinArray = wGenerator.getYLengthMap() / 2;
+            posXonTile = 0;
+            posYonTile = 0;
+            return;
+        }
         if (b != null) {
             wGenerator.deleteBuilding(posXinArray, posYinArray);
             for (Entry<Item, Integer> cost : b.getCost().entrySet()) {
-                inventory.replace(cost.getKey(), inventory.get(cost.getKey()) + cost.getValue());          
+                inventory.replace(cost.getKey(), inventory.get(cost.getKey()) + cost.getValue());
             }
         }
     }
@@ -423,16 +491,16 @@ public class GameController {
      * 
      * @param item The item to be added to the inventory.
      * @return Returns wheter the item has been added sucessfully or not
+     * @throws IllegalArgumentException to be done
      */
-    public static boolean addItemToInventory(Item item) {
-        if (inventory.containsKey(item)) {
-            if (inventory.get(item) == Integer.MAX_VALUE) {
-                return false;
-            }
-            inventory.replace(item, inventory.get(item) + 1);
-        } else {
-            inventory.put(item, 1);
+    public static boolean addItemToInventory(Item item) throws IllegalArgumentException {
+        if (!inventory.containsKey(item)) {
+            throw new IllegalArgumentException("Unknown item");
         }
+        if (inventory.get(item) == Integer.MAX_VALUE) {
+            return false;
+        }
+        inventory.replace(item, inventory.get(item) + 1);
         return true;
     }
 
@@ -539,9 +607,14 @@ public class GameController {
      * @param posXinArray The x coordinate in the map
      * @param posYinArray The y coordinate in the map
      * @return The Field object
+     * @throws IllegalArgumentException to be done
      */
-    public Field getField(int posXinArray, int posYinArray) {
-        return wGenerator.getField(posXinArray, posYinArray);
+    public Field getField(int posXinArray, int posYinArray) throws IllegalArgumentException {
+        try {
+            return wGenerator.getField(posXinArray, posYinArray);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
     }
 
     /**

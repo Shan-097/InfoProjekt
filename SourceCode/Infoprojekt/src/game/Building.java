@@ -2,6 +2,7 @@ package game;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 /**
  * Abstract class Building defines the necessary methods and variables of a
@@ -16,9 +17,14 @@ public abstract class Building {
     private byte rotation;
 
     /**
+     * The length of the inventory.
+     */
+    private static final int INVENTORY_SIZE = 5;
+
+    /**
      * The inventory of the building.<br>
-     * Always has five items in it (if necessary null). Items are moved one spot
-     * each time the items are moved.
+     * Always has INVENTORY_SIZE many items in it (if necessary null). Items are
+     * moved one spot each time the items are moved.
      */
     private LinkedList<Item> content;
 
@@ -29,6 +35,21 @@ public abstract class Building {
     public Building() {
         rotation = 0;
         content = new LinkedList<Item>();
+    }
+
+    /**
+     * A constructor of Building if all values are known.
+     * 
+     * @param pRotation The rotation
+     * @param pContent  The inventory
+     * @throws IllegalArgumentException to be done
+     */
+    public Building(byte pRotation, LinkedList<Item> pContent) throws IllegalArgumentException {
+        rotation = pRotation;
+        if (pContent == null || pContent.size() != INVENTORY_SIZE) {
+            throw new IllegalArgumentException("The inventory has to be not null and have a size of INVENTORY_SIZE.");
+        }
+        content = pContent;
     }
 
     /**
@@ -45,8 +66,15 @@ public abstract class Building {
         if (item == null) {
             return true;
         }
-        if (content.getLast() == null) {
-            content.removeLast();
+        try {
+            if (content.getLast() == null) {
+                content.removeLast();
+                return content.add(item);
+            }
+        } catch (NoSuchElementException e) {
+            for (int i = 0; i < INVENTORY_SIZE - 1; i++) {
+                content.add(null);
+            }
             return content.add(item);
         }
         return false;
@@ -64,9 +92,15 @@ public abstract class Building {
      */
     public void moveItemToNextBuilding(Building otherBuilding) {
         content.addFirst(executeFunction(content.pollFirst()));
-        if (otherBuilding.addItem(content.getFirst())) {
-            content.removeFirst();
-            content.addLast(null);
+        try {
+            if (otherBuilding.addItem(content.getFirst())) {
+                content.removeFirst();
+                content.addLast(null);
+            }
+        } catch (NoSuchElementException e) {
+            for (int i = 0; i < INVENTORY_SIZE; i++) {
+                content.add(null);
+            }
         }
     }
 
@@ -85,6 +119,15 @@ public abstract class Building {
      */
     public byte getRotation() {
         return rotation;
+    }
+
+    /**
+     * Returns the inventory of this building.
+     * 
+     * @return The inventory
+     */
+    public LinkedList<Item> getInventory() {
+        return (LinkedList<Item>) content.clone();
     }
 
     /**
@@ -141,4 +184,14 @@ public abstract class Building {
     public void setRotation(byte pRotation) {
         rotation = pRotation;
     }
+
+    /**
+     * Clones the object so that the original can't be modified but the values can
+     * still be used.<br>
+     * It has to be abstract because a object of type Building can't be constructed.
+     * 
+     * @return The clone of the object
+     */
+    @Override
+    public abstract Building clone();
 }

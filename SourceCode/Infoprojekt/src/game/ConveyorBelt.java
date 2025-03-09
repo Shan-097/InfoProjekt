@@ -1,6 +1,7 @@
 package game;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * The conveyor belt is a building for item transportation.
@@ -39,11 +40,23 @@ public class ConveyorBelt extends Building {
     }
 
     /**
-     * The constructor of ConveyorBelt is calling the super constructor and setting the standard output direction.
+     * The constructor of ConveyorBelt is calling the super constructor and setting
+     * the standard output direction.
      */
     public ConveyorBelt() {
         super();
         outputDirections = new byte[] { 2 };
+    }
+
+    /**
+     * The constructor of ConveyorBelt for cloning an object.
+     * 
+     * @param rotation The rotation
+     * @param inventory The inventory
+     */
+    private ConveyorBelt(byte rotation, LinkedList<Item> inventory, byte[] pOutputDirections) {
+        super(rotation, inventory);
+        outputDirections = pOutputDirections;
     }
 
     /**
@@ -63,7 +76,7 @@ public class ConveyorBelt extends Building {
      * @return The cost of this building.
      */
     public HashMap<Item, Integer> getCost() {
-        return COST;
+        return (HashMap<Item, Integer>) COST.clone();
     }
 
     /**
@@ -72,7 +85,7 @@ public class ConveyorBelt extends Building {
      * @return The input directions.
      */
     public byte[] getInputDirections() {
-        return INPUT_DIRECTIONS;
+        return INPUT_DIRECTIONS.clone();
     }
 
     /**
@@ -81,19 +94,31 @@ public class ConveyorBelt extends Building {
      * @return The output directions.
      */
     public byte[] getOutputDirections() {
-        return outputDirections;
+        return outputDirections.clone();
     }
 
     /**
-     * Overwrites the rotate method from building to account for the possibility to bend a conveyor belt.
+     * Overwrites the rotate method from building to account for the possibility to
+     * bend a conveyor belt.
      */
     @Override
     public void rotate() {
-        if (outputDirections[0] == 3) {
+        if (outputDirections[0] >= 3) {
             this.setRotation((byte) ((getRotation() + 1) % 4));
             outputDirections[0] = 1;
         } else {
             outputDirections[0]++;
         }
+    }
+
+    /**
+     * Clones the object so that the original can't be modified but the values can
+     * still be used.<br>
+     * 
+     * @return The cloned building
+     */
+    @Override
+    public Building clone() {
+        return new ConveyorBelt(this.getRotation(), this.getInventory(), this.getOutputDirections());
     }
 }
