@@ -3,21 +3,24 @@ package game;
 import java.util.HashMap;
 
 /**
- * to be done
+ * The Resource class manages the resources in the game.<br>
+ * For every unique resource one object is created. All references to resources
+ * with the same id have the same pointer and therefor refer to the same object
+ * managed by this class.
  */
 public class Resource {
     /**
-     * to be done
+     * The Collection of resources. Each object can be accessed via its id.
      */
     private static final HashMap<Integer, Resource> ID_MAP = new HashMap<Integer, Resource>(5);
 
     /**
-     * to be done
+     * The id of this Resource object.
      */
     private final int resourceID;
 
     /**
-     * to be done
+     * The static and final attributes are declared here.
      */
     static {
         ID_MAP.put(0, new Resource(0)); // no resource
@@ -28,28 +31,28 @@ public class Resource {
     }
 
     /**
-     * to be done
+     * The private contructor for Resource objects.
      * 
-     * @param pResourceID to be done
+     * @param pResourceID The id of the new object
      */
     private Resource(int pResourceID) {
         resourceID = pResourceID;
     }
 
     /**
-     * to be done
+     * Returns the resource object with the specified id.
      * 
-     * @param pResourceID to be done
-     * @return Resource to be done
+     * @param pResourceID The id of the requested resource
+     * @return The resource with the specified id
      */
     public static Resource getResourceWithID(int pResourceID) {
         return ID_MAP.get(pResourceID);
     }
 
     /**
-     * to be done
+     * Returns the id of this resource object.
      * 
-     * @return int to be done
+     * @return The id
      */
     public int getResourceID() {
         return resourceID;

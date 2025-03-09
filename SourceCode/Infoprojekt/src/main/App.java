@@ -40,45 +40,53 @@ public class App {
     }
 
     /**
-     * loadStartingScreen sets the necessary values and creates
-     * the window for and of the starting screen
-     * closing the others in the process
+     * loadStartingScreen sets the necessary values and creates the window of and
+     * for the starting screen closing the others in the process.
      */
     public static void loadStartingScreen() {
         window.dispose();
         StartingPanel startingPanel = new StartingPanel(FRAME_RATE);
         setStandardProperties(startingPanel);
+
+        // random values, TODO: choose better
+        window.setMinimumSize(new Dimension(500, 300));
         startingPanel.startGameThread();
     }
 
     /**
-     * to be done
+     * loadHotKeyScreen sets the necessary values and creates the window of and for
+     * the hot key screen closing the others in the process.
      */
     public static void loadHotKeyScreen() {
         window.dispose();
         HotKeyPanel hotKeyPanel = new HotKeyPanel(FRAME_RATE);
         setStandardProperties(hotKeyPanel);
+
+        // random values, TODO: choose better
+        window.setMinimumSize(new Dimension(500, 300));
         hotKeyPanel.startGameThread();
     }
 
     /**
-     * loadStartingScreen sets the necessary values and creates
-     * the window for and of the starting screen
-     * closing the others in the process
+     * loadGameScreen sets the necessary values and creates the window of and for
+     * the game screen closing the others in the process.
      */
     public static void loadGameScreen() {
         window.dispose();
         GamePanel gamePanel = new GamePanel(FRAME_RATE);
         setStandardProperties(gamePanel);
+
+        // random values, TODO: choose better
+        window.setMinimumSize(new Dimension(500, 300));
         gamePanel.startGameThread();
     }
 
     /**
-     * to be done
+     * Sets the standard properties of the window and adds the given panel.
      * 
-     * @param panel to be done
+     * @param panel The Panel to be added to the frame
      */
-    private static void setStandardProperties(JPanel panel){
+    private static void setStandardProperties(JPanel panel) {
         window = new JFrame("Keria");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.add(panel);
@@ -86,6 +94,5 @@ public class App {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        window.setMinimumSize(new Dimension(500, 300));// random values, TO DO: choose better
     }
 }

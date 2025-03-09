@@ -3,21 +3,24 @@ package game;
 import java.util.HashMap;
 
 /**
- * to be done
+ * The Item class manages the items in the game.<br>
+ * For every unique item one object is created. All references to items with the
+ * same id have the same pointer and therefor refer to the same object managed
+ * by this class.
  */
 public class Item {
     /**
-     * to be done
+     * The Collection of items. Each object can be accessed via its id.
      */
     private static final HashMap<Integer, Item> ID_MAP = new HashMap<Integer, Item>(5);
 
     /**
-     * to be done
+     * The id of this Item object.
      */
     private final int itemID;
 
     /**
-     * to be done
+     * The static and final attributes are declared here.
      */
     static {
         ID_MAP.put(0, new Item(0)); // brick
@@ -31,19 +34,20 @@ public class Item {
     }
 
     /**
-     * to be done
+     * The private contructor for item objects.
      * 
-     * @param pItemID to be done
+     * @param pItemID The id of the new object
      */
-    public Item(int pItemID) {
+    private Item(int pItemID) {
         itemID = pItemID;
     }
 
     /**
-     * to be done
+     * Returns the smelted variant of the specified object.<br>
+     * If it is already a smelted item it is returned instead.
      * 
-     * @param item to be done
-     * @return Item to be done
+     * @param item The item to be smelted
+     * @return The smelted item
      */
     public static Item getSmeltedItem(Item item) {
         switch (item.getItemID()) {
@@ -65,20 +69,20 @@ public class Item {
     }
 
     /**
-     * to be done
+     * Returns the item object with the specified id.
      * 
-     * @param pItemID to be done
-     * @return Item to be done
+     * @param pItemID The id of the requested item
+     * @return The item with the specified id
      */
     public static Item getItemWithID(int pItemID) {
         return ID_MAP.get(pItemID);
     }
 
     /**
-     * to be done
+     * Returns the item of a certain resource.
      * 
-     * @param resource to be done
-     * @return Item to be done
+     * @param resource The resource the item is requested from
+     * @return The item of the specified resource
      */
     public static Item getItemFromResource(Resource resource) {
         switch (resource.getResourceID()) {
@@ -100,9 +104,9 @@ public class Item {
     }
 
     /**
-     * to be done
+     * Returns the id of this Item object.
      * 
-     * @return int to be done
+     * @return The id
      */
     public int getItemID() {
         return itemID;

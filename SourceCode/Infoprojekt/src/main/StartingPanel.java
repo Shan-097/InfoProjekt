@@ -3,8 +3,6 @@ package main;
 import game.GameController;
 
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -20,7 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * The class of the starting panel.
+ * The class of the starting panel.<br>
  * Controls the behavior of the window and the buttons in it.
  */
 public class StartingPanel extends JPanel implements Runnable {
@@ -159,19 +157,5 @@ public class StartingPanel extends JPanel implements Runnable {
                 delta--;
             }
         }
-    }
-
-    /**
-     * to be done
-     * 
-     * @param g to be done
-     */
-    public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2d = (Graphics2D) g;
-        // g2d.drawImage(myPicture, this.getWidth() / 2, this.getHeight() / 2,null);
-        // g2d.drawImage(myPicture, this.getWidth() / 2 + 200, this.getHeight() / 2 +
-        // 200,null);
-        g2d.dispose();
     }
 }

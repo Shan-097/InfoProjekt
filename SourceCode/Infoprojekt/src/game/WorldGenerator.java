@@ -300,9 +300,9 @@ public class WorldGenerator {
     }
 
     /**
-     * to be done
+     * Returns the map.
      * 
-     * @return to be done
+     * @return The map
      */
     public Field[][] getMap() {
         return map;

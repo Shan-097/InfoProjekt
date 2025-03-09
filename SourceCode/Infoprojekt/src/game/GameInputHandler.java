@@ -8,31 +8,40 @@ import main.InputHandler;
 import main.LoadStoreHotKeys;
 
 /**
- * to be done
+ * The GameInputHandler calls the methods that have to be invoked because of
+ * player input.
  */
 public class GameInputHandler {
     /**
-     * to be done
+     * The InputHandler object of the GameInputHandler.
      */
     private InputHandler inputHandler;
 
     /**
-     * to be done
+     * The Map linking actions and their respective inputs (Characters)
+     * together.<br>
+     * Every action should be associated with exactily one input. The Map is
+     * therefor reversible without losses.
      */
     private HashMap<String, Character> inputMap;
 
     /**
-     * to be done
+     * The reversed Map linking actions and their respective inputs (Characters)
+     * together.
      */
     private HashMap<Character, String> reversedInputMap;
 
     /**
-     * to be done
+     * The GameController object of the game.
      */
     private GameController gameController;
 
     /**
-     * to be done
+     * The constructor of GameInputHandler sets the gameController object of this
+     * instance of the game and the inputHandler of the JPanel. It also loads the inputMap. 
+     * 
+     * @param pGC The gameController object of this instance
+     * @param pIH The inputHandler of the JPanel
      */
     public GameInputHandler(GameController pGC, InputHandler pIH) {
         gameController = pGC;
@@ -45,6 +54,9 @@ public class GameInputHandler {
         }
     }
 
+    /**
+     * Invokes the methods of which the keys associated with their action is pressed.
+     */
     public void invokeMethodsFromInput() {
         ArrayList<String> actions = new ArrayList<String>();
         for (Character c : reversedInputMap.keySet()) {

@@ -3,31 +3,31 @@ package game;
 import java.util.HashMap;
 
 /**
- * to be done
+ * The extractor is a building for item extraction from resource tiles.
  */
 public class Extractor extends Building {
     /**
-     * to be done
+     * The cost of every extractor.
      */
     private static final HashMap<Item, Integer> COST;
 
     /**
-     * to be done
+     * The input directions of every extractor without regards to its rotation.
      */
     private static final byte[] INPUT_DIRECTIONS;
 
     /**
-     * to be done
+     * The output directions of every extractor without regards to its rotation.
      */
     private static final byte[] OUTPUT_DIRECTIONS;
 
     /**
-     * to be done
+     * The item this extractor is extracting.
      */
     private Item itemToBeExtracted;
 
     /**
-     * to be done
+     * The static and final attributes are declared here.
      */
     static {
         COST = new HashMap<Item, Integer>(4);
@@ -44,50 +44,55 @@ public class Extractor extends Building {
     }
 
     /**
-     * to be done
+     * The empty constructor of Extractor is only calling the super constructor.
      */
     public Extractor() {
         super();
     }
 
     /**
-     * to be done
+     * This method creates items as its function and therefor returns the item the
+     * extractor is extracting.<br>
+     * The parameter is not used but has to exist.
+     * 
+     * @param item The item the function is called upon.
+     * @return The item the extractor is extracting.
      */
     protected Item executeFunction(Item item) {
         return itemToBeExtracted;
     }
 
     /**
-     * to be done
+     * Returns the cost of this building.
      * 
-     * @return HashMap<Integer, Integer> to be done
+     * @return The cost of this building.
      */
     public HashMap<Item, Integer> getCost() {
         return COST;
     }
 
     /**
-     * to be done
+     * Returns the input directions of this building.
      * 
-     * @return byte[] to be done
+     * @return The input directions.
      */
     public byte[] getInputDirections() {
         return INPUT_DIRECTIONS;
     }
 
     /**
-     * to be done
+     * Returns the output directions of this building.
      * 
-     * @return byte[] to be done
+     * @return The output directions.
      */
     public byte[] getOutputDirections() {
         return OUTPUT_DIRECTIONS;
     }
 
     /**
-     * to be done
+     * Sets the item that this extractor should extract from the given resource.
      * 
-     * @param pResource to be done
+     * @param pResource The resource of the item that is to be extracted.
      */
     public void setResourceToBeExtracted(Resource pResource) {
         itemToBeExtracted = Item.getItemFromResource(pResource);

@@ -3,26 +3,27 @@ package game;
 import java.util.HashMap;
 
 /**
- * to be done
+ * The conveyor belt is a building for item transportation.
  */
 public class ConveyorBelt extends Building {
     /**
-     * to be done
+     * The cost of every conveyor belt.
      */
     private static final HashMap<Item, Integer> COST;
 
     /**
-     * to be done
+     * The input directions of every conveyor belt without regards to its rotation.
      */
     private final static byte[] INPUT_DIRECTIONS;
 
     /**
-     * to be done
+     * The output directions of every conveyor belt without regards to its rotation
+     * as specified in Building but with regards to how it is bended.
      */
     private byte[] outputDirections;
 
     /**
-     * to be done
+     * The static and final attributes are declared here.
      */
     static {
         COST = new HashMap<Item, Integer>(4);
@@ -38,7 +39,7 @@ public class ConveyorBelt extends Building {
     }
 
     /**
-     * to be done
+     * The constructor of ConveyorBelt is calling the super constructor and setting the standard output direction.
      */
     public ConveyorBelt() {
         super();
@@ -46,44 +47,45 @@ public class ConveyorBelt extends Building {
     }
 
     /**
-     * to be done
+     * As this building type isn't modifying any items it just returns the given
+     * item.
      * 
-     * @param item to be done
-     * @return Item to be done
+     * @param item The item to be "modified".
+     * @return The "modified" item.
      */
     protected Item executeFunction(Item item) {
         return item;
     }
 
     /**
-     * to be done
+     * Returns the cost of this building.
      * 
-     * @return HashMap<Integer, Integer> to be done
+     * @return The cost of this building.
      */
     public HashMap<Item, Integer> getCost() {
         return COST;
     }
 
     /**
-     * to be done
+     * Returns the input directions of this building.
      * 
-     * @return byte[] to be done
+     * @return The input directions.
      */
     public byte[] getInputDirections() {
         return INPUT_DIRECTIONS;
     }
 
     /**
-     * to be done
+     * Returns the output directions of this building.
      * 
-     * @return byte[] to be done
+     * @return The output directions.
      */
     public byte[] getOutputDirections() {
         return outputDirections;
     }
 
     /**
-     * to be done
+     * Overwrites the rotate method from building to account for the possibility to bend a conveyor belt.
      */
     @Override
     public void rotate() {

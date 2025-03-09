@@ -5,21 +5,27 @@ import java.util.LinkedList;
 import main.InputHandler;
 
 /**
- * to be done
+ * The HotKeyInputHandler is used to get the only pressed char of the input
+ * handler at any given moment.
  */
 public class HotKeyInputHandler {
     /**
-     * to be done
+     * The input handler object of the HotKeyInputHandler.
      */
     private InputHandler inputHandler;
 
     /**
-     * to be done
+     * The constructor of the HotKeyInputHandler only sets the input handler object.
      */
     public HotKeyInputHandler(InputHandler pIH) {
         inputHandler = pIH;
     }
 
+    /**
+     * If exactly one character is pressed it is returned. Otherwise null will be returned.
+     * 
+     * @return The character or null
+     */
     public Character getPressedChar() {
         LinkedList<Character> pressed = inputHandler.getPressedCharacters();
         if (pressed.size() == 1) {

@@ -3,44 +3,45 @@ package game;
 import java.util.HashMap;
 
 /**
- * to be done
+ * The collection site is a building that collects the items moved to it and
+ * moves them to the players inventory.
  */
 public class CollectionSite extends Building {
     /**
-     * to be done
-     */
-    private static final HashMap<Item, Integer> COST;
-
-    /**
-     * to be done
+     * The input directions of every collection site without regards to its
+     * rotation.
      */
     private static final byte[] INPUT_DIRECTIONS;
 
     /**
-     * to be done
+     * The output directions of every collection site without regards to its
+     * rotation.
      */
     private static final byte[] OUTPUT_DIRECTIONS;
 
     /**
-     * to be done
+     * The static and final attributes are declared here.
      */
     static {
-        COST = null;
         INPUT_DIRECTIONS = new byte[] { (byte) 0, (byte) 1, (byte) 3, (byte) 4 };
         OUTPUT_DIRECTIONS = new byte[0];
     }
 
     /**
-     * to be done
+     * The empty constructor of CollectionSite is only calling the super
+     * constructor.
      */
     public CollectionSite() {
         super();
     }
 
     /**
-     * to be done
+     * Overrides the addItem(Item item) method from Building.<br>
+     * Items moved to a collection site are added to the players inventory.
      * 
-     * @return boolean to be done
+     * @param item The item being moved to that building.
+     * @return Returns true if and only if the item was successfully added to the
+     *         players inventory.
      */
     @Override
     public boolean addItem(Item item) {
@@ -48,37 +49,38 @@ public class CollectionSite extends Building {
     }
 
     /**
-     * to be done
+     * As this building type isn't modifying any items it just returns the given
+     * item.
      * 
-     * @param item to be done
-     * @return Item to be done
+     * @param item The item to be "modified".
+     * @return The "modified" item.
      */
     protected Item executeFunction(Item item) {
         return item;
     }
 
     /**
-     * to be done
+     * Returns the cost of this building which is nothing.
      * 
-     * @return HashMap<Integer, Integer> to be done
+     * @return The "cost" of this building.
      */
     public HashMap<Item, Integer> getCost() {
-        return COST;
+        return new HashMap<Item, Integer>(0);
     }
 
     /**
-     * to be done
+     * Returns the input directions of this building.
      * 
-     * @return byte[] to be done
+     * @return The input directions.
      */
     public byte[] getInputDirections() {
         return INPUT_DIRECTIONS;
     }
 
     /**
-     * to be done
+     * Returns the output directions of this building.
      * 
-     * @return byte[] to be done
+     * @return The output directions.
      */
     public byte[] getOutputDirections() {
         return OUTPUT_DIRECTIONS;
