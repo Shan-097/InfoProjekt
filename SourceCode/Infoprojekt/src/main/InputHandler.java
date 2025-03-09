@@ -15,15 +15,19 @@ import java.util.Map.Entry;
  */
 public class InputHandler implements KeyListener {
     /**
-     * to be done
+     * The collection of pressed keys.
      */
     private HashMap<Character, Boolean> keysPressed;
 
+    /**
+     * The collection of keys that are to be ignored until they are releases the
+     * next time.
+     */
     private HashSet<Character> keysToIgnoreUntilReleased;
 
     /**
      * Standard constructor of the InnputHandler.
-     * Only instantiates the collection.
+     * Only instantiates the collections.
      */
     public InputHandler() {
         keysPressed = new HashMap<Character, Boolean>(55);
@@ -48,7 +52,7 @@ public class InputHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         char key = e.getKeyChar();
-        //'\u001B' esc, '\u0020' space, '\u007F' delete
+        // '\u001B' esc, '\u0020' space, '\u007F' delete
         if ((!Character.isLetterOrDigit(key)) && "\u001B\u0020\u007F".indexOf(key) == -1) {
             return;
         }
@@ -91,11 +95,11 @@ public class InputHandler implements KeyListener {
     }
 
     /**
-     * to be done
+     * Returns a collection of pressed characters.
      * 
-     * @return to be done
+     * @return The collection of pressed characters
      */
-    public LinkedList<Character> getPressedCharacters(){
+    public LinkedList<Character> getPressedCharacters() {
         LinkedList<Character> pressed = new LinkedList<Character>();
         for (Entry<Character, Boolean> entry : keysPressed.entrySet()) {
             if (entry.getValue()) {
@@ -105,7 +109,11 @@ public class InputHandler implements KeyListener {
         return pressed;
     }
 
-    public void ignoreKeyUntilReleased(Character c){
+    /**
+     * 
+     * @param c
+     */
+    public void ignoreKeyUntilReleased(Character c) {
         if (keysPressed.containsKey(c)) {
             keysPressed.replace(c, false);
         }

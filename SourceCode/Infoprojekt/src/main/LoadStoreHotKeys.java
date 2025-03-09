@@ -10,12 +10,19 @@ import org.json.JSONObject;
 
 import game.GameController;
 
+/**
+ * The class LoadStoreHotKeys manages loading and storing of the hot keys.
+ */
 public class LoadStoreHotKeys {
     /**
-     * to be done
+     * The standard input map is used befor the first modification and if something
+     * goes wrong while loading the hot keys.
      */
     private static final HashMap<String, Character> STANDARD_INPUT_MAP;
 
+    /**
+     * The static and final attributes are declared here.
+     */
     static {
         STANDARD_INPUT_MAP = new HashMap<String, Character>(11);
         STANDARD_INPUT_MAP.put("moveUp", 'w');
@@ -31,9 +38,14 @@ public class LoadStoreHotKeys {
         STANDARD_INPUT_MAP.put("deleteBuilding", 'x');
     }
 
+    /**
+     * Stores the given input map.
+     * 
+     * @param inputMap The input map to be stored
+     */
     public static void storeHotKeys(HashMap<String, Character> inputMap) {
         if (!new File("./config/HotKeys.json").isFile()) {
-            
+
         }
         try (FileWriter file = new FileWriter("./config/HotKeys.json")) {
             JSONObject hotkeys = new JSONObject();
@@ -46,6 +58,11 @@ public class LoadStoreHotKeys {
         }
     }
 
+    /**
+     * Loads and returns the stored input map or returns the standard input map if an error occurs.
+     * 
+     * @return The input map
+     */
     public static HashMap<String, Character> loadHotKeys() {
         if (!new File("./config/HotKeys.json").isFile()) {
             return STANDARD_INPUT_MAP;

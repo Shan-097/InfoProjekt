@@ -1,8 +1,6 @@
 package hotKey;
 
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,6 +15,11 @@ import main.App;
 import main.InputHandler;
 import main.LoadStoreHotKeys;
 
+/**
+ * The class of the panel for reasigning and viewing the hot keys.<br>
+ * Controls the behavior of the buttons, the window and the reasignment of the
+ * hot keys.
+ */
 public class HotKeyPanel extends JPanel implements Runnable {
     /**
      * generic width of the buttons in the starting menu
@@ -34,7 +37,7 @@ public class HotKeyPanel extends JPanel implements Runnable {
     private final int frameRate;
 
     /**
-     * to be done
+     * The HotKeyInputHandler object for getting the pressed character.
      */
     private HotKeyInputHandler hotKeyInputHandler;
 
@@ -44,20 +47,23 @@ public class HotKeyPanel extends JPanel implements Runnable {
     private JButton returnToMainMenu;
 
     /**
-     * to be done
+     * The collection linking the buttons for starting the reasignment process to their action name.
      */
     private HashMap<String, JButton> buttons;
 
     /**
-     * to be done
+     * The collection linking the labels with the actions name to their action name.
      */
     private HashMap<String, JLabel> actions;
 
     /**
-     * to be done
+     * The action name of the action that is about to be changed by the player.
      */
     private String nameOfActionToChange;
 
+    /**
+     * The input map that is loaded, modified and then stored. 
+     */
     private HashMap<String, Character> inputMap;
 
     /**
@@ -172,9 +178,12 @@ public class HotKeyPanel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Sets the new key bind if only one character is pressed and it can be changed.
+     */
     private void checkForNewKey() {
         Character pressed = hotKeyInputHandler.getPressedChar();
-        if (pressed != null  && nameOfActionToChange != null) {
+        if (pressed != null && nameOfActionToChange != null) {
             if (inputMap.containsValue(pressed)) {
                 nameOfActionToChange = null;
                 return;
@@ -186,12 +195,25 @@ public class HotKeyPanel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Sets the name of the action that is to be changed.
+     * 
+     * @param action The (new) action that is to be changed
+     */
     private void changeKeyOf(String action) {
         nameOfActionToChange = action;
     }
 
-    private String charToHumanReadableString(char c){
-        //'\u001B' esc, '\u0020' space, '\u007F' delete
+    /**
+     * Converts the char to a human readable string.<br>
+     * Note that not all characters are supported.<br>
+     * E.g. '\u001B' to "escape"
+     * 
+     * @param c The character to be converted
+     * @return The string of the given character in human readable form
+     */
+    private String charToHumanReadableString(char c) {
+        // '\u001B' esc, '\u0020' space, '\u007F' delete
         switch (c) {
             case '\u001B':
                 return "escape";
@@ -202,16 +224,5 @@ public class HotKeyPanel extends JPanel implements Runnable {
             default:
                 return String.valueOf((char) c);
         }
-    }
-
-    /**
-     * to be done
-     * 
-     * @param g to be done
-     */
-    public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.dispose();
     }
 }
