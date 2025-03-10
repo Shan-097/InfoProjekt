@@ -188,10 +188,15 @@ public class HotKeyPanel extends JPanel implements Runnable {
                 nameOfActionToChange = null;
                 return;
             }
+            Character old = inputMap.get(nameOfActionToChange);
             inputMap.replace(nameOfActionToChange, pressed);
+            if (!LoadStoreHotKeys.storeHotKeys(inputMap)) {
+                inputMap.replace(nameOfActionToChange, old);
+                nameOfActionToChange = null;
+                return;
+            }
             buttons.get(nameOfActionToChange).setText(charToHumanReadableString(pressed));
             nameOfActionToChange = null;
-            LoadStoreHotKeys.storeHotKeys(inputMap);
         }
     }
 
