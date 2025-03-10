@@ -104,7 +104,11 @@ public class GameController {
      * E.g. moves the items on the conveyor belts.
      */
     public void update() {
-        moveItems(getStartingPoints());
+        try {
+            moveItems(getStartingPoints());
+        } catch (IllegalArgumentException e) {
+            return;
+        }
     }
 
     /**
@@ -440,7 +444,16 @@ public class GameController {
         }
 
         if (buildingToBePlaced.getClass() == Extractor.class) {
-            Resource resource = wGenerator.getField(posXinArray, posYinArray).getResource();
+            Resource resource;
+            try {
+                resource = wGenerator.getField(posXinArray, posYinArray).getResource();
+            } catch (IllegalArgumentException e) {
+                posXinArray = wGenerator.getXLengthMap() / 2;
+                posYinArray = wGenerator.getYLengthMap() / 2;
+                posXonTile = 0;
+                posYonTile = 0;
+                return;
+            }
             if (resource == null || resource.getResourceID() == 0) {
                 return;
             }
@@ -479,7 +492,15 @@ public class GameController {
             return;
         }
         if (b != null) {
-            wGenerator.deleteBuilding(posXinArray, posYinArray);
+            try {
+                wGenerator.deleteBuilding(posXinArray, posYinArray);
+            } catch (IllegalArgumentException e) {
+                posXinArray = wGenerator.getXLengthMap() / 2;
+                posYinArray = wGenerator.getYLengthMap() / 2;
+                posXonTile = 0;
+                posYonTile = 0;
+                return;
+            }
             for (Entry<Item, Integer> cost : b.getCost().entrySet()) {
                 inventory.replace(cost.getKey(), inventory.get(cost.getKey()) + cost.getValue());
             }

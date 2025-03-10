@@ -28,14 +28,12 @@ public class Smelter extends Building {
      */
     static {
         COST = new HashMap<Item, Integer>(4);
-        COST.put(Item.getItemWithID(0), 0);
-        COST.put(Item.getItemWithID(1), 0);
-        COST.put(Item.getItemWithID(2), 0);
-        COST.put(Item.getItemWithID(3), 0);
-        COST.put(Item.getItemWithID(4), 0);
-        COST.put(Item.getItemWithID(5), 0);
-        COST.put(Item.getItemWithID(6), 0);
-        COST.put(Item.getItemWithID(7), 0);
+        for (int i = 0; i < 8; i++) {
+            try {
+                COST.put(Item.getItemWithID(i), 0);
+            } catch (Exception e) {
+            }
+        }
         INPUT_DIRECTIONS = new byte[] { 0 };
         OUTPUT_DIRECTIONS = new byte[] { 2 };
     }
@@ -50,15 +48,17 @@ public class Smelter extends Building {
     /**
      * The constructor of Smelter for cloning an object.
      * 
-     * @param rotation The rotation
+     * @param rotation  The rotation
      * @param inventory The inventory
+     * @throws IllegalArgumentException to be done
      */
-    private Smelter(byte rotation, LinkedList<Item> inventory) {
+    private Smelter(byte rotation, LinkedList<Item> inventory) throws IllegalArgumentException {
         super(rotation, inventory);
     }
 
     /**
-     * As this building smelts items it returns the smelted variant of the given one.<br>
+     * As this building smelts items it returns the smelted variant of the given
+     * one.<br>
      * null is defined as the smelted item of null.
      * 
      * @param item The item to be smelted
@@ -98,15 +98,19 @@ public class Smelter extends Building {
     public byte[] getOutputDirections() {
         return OUTPUT_DIRECTIONS;
     }
-    
+
     /**
      * Clones the object so that the original can't be modified but the values can
      * still be used.<br>
      * 
-     * @return The cloned building
+     * @return The cloned building or null if something went wrong.
      */
     @Override
-    public Building clone(){
-        return new Smelter(this.getRotation(), this.getInventory());
+    public Building clone() {
+        try {
+            return new Smelter(this.getRotation(), this.getInventory());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 }

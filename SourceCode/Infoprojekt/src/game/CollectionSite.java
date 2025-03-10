@@ -39,10 +39,11 @@ public class CollectionSite extends Building {
     /**
      * The constructor of CollectionSite for cloning an object.
      * 
-     * @param rotation The rotation
+     * @param rotation  The rotation
      * @param inventory The inventory
+     * @throws IllegalArgumentException to be done
      */
-    private CollectionSite(byte rotation, LinkedList<Item> inventory) {
+    private CollectionSite(byte rotation, LinkedList<Item> inventory) throws IllegalArgumentException {
         super(rotation, inventory);
     }
 
@@ -56,7 +57,11 @@ public class CollectionSite extends Building {
      */
     @Override
     public boolean addItem(Item item) {
-        return GameController.addItemToInventory(item);
+        try {
+            return GameController.addItemToInventory(item);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     /**
@@ -99,12 +104,16 @@ public class CollectionSite extends Building {
 
     /**
      * Clones the object so that the original can't be modified but the values can
-     * still be used.<br>
+     * still be used.
      * 
-     * @return The cloned building
+     * @return The cloned building or null if something went wrong.
      */
     @Override
-    public Building clone(){
-        return new CollectionSite(this.getRotation(), this.getInventory());
+    public Building clone() {
+        try {
+            return new CollectionSite(this.getRotation(), this.getInventory());
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

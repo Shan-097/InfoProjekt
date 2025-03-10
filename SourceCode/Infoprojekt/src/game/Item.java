@@ -52,7 +52,10 @@ public class Item {
      */
     public static Item getSmeltedItem(Item item) throws IllegalArgumentException {
         if (item == null) {
-            throw new IllegalArgumentException("The item can't be null");
+            throw new IllegalArgumentException("The item can't be null.");
+        }
+        if (!ID_MAP.containsValue(item)) {
+            throw new IllegalArgumentException("The item is unknown.");
         }
         switch (item.getItemID()) {
             case 4:

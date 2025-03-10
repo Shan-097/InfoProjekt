@@ -49,6 +49,9 @@ public class Field {
      * @return The building on this field
      */
     public Building getBuilding() {
+        if (building == null) {
+            return null;
+        }
         return building.clone();
     }
 
@@ -87,6 +90,9 @@ public class Field {
      */
     @Override
     public Field clone() {
+        if (building == null) {
+            return new Field(null, resource);
+        }
         return new Field(building.clone(), resource);
     }
 

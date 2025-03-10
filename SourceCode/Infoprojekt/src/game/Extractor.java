@@ -32,14 +32,12 @@ public class Extractor extends Building {
      */
     static {
         COST = new HashMap<Item, Integer>(4);
-        COST.put(Item.getItemWithID(0), 0);
-        COST.put(Item.getItemWithID(1), 0);
-        COST.put(Item.getItemWithID(2), 0);
-        COST.put(Item.getItemWithID(3), 0);
-        COST.put(Item.getItemWithID(4), 0);
-        COST.put(Item.getItemWithID(5), 0);
-        COST.put(Item.getItemWithID(6), 0);
-        COST.put(Item.getItemWithID(7), 0);
+        for (int i = 0; i < 8; i++) {
+            try {
+                COST.put(Item.getItemWithID(i), 0);
+            } catch (Exception e) {
+            }
+        }
         INPUT_DIRECTIONS = new byte[0];
         OUTPUT_DIRECTIONS = new byte[] { 2 };
     }
@@ -56,8 +54,9 @@ public class Extractor extends Building {
      * 
      * @param rotation The rotation
      * @param inventory The inventory
+     * @throws IllegalArgumentException to be done
      */
-    private Extractor(byte rotation, LinkedList<Item> inventory, Item pItemToBeExtracted) {
+    private Extractor(byte rotation, LinkedList<Item> inventory, Item pItemToBeExtracted) throws IllegalArgumentException {
         super(rotation, inventory);
         itemToBeExtracted = pItemToBeExtracted;
     }
@@ -119,10 +118,14 @@ public class Extractor extends Building {
      * Clones the object so that the original can't be modified but the values can
      * still be used.<br>
      * 
-     * @return The cloned building
+     * @return The cloned building or null if something went wrong.
      */
     @Override
     public Building clone(){
-        return new Extractor(this.getRotation(), this.getInventory(), this.itemToBeExtracted);
+        try {
+            return new Extractor(this.getRotation(), this.getInventory(), this.itemToBeExtracted);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 }
