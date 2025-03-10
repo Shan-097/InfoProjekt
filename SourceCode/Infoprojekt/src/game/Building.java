@@ -66,6 +66,13 @@ public abstract class Building {
     }
 
     /**
+     * temp remove later (exists on other branch already)
+     */
+    public LinkedList<Item> getInventory() {
+        return content;
+    }
+
+    /**
      * to be done
      * 
      * @return byte to be done

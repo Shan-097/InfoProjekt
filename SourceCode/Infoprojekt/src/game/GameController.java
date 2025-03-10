@@ -183,9 +183,13 @@ public class GameController {
         int mapLengthX = wGenerator.getXLengthMap();
         int mapLengthY = wGenerator.getYLengthMap();
 
-        for (Tuple tuple : startingPoints) {
-            int x = tuple.getA();
-            int y = tuple.getB();
+        //TODO: fix bug (first conveyor belt has only one item...)
+        while(true){
+            if (startingPoints.size() == 0) {
+                return;
+            }
+            int x = startingPoints.getFirst().getA();
+            int y = startingPoints.getFirst().getB();
             Building b = wGenerator.getField(x, y).getBuilding();
             byte[] inputDirectionsOfBuilding = b.getInputDirections();
             byte rotation = b.getRotation();
@@ -225,9 +229,11 @@ public class GameController {
                 for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++) {
                     if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction) {
                         b2.moveItemToNextBuilding(b);
+                        startingPoints.addLast(new Tuple(x, y));
                     }
                 }
             }
+            startingPoints.removeFirst();
         }
     }
 
