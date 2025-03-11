@@ -88,22 +88,26 @@ public class GameController {
         inventory.put(Item.getItemWithID(7), 0);
 
         if(pFilePath != null) {
-            JSONObject savedWorld = loadWorld(pFilePath);
-            JSONArray worldMap = savedWorld.getJSONArray("worldMap");
-
-            int rows = worldMap.length();
-            int cols = worldMap.getJSONArray(0).length();
-            Field[][] fieldArray = new Field[rows][cols];
+            try {
+                JSONObject savedWorld = loadWorld(pFilePath);
+                JSONArray worldMap = savedWorld.getJSONArray("worldMap");
     
-            for (int i = 0; i < rows; i++) {
-                JSONArray rowArray = worldMap.getJSONArray(i);
-                for (int j = 0; j < cols; j++) {
-                    fieldArray[i][j] = new Field(new Building(), new Resource(rowArray.getJSONObject(j).getJSONObject("resource").getInt("resourceID")));
-                    // rowArray.getJSONObject(j)
+                int rows = worldMap.length();
+                int cols = worldMap.getJSONArray(0).length();
+                Field[][] fieldArray = new Field[rows][cols];
+        
+                for (int i = 0; i < rows; i++) {
+                    JSONArray rowArray = worldMap.getJSONArray(i);
+                    for (int j = 0; j < cols; j++) {
+                        fieldArray[i][j] = new Field(rowArray.getJSONObject(j).getJSONObject("resource").getInt("resourceID"));
+                        // rowArray.getJSONObject(j)
+                    }
                 }
+    
+                wGenerator = new WorldGenerator(100, 100, fieldArray);
+            } catch (Exception e) {
+                wGenerator = new WorldGenerator(100, 100, null);
             }
-
-            wGenerator = new WorldGenerator(posXinArray, movementDirection, fieldArray);
         } else {
             wGenerator = new WorldGenerator(100, 100, null);
         }
