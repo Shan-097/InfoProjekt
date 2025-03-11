@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map.Entry;
 
@@ -185,10 +186,10 @@ public class GamePanel extends JPanel implements Runnable {
             if (delta >= 1) {
                 gameInputHandler.invokeMethodsFromInput();
                 if (count == 4) {
+                    drawState = (drawState + 1) % 4;
                     if (drawState == 0) {
                         gameController.update();
                     }
-                    drawState = (drawState + 1) % 4;
                 }
                 repaint();
                 count = (count + 1) % 5;
@@ -323,7 +324,7 @@ public class GamePanel extends JPanel implements Runnable {
                 if (newX < 0 || newX >= mapXLength || newY < 0 || newY >= mapYLength) {
                     continue;
                 }
-                Field temp2 = gameController.getField(x, y);
+                Field temp2 = gameController.getField(newX, newY);
                 if (temp2 == null || temp2.getBuilding() == null) {
                     continue;
                 }
@@ -669,7 +670,8 @@ public class GamePanel extends JPanel implements Runnable {
     private void drawConveyorBelt(Graphics2D g2d, Building b, int posX, int posY) {
         byte input = b.getRotation();
         byte output = b.getOutputDirections()[0];
-        ArrayList<Item> content = new ArrayList<Item>(b.getInventory()); // 8 by 8 pixels for items on conveyor belts
+        ArrayList<Item> content = new ArrayList<Item>(b.getInventory()); // 16 by 16 pixels for items on conveyor belts
+        HashSet<Integer> movedItems = b.getMovedItems();
         int[][] itemCoordinates = new int[5][2];
         int middle = tileSize / 2;
         int state = 3 * drawState;
@@ -678,147 +680,147 @@ public class GamePanel extends JPanel implements Runnable {
         if (input == 0 && output == 1) {
             conveyor = "conveyorUPtoRIGHT";
             itemCoordinates[4][0] = middle - 4;
-            itemCoordinates[4][1] = middle - 30 + state;
+            itemCoordinates[4][1] = movedItems.contains(4) ? middle - 30 + state : middle - 30;
             itemCoordinates[3][0] = middle - 4;
-            itemCoordinates[3][1] = middle - 17 + state;
-            itemCoordinates[2][0] = middle - 4 + state;
+            itemCoordinates[3][1] = movedItems.contains(3) ? middle - 17 + state : middle - 17;
+            itemCoordinates[2][0] = movedItems.contains(2) ? middle - 4 + state : middle - 4;
             itemCoordinates[2][1] = middle - 4;
-            itemCoordinates[1][0] = middle + 9 + state;
+            itemCoordinates[1][0] = movedItems.contains(1) ? middle + 9 + state : middle + 9;
             itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[0][0] = middle + 22 + state;
+            itemCoordinates[0][0] = movedItems.contains(0) ? middle + 22 + state : middle + 22;
             itemCoordinates[0][1] = middle - 4;
         } else if (input == 0 && output == 2) {
             conveyor = "conveyorDOWN";
             itemCoordinates[4][0] = middle - 4;
-            itemCoordinates[4][1] = middle - 30 + state;
+            itemCoordinates[4][1] = movedItems.contains(4) ? middle - 30 + state : middle - 30;
             itemCoordinates[3][0] = middle - 4;
-            itemCoordinates[3][1] = middle - 17 + state;
+            itemCoordinates[3][1] = movedItems.contains(3) ? middle - 17 + state : middle - 17;
             itemCoordinates[2][0] = middle - 4;
-            itemCoordinates[2][1] = middle - 4 + state;
+            itemCoordinates[2][1] = movedItems.contains(2) ? middle - 4 + state : middle - 4;
             itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = middle + 9 + state;
+            itemCoordinates[1][1] = movedItems.contains(1) ? middle + 9 + state : middle + 9;
             itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = middle + 22 + state;
+            itemCoordinates[0][1] = movedItems.contains(0) ? middle + 22 + state : middle + 22;
         } else if (input == 0 && output == 3) {
             conveyor = "conveyorUPtoLEFT";
             itemCoordinates[4][0] = middle - 4;
-            itemCoordinates[4][1] = middle - 30 + state;
+            itemCoordinates[4][1] = movedItems.contains(4) ? middle - 30 + state : middle - 30;
             itemCoordinates[3][0] = middle - 4;
-            itemCoordinates[3][1] = middle - 17 + state;
-            itemCoordinates[2][0] = middle - 4 - state;
+            itemCoordinates[3][1] = movedItems.contains(3) ? middle - 17 + state : middle - 17;
+            itemCoordinates[2][0] = movedItems.contains(2) ? middle - 4 - state : middle - 4;
             itemCoordinates[2][1] = middle - 4;
-            itemCoordinates[1][0] = middle - 17 - state;
+            itemCoordinates[1][0] = movedItems.contains(1) ? middle - 17 - state : middle - 17;
             itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[0][0] = middle - 30 - state;
+            itemCoordinates[0][0] = movedItems.contains(0) ? middle - 30 - state : middle - 30;
             itemCoordinates[0][1] = middle - 4;
         } else if (input == 1 && output == 1) {
             conveyor = "conveyorRIGHTtoDOWN";
-            itemCoordinates[4][0] = middle + 22 - state;
+            itemCoordinates[4][0] = movedItems.contains(4) ? middle + 22 - state : middle + 22;
             itemCoordinates[4][1] = middle - 4;
-            itemCoordinates[3][0] = middle + 9 - state;
+            itemCoordinates[3][0] = movedItems.contains(3) ? middle + 9 - state : middle + 9;
             itemCoordinates[3][1] = middle - 4;
             itemCoordinates[2][0] = middle - 4;
-            itemCoordinates[2][1] = middle - 4 + state;
+            itemCoordinates[2][1] = movedItems.contains(2) ? middle - 4 + state : middle - 4;
             itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = middle + 9 + state;
+            itemCoordinates[1][1] = movedItems.contains(1) ? middle + 9 + state : middle + 9;
             itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = middle + 22 + state;
+            itemCoordinates[0][1] = movedItems.contains(0) ? middle + 22 + state : middle + 22;
         } else if (input == 1 && output == 2) {
             conveyor = "conveyorLEFT";
-            itemCoordinates[4][0] = middle + 22 - state;
+            itemCoordinates[4][0] = movedItems.contains(4) ? middle + 22 - state : middle + 22;
             itemCoordinates[4][1] = middle - 4;
-            itemCoordinates[3][0] = middle + 9 - state;
+            itemCoordinates[3][0] = movedItems.contains(3) ? middle + 9 - state : middle + 9;
             itemCoordinates[3][1] = middle - 4;
-            itemCoordinates[2][0] = middle - 4 - state;
+            itemCoordinates[2][0] = movedItems.contains(2) ? middle - 4 - state : middle - 4;
             itemCoordinates[2][1] = middle - 4;
-            itemCoordinates[1][0] = middle - 17 - state;
+            itemCoordinates[1][0] = movedItems.contains(1) ? middle - 17 - state : middle - 17;
             itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[0][0] = middle - 30 - state;
+            itemCoordinates[0][0] = movedItems.contains(0) ? middle - 30 - state : middle - 30;
             itemCoordinates[0][1] = middle - 4;
         } else if (input == 1 && output == 3) {
             conveyor = "conveyorRIGHTtoUP";
-            itemCoordinates[4][0] = middle + 22 - state;
+            itemCoordinates[4][0] = movedItems.contains(4) ? middle + 22 - state : middle + 22;
             itemCoordinates[4][1] = middle - 4;
-            itemCoordinates[3][0] = middle + 9 - state;
+            itemCoordinates[3][0] = movedItems.contains(3) ? middle + 9 - state : middle + 9;
             itemCoordinates[3][1] = middle - 4;
             itemCoordinates[2][0] = middle - 4;
-            itemCoordinates[2][1] = middle - 4 - state;
+            itemCoordinates[2][1] = movedItems.contains(2) ? middle - 4 - state : middle - 4;
             itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = middle - 17 - state;
+            itemCoordinates[1][1] = movedItems.contains(1) ? middle - 17 - state : middle - 17;
             itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = middle - 30 - state;
+            itemCoordinates[0][1] = movedItems.contains(0) ? middle - 30 - state : middle - 30;
         } else if (input == 2 && output == 1) {
             conveyor = "conveyorDOWNtoLEFT";
             itemCoordinates[4][0] = middle - 4;
-            itemCoordinates[4][1] = middle + 22 - state;
+            itemCoordinates[4][1] = movedItems.contains(4) ? middle + 22 - state : middle + 22;
             itemCoordinates[3][0] = middle - 4;
-            itemCoordinates[3][1] = middle + 9 - state;
-            itemCoordinates[2][0] = middle - 4 - state;
+            itemCoordinates[3][1] = movedItems.contains(3) ? middle + 9 - state : middle + 9;
+            itemCoordinates[2][0] = movedItems.contains(2) ? middle - 4 - state : middle - 4;
             itemCoordinates[2][1] = middle - 4;
-            itemCoordinates[1][0] = middle - 17 - state;
+            itemCoordinates[1][0] = movedItems.contains(1) ? middle - 17 - state : middle - 17;
             itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[0][0] = middle - 30 - state;
+            itemCoordinates[0][0] = movedItems.contains(0) ? middle - 30 - state : middle - 30;
             itemCoordinates[0][1] = middle - 4;
         } else if (input == 2 && output == 2) {
             conveyor = "conveyorUP";
             itemCoordinates[4][0] = middle - 4;
-            itemCoordinates[4][1] = middle + 22 - state;
+            itemCoordinates[4][1] = movedItems.contains(4) ? middle + 22 - state : middle + 22;
             itemCoordinates[3][0] = middle - 4;
-            itemCoordinates[3][1] = middle + 9 - state;
+            itemCoordinates[3][1] = movedItems.contains(3) ? middle + 9 - state : middle + 9;
             itemCoordinates[2][0] = middle - 4;
-            itemCoordinates[2][1] = middle - 4 - state;
+            itemCoordinates[2][1] = movedItems.contains(2) ? middle - 4 - state : middle - 4;
             itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = middle - 17 - state;
+            itemCoordinates[1][1] = movedItems.contains(1) ? middle - 17 - state : middle - 17;
             itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = middle - 30 - state;
+            itemCoordinates[0][1] = movedItems.contains(0) ? middle - 30 - state : middle - 30;
         } else if (input == 2 && output == 3) {
             conveyor = "conveyorDOWNtoRIGHT";
             itemCoordinates[4][0] = middle - 4;
-            itemCoordinates[4][1] = middle + 22 - state;
+            itemCoordinates[4][1] = movedItems.contains(4) ? middle + 22 - state : middle + 22;
             itemCoordinates[3][0] = middle - 4;
-            itemCoordinates[3][1] = middle + 9 - state;
-            itemCoordinates[2][0] = middle - 4 + state;
+            itemCoordinates[3][1] = movedItems.contains(3) ? middle + 9 - state : middle + 9;
+            itemCoordinates[2][0] = movedItems.contains(2) ? middle - 4 + state : middle - 4;
             itemCoordinates[2][1] = middle - 4;
-            itemCoordinates[1][0] = middle + 9 + state;
+            itemCoordinates[1][0] = movedItems.contains(1) ? middle + 9 + state : middle + 9;
             itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[0][0] = middle + 22 + state;
+            itemCoordinates[0][0] = movedItems.contains(0) ? middle + 22 + state : middle + 22;
             itemCoordinates[0][1] = middle - 4;
         } else if (input == 3 && output == 1) {
             conveyor = "conveyorLEFTtoUP";
-            itemCoordinates[4][0] = middle - 30 + state;
+            itemCoordinates[4][0] = movedItems.contains(4) ? middle - 30 + state : middle - 30;
             itemCoordinates[4][1] = middle - 4;
-            itemCoordinates[3][0] = middle - 17 + state;
+            itemCoordinates[3][0] = movedItems.contains(3) ? middle - 17 + state : middle - 17;
             itemCoordinates[3][1] = middle - 4;
             itemCoordinates[2][0] = middle - 4;
-            itemCoordinates[2][1] = middle - 4 - state;
+            itemCoordinates[2][1] = movedItems.contains(2) ? middle - 4 - state : middle - 4;
             itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = middle - 17 - state;
+            itemCoordinates[1][1] = movedItems.contains(1) ? middle - 17 - state : middle - 17;
             itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = middle - 30 - state;
+            itemCoordinates[0][1] = movedItems.contains(0) ? middle - 30 - state : middle - 30;
         } else if (input == 3 && output == 2) {
             conveyor = "conveyorRIGHT";
-            itemCoordinates[4][0] = middle - 30 + state;
+            itemCoordinates[4][0] = movedItems.contains(4) ? middle - 30 + state : middle - 30;
             itemCoordinates[4][1] = middle - 4;
-            itemCoordinates[3][0] = middle - 17 + state;
+            itemCoordinates[3][0] = movedItems.contains(3) ? middle - 17 + state : middle - 17;
             itemCoordinates[3][1] = middle - 4;
-            itemCoordinates[2][0] = middle - 4 + state;
+            itemCoordinates[2][0] = movedItems.contains(2) ? middle - 4 + state : middle - 4;
             itemCoordinates[2][1] = middle - 4;
-            itemCoordinates[1][0] = middle + 9 + state;
+            itemCoordinates[1][0] = movedItems.contains(1) ? middle + 9 + state : middle + 9;
             itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[0][0] = middle + 22 + state;
+            itemCoordinates[0][0] = movedItems.contains(0) ? middle + 22 + state : middle + 22;
             itemCoordinates[0][1] = middle - 4;
         } else if (input == 3 && output == 3) {
             conveyor = "conveyorLEFTtoDOWN";
-            itemCoordinates[4][0] = middle - 30 + state;
+            itemCoordinates[4][0] = movedItems.contains(4) ? middle - 30 + state : middle - 30;
             itemCoordinates[4][1] = middle - 4;
-            itemCoordinates[3][0] = middle - 17 + state;
+            itemCoordinates[3][0] = movedItems.contains(3) ? middle - 17 + state : middle - 17;
             itemCoordinates[3][1] = middle - 4;
             itemCoordinates[2][0] = middle - 4;
-            itemCoordinates[2][1] = middle - 4 + state;
+            itemCoordinates[2][1] = movedItems.contains(2) ? middle - 4 + state : middle - 4;
             itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = middle + 9 + state;
+            itemCoordinates[1][1] = movedItems.contains(1) ? middle + 9 + state : middle + 9;
             itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = middle + 22 + state;
+            itemCoordinates[0][1] = movedItems.contains(0) ? middle + 22 + state : middle + 22;
         }
 
         g2d.drawImage(images.get(conveyor), posX, posY, null);

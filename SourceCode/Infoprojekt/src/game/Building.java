@@ -1,6 +1,7 @@
 package game;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
@@ -20,12 +21,18 @@ public abstract class Building {
     /**
      * to be done
      */
+    private HashSet<Integer> movedIndices;
+
+    /**
+     * to be done
+     */
     public Building() {
         rotation = 0;
-        //content = new LinkedList<Item>(List.of(null,null,null,null,null));
         content = new LinkedList<Item>();
-        for (int i = 0; i < 5; i++) 
+        for (int i = 0; i < 5; i++) {
             content.add(null);
+        }
+        movedIndices = new HashSet<>(5);
     }
 
     /**
@@ -40,6 +47,7 @@ public abstract class Building {
         if (content.getLast() == null) {
             content.removeLast();
             content.addLast(item);
+            movedIndices.add(4);
             return true;
         }
         return false;
@@ -55,6 +63,10 @@ public abstract class Building {
         if (otherBuilding.addItem(content.getFirst())) {
             content.removeFirst();
             content.addLast(null);
+            movedIndices.clear();
+            for (int i = 0; i < 5; i++) {
+                movedIndices.add(i);
+            }
         } else {
             otherBuilding.moveItemInsideBuilding();
         }
@@ -64,10 +76,14 @@ public abstract class Building {
      * to be done
      */
     public void moveItemInsideBuilding() {
+        movedIndices.clear();
         for (int i = 0; i < 5; i++) {
             if (content.getFirst() == null) {
                 content.remove(i);
                 content.addLast(null);
+                for (int j = i + 1; j < 5; j++) {
+                    movedIndices.add(j);
+                }
                 return;
             }
         }
@@ -94,6 +110,10 @@ public abstract class Building {
      */
     public byte getRotation() {
         return rotation;
+    }
+
+    public HashSet<Integer> getMovedItems() {
+        return movedIndices;
     }
 
     /**

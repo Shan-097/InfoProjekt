@@ -161,7 +161,7 @@ public class GameController {
                 if (newX < 0 || newX >= mapLengthX || newY < 0 || newY >= mapLengthY) {
                     continue;
                 }
-                Field temp2 = wGenerator.getField(x, y);
+                Field temp2 = wGenerator.getField(newX, newY);
                 if (temp2 == null || temp2.getBuilding() == null) {
                     continue;
                 }
