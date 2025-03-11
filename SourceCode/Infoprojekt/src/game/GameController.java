@@ -410,7 +410,7 @@ public class GameController {
      */
     public void removeBuilding() {
         Building b = wGenerator.getField(posXinArray, posYinArray).getBuilding();
-        if (b != null) {
+        if (b != null && b.getClass() != CollectionSite.class) {
             wGenerator.deleteBuilding(posXinArray, posYinArray);
             for (Entry<Item, Integer> cost : b.getCost().entrySet()) {
                 inventory.replace(cost.getKey(), inventory.get(cost.getKey()) + cost.getValue());          

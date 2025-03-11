@@ -15,43 +15,73 @@ import game.GameController;
  */
 public class LoadStoreHotKeys {
     /**
-     * The standard input map is used befor the first modification and if something
-     * goes wrong while loading the hot keys.
+     * to be done
      */
-    private static final HashMap<String, Character> STANDARD_INPUT_MAP;
+    private static final HashMap<String, Character> STANDARD_INPUT_MAP_HOLDABLE;
+
+    /**
+     * to be done
+     */
+    private static final HashMap<String, Character> STANDARD_INPUT_MAP_NORMAL;
+
+    /**
+     * to be done
+     */
+    private static final HashMap<String, Character> STANDARD_INPUT_MAP_NOT_HOLDABLE;
 
     /**
      * The static and final attributes are declared here.
      */
     static {
-        STANDARD_INPUT_MAP = new HashMap<String, Character>(11);
-        STANDARD_INPUT_MAP.put("moveUp", 'w');
-        STANDARD_INPUT_MAP.put("moveDown", 's');
-        STANDARD_INPUT_MAP.put("moveLeft", 'a');
-        STANDARD_INPUT_MAP.put("moveRight", 'd');
-        STANDARD_INPUT_MAP.put("placeConveyorBelt", '1');
-        STANDARD_INPUT_MAP.put("placeExtractor", '2');
-        STANDARD_INPUT_MAP.put("placeSmelter", '3');
-        STANDARD_INPUT_MAP.put("rotateBuilding", 'r');
-        STANDARD_INPUT_MAP.put("cancelPlacement", (char) 27);
-        STANDARD_INPUT_MAP.put("placeBuilding", 'b');
-        STANDARD_INPUT_MAP.put("deleteBuilding", 'x');
+        STANDARD_INPUT_MAP_NORMAL = new HashMap<String, Character>(4);
+        STANDARD_INPUT_MAP_NORMAL.put("moveUp", 'w');
+        STANDARD_INPUT_MAP_NORMAL.put("moveDown", 's');
+        STANDARD_INPUT_MAP_NORMAL.put("moveLeft", 'a');
+        STANDARD_INPUT_MAP_NORMAL.put("moveRight", 'd');
+
+        STANDARD_INPUT_MAP_NOT_HOLDABLE = new HashMap<String, Character>(5);
+        STANDARD_INPUT_MAP_NOT_HOLDABLE.put("placeConveyorBelt", '1');
+        STANDARD_INPUT_MAP_NOT_HOLDABLE.put("placeExtractor", '2');
+        STANDARD_INPUT_MAP_NOT_HOLDABLE.put("placeSmelter", '3');
+        STANDARD_INPUT_MAP_NOT_HOLDABLE.put("rotateBuilding", 'r');
+        STANDARD_INPUT_MAP_NOT_HOLDABLE.put("cancelPlacement", (char) 27);
+
+        STANDARD_INPUT_MAP_HOLDABLE = new HashMap<String, Character>(2);
+        STANDARD_INPUT_MAP_HOLDABLE.put("placeBuilding", 'b');
+        STANDARD_INPUT_MAP_HOLDABLE.put("deleteBuilding", 'x');
     }
 
     /**
-     * Stores the given input map.
+     * Stores the given input maps.
      * 
-     * @param inputMap The input map to be stored
+     * @param iMN to be done
+     * @param iMNH to be done
+     * @param iMH to be done
      */
-    public static void storeHotKeys(HashMap<String, Character> inputMap) {
+    public static void storeHotKeys(HashMap<String, Character> iMN, HashMap<String, Character> iMNH,
+            HashMap<String, Character> iMH) {
         if (!new File("./config/HotKeys.json").isFile()) {
 
         }
         try (FileWriter file = new FileWriter("./config/HotKeys.json")) {
             JSONObject hotkeys = new JSONObject();
-            for (Entry<String, Character> inputMapping : inputMap.entrySet()) {
-                hotkeys.put(inputMapping.getKey(), inputMapping.getValue());
+            JSONObject hotkeysNormal = new JSONObject();
+            for (Entry<String, Character> inputMapping : iMN.entrySet()) {
+                hotkeysNormal.put(inputMapping.getKey(), inputMapping.getValue());
             }
+            hotkeys.put("normal", hotkeysNormal);
+
+            JSONObject hotkeysNotHoldable = new JSONObject();
+            for (Entry<String, Character> inputMapping : iMNH.entrySet()) {
+                hotkeysNotHoldable.put(inputMapping.getKey(), inputMapping.getValue());
+            }
+            hotkeys.put("not_holdable", hotkeysNotHoldable);
+
+            JSONObject hotkeysHoldable = new JSONObject();
+            for (Entry<String, Character> inputMapping : iMN.entrySet()) {
+                hotkeysHoldable.put(inputMapping.getKey(), inputMapping.getValue());
+            }
+            hotkeys.put("holdable", hotkeysHoldable);
             file.write(hotkeys.toString(0));
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,35 +89,73 @@ public class LoadStoreHotKeys {
     }
 
     /**
-     * Loads and returns the stored input map or returns the standard input map if an error occurs.
+     * Loads and returns the stored input maps or returns the standard input maps if an error occurs.
      * 
-     * @return The input map
+     * @return to be done
      */
-    public static HashMap<String, Character> loadHotKeys() {
+    public static HashMap<String, HashMap<String, Character>> loadHotKeys() {
+        HashMap<String, HashMap<String, Character>> standard = new HashMap<String, HashMap<String, Character>>();
+        standard.put("normal", STANDARD_INPUT_MAP_NORMAL);
+        standard.put("not_holdable", STANDARD_INPUT_MAP_NOT_HOLDABLE);
+        standard.put("holdable", STANDARD_INPUT_MAP_HOLDABLE);
+
+        HashMap<String, Character> unionInputMap = new HashMap<String, Character>();
+        unionInputMap.putAll(STANDARD_INPUT_MAP_NORMAL);
+        unionInputMap.putAll(STANDARD_INPUT_MAP_NOT_HOLDABLE);
+        unionInputMap.putAll(STANDARD_INPUT_MAP_HOLDABLE);
+
         if (!new File("./config/HotKeys.json").isFile()) {
-            return STANDARD_INPUT_MAP;
+            return standard;
         }
+
+        HashMap<String, Character> iMN = new HashMap<String, Character>(4);
+        HashMap<String, Character> iMNH = new HashMap<String, Character>(5);
+        HashMap<String, Character> iMH = new HashMap<String, Character>(2);
         JSONObject hotkeys = GameController.readJsonFile("./config/HotKeys.json");
-        HashMap<String, Character> inputMap = new HashMap<String, Character>(11);
+
         for (String key : hotkeys.keySet()) {
-            String value;
-            char pressedKey;
+            if (key != "normal" && key != "not_holdable" && key != "holdable") {
+                return standard;
+            }
+
             try {
-                value = hotkeys.getString(key);
-                pressedKey = value.toCharArray()[0];
-            } catch (Exception e) {
-                return STANDARD_INPUT_MAP;
+                JSONObject innerObject = hotkeys.getJSONObject(key);
+                for (String action : innerObject.keySet()) {
+                    String value;
+                    char pressedKey;
+                    try {
+                        value = innerObject.getString(action);
+                        pressedKey = value.toCharArray()[0];
+                    } catch (Exception e) {
+                        return standard;
+                    }
+                    if (value.length() != 1 || (!unionInputMap.containsKey(key)) || iMN.containsValue(pressedKey)
+                            || iMNH.containsValue(pressedKey) || iMH.containsValue(pressedKey)) {
+                        return standard;
+                    }
+                    if (key == "normal") {
+                        iMN.put(action, pressedKey);                    
+                    }
+                    if (key == "not_holdable") {
+                        iMNH.put(action, pressedKey);                    
+                    }
+                    if (key == "holdable") {
+                        iMH.put(action, pressedKey);                    
+                    }
+                }
+            } catch (Error e) {
+                return standard;
             }
-            if (value.length() != 1 || (!STANDARD_INPUT_MAP.containsKey(key)) || inputMap.containsValue(pressedKey)) {
-                return STANDARD_INPUT_MAP;
-            }
-            inputMap.put(key, pressedKey);
         }
-        for (String key : STANDARD_INPUT_MAP.keySet()) {
-            if (!inputMap.containsKey(key)) {
-                return STANDARD_INPUT_MAP;
+        for (String key : unionInputMap.keySet()) {
+            if (!(iMN.containsKey(key) ^ iMH.containsKey(key) ^ iMNH.containsKey(key))) {
+                return standard;
             }
         }
-        return inputMap;
+        HashMap<String, HashMap<String, Character>> returnInputMap = new HashMap<String, HashMap<String, Character>>();
+        returnInputMap.put("normal", iMN);
+        returnInputMap.put("not_holdable", iMNH);
+        returnInputMap.put("holdable", iMH);
+        return returnInputMap;
     }
 }
