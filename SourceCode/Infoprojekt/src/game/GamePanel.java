@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import main.InputHandler;
 
@@ -70,12 +71,12 @@ public class GamePanel extends JPanel implements Runnable {
      * 
      * @param pFr Frame rate
      */
-    public GamePanel(int pFr, String pFilePath) {
+    public GamePanel(int pFr, String pFilePath, JFrame pWindow) {
         this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
         this.setDoubleBuffered(true);
         frameRate = pFr;
         worldFilePath = pFilePath;
-        gameController = new GameController(pFilePath);
+        gameController = new GameController(pFilePath, pWindow);
         //if(pFilePath != null) {
         //    gameController.loadWorld(worldFilePath);
         //}

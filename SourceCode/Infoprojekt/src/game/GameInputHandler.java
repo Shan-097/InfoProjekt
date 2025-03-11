@@ -40,7 +40,8 @@ public class GameInputHandler {
         inputMap.put('2', "placeExtractor");
         inputMap.put('3', "placeSmelter");
         inputMap.put('r', "rotateBuilding");
-        inputMap.put((char) 27, "cancelPlacement"); // esc
+        inputMap.put('q', "cancelPlacement");
+        inputMap.put((char) 27, "pauseMenu"); // esc
         inputMap.put('b', "placeBuilding");
         inputMap.put('x', "deleteBuilding");
     }
@@ -122,6 +123,9 @@ public class GameInputHandler {
         }
         if (actions.contains("cancelPlacement")) {
             gameController.cancelPlacement();
+        }
+        if (actions.contains("pauseMenu")) {
+            gameController.showPauseMenu();
         }
         if (actions.contains("rotateBuilding")) {
             gameController.rotateBuilding();

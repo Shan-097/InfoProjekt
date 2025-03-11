@@ -1,5 +1,9 @@
 package game;
 
+import com.sun.security.auth.module.NTLoginModule;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -8,6 +12,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,6 +28,16 @@ import org.json.JSONObject;
  * the individual components of the model.
  */
 public class GameController {
+    /**
+     * generic width of the buttons in the starting menu
+     */
+    private final int buttonWidth = 230;
+
+    /**
+     * generic height of the buttons in the starting menu
+     */
+    private final int buttonHeight = 35;
+
     /**
      * The inventory of the player.<br>
      * Stores for every item how many are in the inventory.
@@ -72,11 +92,22 @@ public class GameController {
     private Building buildingToBePlaced;
 
     /**
+     * to be done
+     */
+    private boolean isPaused;
+
+    /**
+     * to be done
+     */
+    private JFrame window;
+
+    /**
      * Instantiates a new Object of type GameController.<br>
      * Sets for example the starting position of the player.
      * @param pFilePath to be done
+     * @param window to be done
      */
-    public GameController(String pFilePath) {
+    public GameController(String pFilePath, JFrame pWindow) {
         inventory = new HashMap<Item, Integer>();
         inventory.put(Item.getItemWithID(0), 0);
         inventory.put(Item.getItemWithID(1), 0);
@@ -86,6 +117,8 @@ public class GameController {
         inventory.put(Item.getItemWithID(5), 0);
         inventory.put(Item.getItemWithID(6), 0);
         inventory.put(Item.getItemWithID(7), 0);
+
+        window = pWindow;
 
         if(pFilePath != null) {
             try {
@@ -195,6 +228,38 @@ public class GameController {
             }
         }
         return listOfStartingPoints;
+    }
+
+    public void showPauseMenu() {
+            isPaused = true;
+
+            JDialog pauseDialog = new JDialog(window, "Pause", true);
+
+            pauseDialog.setSize(500, 400);
+            pauseDialog.setLayout(null);
+            
+            JButton resumeButton = new JButton("Resume");
+            JButton exitButton = new JButton("Exit");
+            JButton saveAndExit = new JButton("Save and Exit");
+
+            resumeButton.setFont(new Font("Arial", Font.BOLD, 15));
+            exitButton.setFont(new Font("Arial", Font.BOLD, 15));
+            saveAndExit.setFont(new Font("Arial", Font.BOLD, 15));
+
+            resumeButton.setBounds((window.getWidth() - buttonWidth) / 2, (window.getHeight() - buttonHeight) / 2 - 45, buttonWidth, buttonHeight);
+            exitButton.setBounds((window.getWidth() - buttonWidth) / 2, (window.getHeight() - buttonHeight) / 2 + 45, buttonWidth, buttonHeight);
+            saveAndExit.setBounds((window.getWidth() - buttonWidth) / 2, (window.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
+            
+            resumeButton.addActionListener((ActionEvent e) -> {
+                isPaused = false;
+                pauseDialog.dispose();
+            });
+
+            pauseDialog.add(resumeButton);
+            pauseDialog.add(exitButton);
+            pauseDialog.add(saveAndExit);
+            pauseDialog.setLocationRelativeTo(window);
+            pauseDialog.setVisible(true);
     }
 
     /**

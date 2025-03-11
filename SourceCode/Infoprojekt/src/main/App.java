@@ -65,7 +65,7 @@ public class App {
         window = new JFrame("Keria");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        GamePanel gamePanel = new GamePanel(FRAME_RATE, worldPath);
+        GamePanel gamePanel = new GamePanel(FRAME_RATE, worldPath, window);
         window.add(gamePanel);
         window.pack();
         window.setLocationRelativeTo(null);
