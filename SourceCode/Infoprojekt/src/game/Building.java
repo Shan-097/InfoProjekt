@@ -2,7 +2,6 @@ package game;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * to be done
@@ -40,7 +39,8 @@ public abstract class Building {
         }
         if (content.getLast() == null) {
             content.removeLast();
-            return content.add(item);
+            content.addLast(item);
+            return true;
         }
         return false;
     }
@@ -55,6 +55,21 @@ public abstract class Building {
         if (otherBuilding.addItem(content.getFirst())) {
             content.removeFirst();
             content.addLast(null);
+        } else {
+            otherBuilding.moveItemInsideBuilding();
+        }
+    }
+
+    /**
+     * to be done
+     */
+    public void moveItemInsideBuilding() {
+        for (int i = 0; i < 5; i++) {
+            if (content.getFirst() == null) {
+                content.remove(i);
+                content.addLast(null);
+                return;
+            }
         }
     }
 
