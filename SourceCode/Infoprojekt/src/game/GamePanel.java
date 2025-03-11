@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import main.InputHandler;
+import main.Tuple;
 
 /**
  * Responsible for the entirety of visual output in the main game and therefore
@@ -62,6 +63,8 @@ public class GamePanel extends JPanel implements Runnable {
     Dictionary<String, String> imgPaths = new Hashtable<>();
 
     Dictionary<Item, JLabel> resourceLabels = new Hashtable<>();
+
+    private int drawState = 0;
 
     /**
      * Constructor of the GamePanel class
@@ -173,18 +176,22 @@ public class GamePanel extends JPanel implements Runnable {
         long lastTime = System.nanoTime();
         long currentTime;
         double delta = 0;
+        int count = 0;
 
         while (gameThread != null) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / frameDisplayTime;
             lastTime = currentTime;
             if (delta >= 1) {
-                // update
                 gameInputHandler.invokeMethodsFromInput();
-                gameController.update();
-
-                // draw updated
+                if (count == 4) {
+                    if (drawState == 0) {
+                        gameController.update();
+                    }
+                    drawState = (drawState + 1) % 4;
+                }
                 repaint();
+                count = (count + 1) % 5;
                 delta--;
             }
         }
@@ -229,6 +236,7 @@ public class GamePanel extends JPanel implements Runnable {
         int mapXLength = gameController.getXLengthMap();
         int mapYLength = gameController.getYLengthMap();
 
+        // draw resources and the outside
         for (int i = 0; i < numWidth; i++) {
             for (int j = 0; j < numHeight; j++) {
                 indexCurrentX = posXinArray - (numWidth / 2) + i;
@@ -263,80 +271,143 @@ public class GamePanel extends JPanel implements Runnable {
                     g2d.setColor(Color.YELLOW);
                     g2d.fillRect(movementX, movementY, tileSize, tileSize);
                 }
+            }
+        }
 
-                // Draw the buildings
-                if (field.getBuilding() != null) {
-                    byte rotation = field.getBuilding().getRotation();
-                    if (field.getBuilding().getClass() == CollectionSite.class) {
-                        switch (rotation) {
-                            case 1:
-                                g2d.drawImage(images.get("extractorUP"), movementX, movementY, null);
-                                break;
-                            case 2:
-                                g2d.drawImage(images.get("collectionSiteSide"), movementX, movementY, null);
-                                break;
-                            case 3:
-                                g2d.drawImage(images.get("extractorDOWN"), movementX, movementY, null);
-                                break;
-                            case 4:
-                                g2d.drawImage(images.get("collectionSiteSide"), movementX, movementY, null);
-                                break;
-                            case 5:
-                                g2d.drawImage(images.get("collectionSiteMid"), movementX, movementY, null);
-                                break;
-                            case 6:
-                                g2d.drawImage(images.get("collectionSiteSide"), movementX, movementY, null);
-                                break;
-                            case 7:
-                                g2d.drawImage(images.get("extractorLEFT"), movementX, movementY, null);
-                                break;
-                            case 8:
-                                g2d.drawImage(images.get("collectionSiteSide"), movementX, movementY, null);
-                                break;
-                            case 9:
-                                g2d.drawImage(images.get("extractorLEFT"), movementX, movementY, null);
-                        }
-                    } else if (field.getBuilding().getClass() == ConveyorBelt.class) {
-                        // g2d.drawImage(images.get(rotateConveyorBelt(field.getBuilding().getRotation(),
-                        // field.getBuilding().getOutputDirections()[0])), movementX, movementY, null);
-                        this.drawConveyorBelt(g2d, field.getBuilding(), movementX, movementY);
-                    } else if (field.getBuilding().getClass() == Extractor.class) {
-                        switch ((rotation + 2) % 4) {
-                            case 0:
-                                g2d.drawImage(images.get("extractorUP"), movementX, movementY, null);
-                                break;
-                            case 1:
-                                g2d.drawImage(images.get("extractorRIGHT"), movementX, movementY, null);
-                                break;
-                            case 2:
-                                g2d.drawImage(images.get("extractorDOWN"), movementX, movementY, null);
-                                break;
-                            case 3:
-                                g2d.drawImage(images.get("extractorLEFT"), movementX, movementY, null);
-                        }
-                    } else if (field.getBuilding().getClass() == Smelter.class) {
-                        switch (rotation) {
-                            case 0:
-                                g2d.drawImage(images.get("smelterUP"), movementX, movementY, null);
-                                break;
-                            case 1:
-                                g2d.drawImage(images.get("smelterRIGHT"), movementX, movementY, null);
-                                break;
-                            case 2:
-                                g2d.drawImage(images.get("smelterDOWN"), movementX, movementY, null);
-                                break;
-                            case 3:
-                                g2d.drawImage(images.get("smelterLEFT"), movementX, movementY, null);
-                        }
+        ArrayList<Tuple> startingPoints = gameController.getStartingPoints();
+        int minX = posXinArray - (numWidth / 2);
+        int maxX = posXinArray + (numWidth / 2);
+        int minY = posYinArray - (numHeight / 2);
+        int maxY = posYinArray + (numHeight / 2);
+        while (true) {
+            if (startingPoints.size() == 0) {
+                break;
+            }
+
+            int x = startingPoints.getFirst().getA();
+            int y = startingPoints.getFirst().getB();
+
+            Building b = gameController.getField(x, y).getBuilding();
+            if (b == null) {
+                startingPoints.removeFirst();
+                continue;
+            }
+            byte[] inputDirections = b.getInputDirections();
+            byte rotation = b.getRotation();
+            for (int i = 0; i < inputDirections.length; i++) {
+                byte direction;
+                if (b.getClass() == CollectionSite.class) {
+                    direction = (byte) (inputDirections[i] % 4);
+                } else {
+                    direction = (byte) ((inputDirections[i] + rotation) % 4);
+                }
+                int newX = x;
+                int newY = y;
+                switch (direction) {
+                    case 0:
+                        newY--;
+                        break;
+
+                    case 1:
+                        newX++;
+                        break;
+
+                    case 2:
+                        newY++;
+                        break;
+
+                    case 3:
+                        newX--;
+                        break;
+                }
+                if (newX < 0 || newX >= mapXLength || newY < 0 || newY >= mapYLength) {
+                    continue;
+                }
+                Field temp2 = gameController.getField(x, y);
+                if (temp2 == null || temp2.getBuilding() == null) {
+                    continue;
+                }
+                byte[] outputDirectionsOfOtherBuilding = temp2.getBuilding().getOutputDirections();
+                byte rotationOfOtherBuilding = temp2.getBuilding().getRotation();
+                for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++) {
+                    if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction) {
+                        startingPoints.addLast(new Tuple(newX, newY));
                     }
                 }
+            }
 
-                // Draw the building highlight preview
-                if (gameController.getBuildingToBePlaced() != null && indexCurrentX == posXinArray
-                        && indexCurrentY == posYinArray) {
-                    g2d.drawImage(images.get("preview"), movementX, movementY, null);
+            startingPoints.removeFirst();
+
+            if (x >= minX || x <= maxX || y >= minY || y <= maxY) {
+                x = (int) (TileCenterX + (x - posXinArray - gameController.getOffsetX()) * tileSize);
+                y = (int) (TileCenterY + (y - posYinArray - gameController.getOffsetY()) * tileSize);
+                if (b.getClass() == CollectionSite.class) {
+                    switch (rotation) {
+                        case 1:
+                            g2d.drawImage(images.get("extractorUP"), x, y, null);
+                            break;
+                        case 2:
+                            g2d.drawImage(images.get("collectionSiteSide"), x, y, null);
+                            break;
+                        case 3:
+                            g2d.drawImage(images.get("extractorDOWN"), x, y, null);
+                            break;
+                        case 4:
+                            g2d.drawImage(images.get("collectionSiteSide"), x, y, null);
+                            break;
+                        case 5:
+                            g2d.drawImage(images.get("collectionSiteMid"), x, y, null);
+                            break;
+                        case 6:
+                            g2d.drawImage(images.get("collectionSiteSide"), x, y, null);
+                            break;
+                        case 7:
+                            g2d.drawImage(images.get("extractorLEFT"), x, y, null);
+                            break;
+                        case 8:
+                            g2d.drawImage(images.get("collectionSiteSide"), x, y, null);
+                            break;
+                        case 9:
+                            g2d.drawImage(images.get("extractorLEFT"), x, y, null);
+                    }
+                } else if (b.getClass() == ConveyorBelt.class) {
+                    this.drawConveyorBelt(g2d, b, x, y);
+                } else if (b.getClass() == Extractor.class) {
+                    switch ((rotation + 2) % 4) {
+                        case 0:
+                            g2d.drawImage(images.get("extractorUP"), x, y, null);
+                            break;
+                        case 1:
+                            g2d.drawImage(images.get("extractorRIGHT"), x, y, null);
+                            break;
+                        case 2:
+                            g2d.drawImage(images.get("extractorDOWN"), x, y, null);
+                            break;
+                        case 3:
+                            g2d.drawImage(images.get("extractorLEFT"), x, y, null);
+                    }
+                } else if (b.getClass() == Smelter.class) {
+                    switch (rotation) {
+                        case 0:
+                            g2d.drawImage(images.get("smelterUP"), x, y, null);
+                            break;
+                        case 1:
+                            g2d.drawImage(images.get("smelterRIGHT"), x, y, null);
+                            break;
+                        case 2:
+                            g2d.drawImage(images.get("smelterDOWN"), x, y, null);
+                            break;
+                        case 3:
+                            g2d.drawImage(images.get("smelterLEFT"), x, y, null);
+                    }
                 }
             }
+        }
+
+        // Draw the building highlight preview
+        if (gameController.getBuildingToBePlaced() != null) {
+            g2d.drawImage(images.get("preview"), (int) (TileCenterX - gameController.getOffsetX() * tileSize),
+                    (int) (TileCenterY - gameController.getOffsetY() * tileSize), null);
         }
 
         // Draw the preview of the building about to be placed
@@ -352,10 +423,7 @@ public class GamePanel extends JPanel implements Runnable {
             g2d.setColor(new Color(255, 255, 255, 157));
             g2d.fillRect(100 - 64, 100 - 64, 64 * 3, 64 * 3);
             if (gameController.getBuildingToBePlaced().getClass() == ConveyorBelt.class) {
-                g2d.drawImage(
-                        images.get(rotateConveyorBelt(gameController.getBuildingToBePlaced().getRotation(),
-                                gameController.getBuildingToBePlaced().getOutputDirections()[0])),
-                        previewCoords, previewCoords, null);
+                this.drawConveyorBelt(g2d, gameController.getBuildingToBePlaced(), previewCoords, previewCoords);
             } else if (gameController.getBuildingToBePlaced().getClass() == Extractor.class) {
                 switch (gameController.getBuildingToBePlaced().getRotation()) {
                     case 0:
@@ -604,130 +672,153 @@ public class GamePanel extends JPanel implements Runnable {
         ArrayList<Item> content = new ArrayList<Item>(b.getInventory()); // 8 by 8 pixels for items on conveyor belts
         int[][] itemCoordinates = new int[5][2];
         int middle = tileSize / 2;
-        itemCoordinates[2][0] = middle - 4;
-        itemCoordinates[2][1] = middle - 4;
+        int state = 3 * drawState;
         String conveyor = "";
 
         if (input == 0 && output == 1) {
             conveyor = "conveyorUPtoRIGHT";
-            itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = middle - 30;
-            itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = middle - 17;
-            itemCoordinates[3][0] = middle + 9;
-            itemCoordinates[3][1] = middle - 4;
-            itemCoordinates[4][0] = middle + 22;
-            itemCoordinates[4][1] = middle - 4;
+            itemCoordinates[4][0] = middle - 4;
+            itemCoordinates[4][1] = middle - 30 + state;
+            itemCoordinates[3][0] = middle - 4;
+            itemCoordinates[3][1] = middle - 17 + state;
+            itemCoordinates[2][0] = middle - 4 + state;
+            itemCoordinates[2][1] = middle - 4;
+            itemCoordinates[1][0] = middle + 9 + state;
+            itemCoordinates[1][1] = middle - 4;
+            itemCoordinates[0][0] = middle + 22 + state;
+            itemCoordinates[0][1] = middle - 4;
         } else if (input == 0 && output == 2) {
             conveyor = "conveyorDOWN";
-            itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = middle - 30;
-            itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = middle - 17;
-            itemCoordinates[3][0] = middle - 4;
-            itemCoordinates[3][1] = middle + 9;
             itemCoordinates[4][0] = middle - 4;
-            itemCoordinates[4][1] = middle + 22;
+            itemCoordinates[4][1] = middle - 30 + state;
+            itemCoordinates[3][0] = middle - 4;
+            itemCoordinates[3][1] = middle - 17 + state;
+            itemCoordinates[2][0] = middle - 4;
+            itemCoordinates[2][1] = middle - 4 + state;
+            itemCoordinates[1][0] = middle - 4;
+            itemCoordinates[1][1] = middle + 9 + state;
+            itemCoordinates[0][0] = middle - 4;
+            itemCoordinates[0][1] = middle + 22 + state;
         } else if (input == 0 && output == 3) {
             conveyor = "conveyorUPtoLEFT";
-            itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = middle - 30;
-            itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = middle - 17;
-            itemCoordinates[3][0] = middle - 17;
-            itemCoordinates[3][1] = middle - 4;
-            itemCoordinates[4][0] = middle - 30;
-            itemCoordinates[4][1] = middle - 4;
+            itemCoordinates[4][0] = middle - 4;
+            itemCoordinates[4][1] = middle - 30 + state;
+            itemCoordinates[3][0] = middle - 4;
+            itemCoordinates[3][1] = middle - 17 + state;
+            itemCoordinates[2][0] = middle - 4 - state;
+            itemCoordinates[2][1] = middle - 4;
+            itemCoordinates[1][0] = middle - 17 - state;
+            itemCoordinates[1][1] = middle - 4;
+            itemCoordinates[0][0] = middle - 30 - state;
+            itemCoordinates[0][1] = middle - 4;
         } else if (input == 1 && output == 1) {
             conveyor = "conveyorRIGHTtoDOWN";
-            itemCoordinates[0][0] = middle + 22;
-            itemCoordinates[0][1] = middle - 4;
-            itemCoordinates[1][0] = middle + 9;
-            itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[3][0] = middle - 4;
-            itemCoordinates[3][1] = middle + 9;
-            itemCoordinates[4][0] = middle - 4;
-            itemCoordinates[4][1] = middle + 22;
+            itemCoordinates[4][0] = middle + 22 - state;
+            itemCoordinates[4][1] = middle - 4;
+            itemCoordinates[3][0] = middle + 9 - state;
+            itemCoordinates[3][1] = middle - 4;
+            itemCoordinates[2][0] = middle - 4;
+            itemCoordinates[2][1] = middle - 4 + state;
+            itemCoordinates[1][0] = middle - 4;
+            itemCoordinates[1][1] = middle + 9 + state;
+            itemCoordinates[0][0] = middle - 4;
+            itemCoordinates[0][1] = middle + 22 + state;
         } else if (input == 1 && output == 2) {
             conveyor = "conveyorLEFT";
-            itemCoordinates[0][0] = middle + 22;
-            itemCoordinates[0][1] = middle - 4;
-            itemCoordinates[1][0] = middle + 9;
-            itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[3][0] = middle - 17;
-            itemCoordinates[3][1] = middle - 4;
-            itemCoordinates[4][0] = middle - 30;
+            itemCoordinates[4][0] = middle + 22 - state;
             itemCoordinates[4][1] = middle - 4;
+            itemCoordinates[3][0] = middle + 9 - state;
+            itemCoordinates[3][1] = middle - 4;
+            itemCoordinates[2][0] = middle - 4 - state;
+            itemCoordinates[2][1] = middle - 4;
+            itemCoordinates[1][0] = middle - 17 - state;
+            itemCoordinates[1][1] = middle - 4;
+            itemCoordinates[0][0] = middle - 30 - state;
+            itemCoordinates[0][1] = middle - 4;
         } else if (input == 1 && output == 3) {
             conveyor = "conveyorRIGHTtoUP";
-            itemCoordinates[0][0] = middle + 22;
-            itemCoordinates[0][1] = middle - 4;
-            itemCoordinates[1][0] = middle + 9;
-            itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[3][0] = middle - 4;
-            itemCoordinates[3][1] = middle - 17;
-            itemCoordinates[4][0] = middle - 4;
-            itemCoordinates[4][1] = middle - 30;
+            itemCoordinates[4][0] = middle + 22 - state;
+            itemCoordinates[4][1] = middle - 4;
+            itemCoordinates[3][0] = middle + 9 - state;
+            itemCoordinates[3][1] = middle - 4;
+            itemCoordinates[2][0] = middle - 4;
+            itemCoordinates[2][1] = middle - 4 - state;
+            itemCoordinates[1][0] = middle - 4;
+            itemCoordinates[1][1] = middle - 17 - state;
+            itemCoordinates[0][0] = middle - 4;
+            itemCoordinates[0][1] = middle - 30 - state;
         } else if (input == 2 && output == 1) {
             conveyor = "conveyorDOWNtoLEFT";
-            itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = middle + 22;
-            itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = middle + 9;
-            itemCoordinates[3][0] = middle - 17;
-            itemCoordinates[3][1] = middle - 4;
-            itemCoordinates[4][0] = middle - 30;
-            itemCoordinates[4][1] = middle - 4;
+            itemCoordinates[4][0] = middle - 4;
+            itemCoordinates[4][1] = middle + 22 - state;
+            itemCoordinates[3][0] = middle - 4;
+            itemCoordinates[3][1] = middle + 9 - state;
+            itemCoordinates[2][0] = middle - 4 - state;
+            itemCoordinates[2][1] = middle - 4;
+            itemCoordinates[1][0] = middle - 17 - state;
+            itemCoordinates[1][1] = middle - 4;
+            itemCoordinates[0][0] = middle - 30 - state;
+            itemCoordinates[0][1] = middle - 4;
         } else if (input == 2 && output == 2) {
             conveyor = "conveyorUP";
-            itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = middle + 22;
-            itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = middle + 9;
-            itemCoordinates[3][0] = middle - 4;
-            itemCoordinates[3][1] = middle - 17;
             itemCoordinates[4][0] = middle - 4;
-            itemCoordinates[4][1] = middle - 30;
+            itemCoordinates[4][1] = middle + 22 - state;
+            itemCoordinates[3][0] = middle - 4;
+            itemCoordinates[3][1] = middle + 9 - state;
+            itemCoordinates[2][0] = middle - 4;
+            itemCoordinates[2][1] = middle - 4 - state;
+            itemCoordinates[1][0] = middle - 4;
+            itemCoordinates[1][1] = middle - 17 - state;
+            itemCoordinates[0][0] = middle - 4;
+            itemCoordinates[0][1] = middle - 30 - state;
         } else if (input == 2 && output == 3) {
             conveyor = "conveyorDOWNtoRIGHT";
-            itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = middle + 22;
-            itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = middle + 9;
-            itemCoordinates[3][0] = middle + 9;
-            itemCoordinates[3][1] = middle - 4;
-            itemCoordinates[4][0] = middle + 22;
-            itemCoordinates[4][1] = middle - 4;
+            itemCoordinates[4][0] = middle - 4;
+            itemCoordinates[4][1] = middle + 22 - state;
+            itemCoordinates[3][0] = middle - 4;
+            itemCoordinates[3][1] = middle + 9 - state;
+            itemCoordinates[2][0] = middle - 4 + state;
+            itemCoordinates[2][1] = middle - 4;
+            itemCoordinates[1][0] = middle + 9 + state;
+            itemCoordinates[1][1] = middle - 4;
+            itemCoordinates[0][0] = middle + 22 + state;
+            itemCoordinates[0][1] = middle - 4;
         } else if (input == 3 && output == 1) {
             conveyor = "conveyorLEFTtoUP";
-            itemCoordinates[0][0] = middle - 30;
-            itemCoordinates[0][1] = middle - 4;
-            itemCoordinates[1][0] = middle - 17;
-            itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[3][0] = middle - 4;
-            itemCoordinates[3][1] = middle - 17;
-            itemCoordinates[4][0] = middle - 4;
-            itemCoordinates[4][1] = middle - 30;
+            itemCoordinates[4][0] = middle - 30 + state;
+            itemCoordinates[4][1] = middle - 4;
+            itemCoordinates[3][0] = middle - 17 + state;
+            itemCoordinates[3][1] = middle - 4;
+            itemCoordinates[2][0] = middle - 4;
+            itemCoordinates[2][1] = middle - 4 - state;
+            itemCoordinates[1][0] = middle - 4;
+            itemCoordinates[1][1] = middle - 17 - state;
+            itemCoordinates[0][0] = middle - 4;
+            itemCoordinates[0][1] = middle - 30 - state;
         } else if (input == 3 && output == 2) {
             conveyor = "conveyorRIGHT";
-            itemCoordinates[0][0] = middle - 30;
-            itemCoordinates[0][1] = middle - 4;
-            itemCoordinates[1][0] = middle - 17;
-            itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[3][0] = middle + 9;
-            itemCoordinates[3][1] = middle - 4;
-            itemCoordinates[4][0] = middle + 22;
+            itemCoordinates[4][0] = middle - 30 + state;
             itemCoordinates[4][1] = middle - 4;
+            itemCoordinates[3][0] = middle - 17 + state;
+            itemCoordinates[3][1] = middle - 4;
+            itemCoordinates[2][0] = middle - 4 + state;
+            itemCoordinates[2][1] = middle - 4;
+            itemCoordinates[1][0] = middle + 9 + state;
+            itemCoordinates[1][1] = middle - 4;
+            itemCoordinates[0][0] = middle + 22 + state;
+            itemCoordinates[0][1] = middle - 4;
         } else if (input == 3 && output == 3) {
             conveyor = "conveyorLEFTtoDOWN";
-            itemCoordinates[0][0] = middle - 30;
-            itemCoordinates[0][1] = middle - 4;
-            itemCoordinates[1][0] = middle - 17;
-            itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[3][0] = middle - 4;
-            itemCoordinates[3][1] = middle + 9;
-            itemCoordinates[4][0] = middle - 4;
-            itemCoordinates[4][1] = middle + 22;
+            itemCoordinates[4][0] = middle - 30 + state;
+            itemCoordinates[4][1] = middle - 4;
+            itemCoordinates[3][0] = middle - 17 + state;
+            itemCoordinates[3][1] = middle - 4;
+            itemCoordinates[2][0] = middle - 4;
+            itemCoordinates[2][1] = middle - 4 + state;
+            itemCoordinates[1][0] = middle - 4;
+            itemCoordinates[1][1] = middle + 9 + state;
+            itemCoordinates[0][0] = middle - 4;
+            itemCoordinates[0][1] = middle + 22 + state;
         }
 
         g2d.drawImage(images.get(conveyor), posX, posY, null);
@@ -737,79 +828,33 @@ public class GamePanel extends JPanel implements Runnable {
             }
             switch (content.get(i).getItemID()) {
                 case 0:
-                    g2d.setColor(new Color(0, 0, 0));
-                    break;
-
+                    // TODO
                 case 1:
-                    g2d.setColor(new Color(255, 0, 0));
-                    break;
-
+                    // TODO
                 case 2:
-                    g2d.setColor(new Color(0, 255, 0));
-                    break;
-
+                    // TODO
                 case 3:
-                    g2d.setColor(new Color(255, 255, 0));
-                    break;
-
+                    // TODO
                 case 4:
-                    g2d.setColor(new Color(0, 0, 255));
+                    g2d.drawImage(images.get("stone"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
+                            null, null);
                     break;
 
                 case 5:
-                    g2d.setColor(new Color(255, 0, 255));
+                    g2d.drawImage(images.get("copper"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
+                            null, null);
                     break;
 
                 case 6:
-                    g2d.setColor(new Color(0, 255, 255));
+                    g2d.drawImage(images.get("iron"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
+                            null, null);
                     break;
 
                 case 7:
-                    g2d.setColor(new Color(255, 255, 255));
+                    g2d.drawImage(images.get("gold"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
+                            null, null);
                     break;
             }
-            g2d.drawRect(itemCoordinates[i][0] + posX, itemCoordinates[i][1] + posY, 8, 8);
         }
-    }
-
-    public String rotateConveyorBelt(byte input, byte output) {
-
-        if (input == 0 && output == 1)
-            return "conveyorUPtoRIGHT";
-
-        else if (input == 0 && output == 2)
-            return "conveyorDOWN";
-
-        else if (input == 0 && output == 3)
-            return "conveyorUPtoLEFT";
-
-        else if (input == 1 && output == 1)
-            return "conveyorRIGHTtoDOWN";
-
-        else if (input == 1 && output == 2)
-            return "conveyorLEFT";
-
-        else if (input == 1 && output == 3)
-            return "conveyorRIGHTtoUP";
-
-        else if (input == 2 && output == 1)
-            return "conveyorDOWNtoLEFT";
-
-        else if (input == 2 && output == 2)
-            return "conveyorUP";
-
-        else if (input == 2 && output == 3)
-            return "conveyorDOWNtoRIGHT";
-
-        else if (input == 3 && output == 1)
-            return "conveyorLEFTtoUP";
-
-        else if (input == 3 && output == 2)
-            return "conveyorRIGHT";
-
-        else if (input == 3 && output == 3)
-            return "conveyorLEFTtoDOWN";
-
-        return null;
     }
 }

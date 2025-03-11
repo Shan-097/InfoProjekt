@@ -12,6 +12,8 @@ import java.util.Map.Entry;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import main.Tuple;
+
 /**
  * The GameController class is the heart of the model.<br>
  * It suplies the controller with the necessary get and set methods and connects
@@ -108,7 +110,7 @@ public class GameController {
      * 
      * @return Returns the list of coordinates the found buildings are standing on.
      */
-    private ArrayList<Tuple> getStartingPoints() {
+    public ArrayList<Tuple> getStartingPoints() {
         ArrayList<Tuple> buildingList = new ArrayList<Tuple>();
 
         int mapLengthX = wGenerator.getXLengthMap();
@@ -137,8 +139,8 @@ public class GameController {
                 } else {
                     direction = (byte) ((inputDirectionsOfBuilding[i] + rotation) % 4);
                 }
-                int newX = 0;
-                int newY = 0;
+                int newX = x;
+                int newY = y;
                 switch (direction) {
                     case 0:
                         newY--;
@@ -186,12 +188,14 @@ public class GameController {
         int mapLengthX = wGenerator.getXLengthMap();
         int mapLengthY = wGenerator.getYLengthMap();
 
+        System.out.println();
         for (Tuple point : startingPoints) {
             int x = point.getA();
             int y = point.getB();
             Building b = wGenerator.getField(x, y).getBuilding();
             b.moveItemInsideBuilding();
         }
+        System.out.println();
 
         while (true) {
             if (startingPoints.size() == 0) {
@@ -529,37 +533,6 @@ public class GameController {
      */
     public Building getBuildingToBePlaced() {
         return buildingToBePlaced;
-    }
-
-    /**
-     * Inner class of a tuple with two elements.<br>
-     * Used for storing coordinates of a 2D space and comparing them.
-     */
-    private class Tuple {
-        private int a;
-        private int b;
-
-        public Tuple(int pA, int pB) {
-            a = pA;
-            b = pB;
-        }
-
-        public int getA() {
-            return a;
-        }
-
-        public int getB() {
-            return b;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            Tuple other = (Tuple) obj;
-            if (a == other.getA() && b == other.getB()) {
-                return true;
-            }
-            return false;
-        }
     }
 
     /**
