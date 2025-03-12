@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
- * The class of the Input handler implementing Keylistener.
- * Every Object has a collection of all keys with wether or not they are
+ * The class of the Input handler implementing Keylistener.<br>
+ * Every Object has a collection of all keys with whether or not they are
  * pressed.
  */
 public class InputHandler implements KeyListener {

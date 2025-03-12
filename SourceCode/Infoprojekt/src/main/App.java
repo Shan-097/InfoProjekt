@@ -44,7 +44,6 @@ public class App {
      * for the starting screen closing the others in the process.
      */
     public static void loadStartingScreen() {
-        window.dispose();
         StartingPanel startingPanel = new StartingPanel(FRAME_RATE);
         setStandardProperties(startingPanel);
 
@@ -58,7 +57,6 @@ public class App {
      * the hot key screen closing the others in the process.
      */
     public static void loadHotKeyScreen() {
-        window.dispose();
         HotKeyPanel hotKeyPanel = new HotKeyPanel(FRAME_RATE);
         setStandardProperties(hotKeyPanel);
 
@@ -72,7 +70,6 @@ public class App {
      * the game screen closing the others in the process.
      */
     public static void loadGameScreen() {
-        window.dispose();
         GamePanel gamePanel = new GamePanel(FRAME_RATE);
         setStandardProperties(gamePanel);
 
@@ -87,6 +84,7 @@ public class App {
      * @param panel The Panel to be added to the frame
      */
     private static void setStandardProperties(JPanel panel) {
+        window.dispose();
         window = new JFrame("Keria");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.add(panel);

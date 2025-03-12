@@ -1,6 +1,7 @@
 package game;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
@@ -23,12 +24,21 @@ public abstract class Building {
     private LinkedList<Item> content;
 
     /**
+     * to be done
+     */
+    private HashSet<Integer> movedIndices;
+
+    /**
      * Basic constructor of Building for super() calls.<br>
      * Initalizes the rotation and inventory of the building.
      */
     public Building() {
         rotation = 0;
         content = new LinkedList<Item>();
+        for (int i = 0; i < 5; i++) {
+            content.add(null);
+        }
+        movedIndices = new HashSet<>(5);
     }
 
     /**
@@ -47,7 +57,8 @@ public abstract class Building {
         }
         if (content.getLast() == null) {
             content.removeLast();
-            return content.add(item);
+            content.addLast(item);
+            return true;
         }
         return false;
     }
@@ -67,6 +78,29 @@ public abstract class Building {
         if (otherBuilding.addItem(content.getFirst())) {
             content.removeFirst();
             content.addLast(null);
+            movedIndices.clear();
+            for (int i = 0; i < 5; i++) {
+                movedIndices.add(i);
+            }
+        } else {
+            this.moveItemInsideBuilding();
+        }
+    }
+
+    /**
+     * to be done
+     */
+    public void moveItemInsideBuilding() {
+        movedIndices.clear();
+        for (int i = 0; i < 5; i++) {
+            if (content.get(i) == null) {
+                content.remove(i);
+                content.addLast(null);
+                for (int j = i + 1; j < 5; j++) {
+                    movedIndices.add(j);
+                }
+                return;
+            }
         }
     }
 
@@ -79,12 +113,28 @@ public abstract class Building {
     }
 
     /**
+     * temp remove later (exists on other branch already)
+     */
+    public LinkedList<Item> getInventory() {
+        return content;
+    }
+
+    /**
      * Returns the rotation of this building.
      * 
      * @return The rotation.
      */
     public byte getRotation() {
         return rotation;
+    }
+
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
+    public HashSet<Integer> getMovedItems() {
+        return movedIndices;
     }
 
     /**

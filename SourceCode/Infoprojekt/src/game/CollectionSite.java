@@ -23,7 +23,7 @@ public class CollectionSite extends Building {
      * The static and final attributes are declared here.
      */
     static {
-        INPUT_DIRECTIONS = new byte[] { (byte) 0, (byte) 1, (byte) 3, (byte) 4 };
+        INPUT_DIRECTIONS = new byte[] { (byte) 0, (byte) 1, (byte) 2, (byte) 3 };
         OUTPUT_DIRECTIONS = new byte[0];
     }
 

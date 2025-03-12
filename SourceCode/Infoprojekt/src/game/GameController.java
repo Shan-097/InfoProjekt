@@ -12,6 +12,8 @@ import java.util.Map.Entry;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import main.Tuple;
+
 /**
  * The GameController class is the heart of the model.<br>
  * It suplies the controller with the necessary get and set methods and connects
@@ -108,7 +110,7 @@ public class GameController {
      * 
      * @return Returns the list of coordinates the found buildings are standing on.
      */
-    private ArrayList<Tuple> getStartingPoints() {
+    public ArrayList<Tuple> getStartingPoints() {
         ArrayList<Tuple> buildingList = new ArrayList<Tuple>();
 
         int mapLengthX = wGenerator.getXLengthMap();
@@ -131,32 +133,35 @@ public class GameController {
             byte[] inputDirectionsOfBuilding = temp.getBuilding().getInputDirections();
             byte rotation = temp.getBuilding().getRotation();
             for (int i = 0; i < inputDirectionsOfBuilding.length; i++) {
-                byte direction = (byte) ((inputDirectionsOfBuilding[i] + rotation) % 4);
-                int deltaX = 0;
-                int deltaY = 0;
+                byte direction;
+                if (temp.getBuilding().getClass() == CollectionSite.class) {
+                    direction = (byte) (inputDirectionsOfBuilding[i] % 4);
+                } else {
+                    direction = (byte) ((inputDirectionsOfBuilding[i] + rotation) % 4);
+                }
+                int newX = x;
+                int newY = y;
                 switch (direction) {
                     case 0:
-                        deltaY--;
+                        newY--;
                         break;
 
                     case 1:
-                        deltaX++;
+                        newX++;
                         break;
 
                     case 2:
-                        deltaY++;
+                        newY++;
                         break;
 
                     case 3:
-                        deltaX--;
+                        newX--;
                         break;
                 }
-                x += deltaX;
-                y += deltaY;
-                if (x < 0 || x >= mapLengthX || y < 0 || y >= mapLengthY) {
+                if (newX < 0 || newX >= mapLengthX || newY < 0 || newY >= mapLengthY) {
                     continue;
                 }
-                Field temp2 = wGenerator.getField(x, y);
+                Field temp2 = wGenerator.getField(newX, newY);
                 if (temp2 == null || temp2.getBuilding() == null) {
                     continue;
                 }
@@ -164,7 +169,7 @@ public class GameController {
                 byte rotationOfOtherBuilding = temp2.getBuilding().getRotation();
                 for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++) {
                     if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction) {
-                        listOfStartingPoints.remove(new Tuple(x, y));
+                        listOfStartingPoints.remove(new Tuple(newX, newY));
                     }
                 }
             }
@@ -183,39 +188,52 @@ public class GameController {
         int mapLengthX = wGenerator.getXLengthMap();
         int mapLengthY = wGenerator.getYLengthMap();
 
-        for (Tuple tuple : startingPoints) {
-            int x = tuple.getA();
-            int y = tuple.getB();
+        for (Tuple point : startingPoints) {
+            int x = point.getA();
+            int y = point.getB();
+            Building b = wGenerator.getField(x, y).getBuilding();
+            b.moveItemInsideBuilding();
+        }
+
+        while (true) {
+            if (startingPoints.size() == 0) {
+                return;
+            }
+            int x = startingPoints.get(0).getA();
+            int y = startingPoints.get(0).getB();
             Building b = wGenerator.getField(x, y).getBuilding();
             byte[] inputDirectionsOfBuilding = b.getInputDirections();
             byte rotation = b.getRotation();
             for (int i = 0; i < inputDirectionsOfBuilding.length; i++) {
-                byte direction = (byte) ((inputDirectionsOfBuilding[i] + rotation) % 4);
-                int deltaX = 0;
-                int deltaY = 0;
+                byte direction;
+                if (b.getClass() == CollectionSite.class) {
+                    direction = (byte) (inputDirectionsOfBuilding[i] % 4);
+                } else {
+                    direction = (byte) ((inputDirectionsOfBuilding[i] + rotation) % 4);
+                }
+                int newX = x;
+                int newY = y;
                 switch (direction) {
                     case 0:
-                        deltaY--;
+                        newY--;
                         break;
 
                     case 1:
-                        deltaX++;
+                        newX++;
                         break;
 
                     case 2:
-                        deltaY++;
+                        newY++;
                         break;
 
                     case 3:
-                        deltaX--;
+                        newX--;
                         break;
                 }
-                x += deltaX;
-                y += deltaY;
-                if (x < 0 || x >= mapLengthX || y < 0 || y >= mapLengthY) {
+                if (newX < 0 || newX >= mapLengthX || newY < 0 || newY >= mapLengthY) {
                     continue;
                 }
-                Field temp2 = wGenerator.getField(x, y);
+                Field temp2 = wGenerator.getField(newX, newY);
                 if (temp2 == null || temp2.getBuilding() == null) {
                     continue;
                 }
@@ -225,9 +243,12 @@ public class GameController {
                 for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++) {
                     if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction) {
                         b2.moveItemToNextBuilding(b);
+                        startingPoints.add(new Tuple(newX, newY));
+                        break;
                     }
                 }
             }
+            startingPoints.remove(0);
         }
     }
 
@@ -385,7 +406,7 @@ public class GameController {
         for (Entry<Item, Integer> cost : buildingToBePlaced.getCost().entrySet()) {
             if (inventory.get(cost.getKey()) < cost.getValue()) {
                 return;
-            }            
+            }
         }
 
         if (buildingToBePlaced.getClass() == Extractor.class) {
@@ -399,10 +420,21 @@ public class GameController {
         }
 
         for (Entry<Item, Integer> cost : buildingToBePlaced.getCost().entrySet()) {
-            inventory.replace(cost.getKey(), inventory.get(cost.getKey()) - cost.getValue());          
+            inventory.replace(cost.getKey(), inventory.get(cost.getKey()) - cost.getValue());
         }
 
         wGenerator.placeBuilding(posXinArray, posYinArray, buildingToBePlaced);
+
+        if (buildingToBePlaced.getClass() == ConveyorBelt.class) {
+            ConveyorBelt temp = new ConveyorBelt();
+            while (temp.getOutputDirections()[0] != buildingToBePlaced.getOutputDirections()[0]) {
+                temp.rotate();
+            }
+            temp.setRotation(buildingToBePlaced.getRotation());
+            buildingToBePlaced = temp;
+        } else {
+            buildingToBePlaced = null;
+        }
     }
 
     /**
@@ -413,7 +445,7 @@ public class GameController {
         if (b != null && b.getClass() != CollectionSite.class) {
             wGenerator.deleteBuilding(posXinArray, posYinArray);
             for (Entry<Item, Integer> cost : b.getCost().entrySet()) {
-                inventory.replace(cost.getKey(), inventory.get(cost.getKey()) + cost.getValue());          
+                inventory.replace(cost.getKey(), inventory.get(cost.getKey()) + cost.getValue());
             }
         }
     }
@@ -425,6 +457,9 @@ public class GameController {
      * @return Returns wheter the item has been added sucessfully or not
      */
     public static boolean addItemToInventory(Item item) {
+        if (item == null) {
+            return true;
+        }
         if (inventory.containsKey(item)) {
             if (inventory.get(item) == Integer.MAX_VALUE) {
                 return false;
@@ -489,48 +524,12 @@ public class GameController {
     }
 
     /**
-     * temp
+     * to be done
+     * 
+     * @return to be done
      */
-    public Building getBuilding(int posX, int posY) {
-        return wGenerator.getField(posX, posY).getBuilding();
-    }
-
-    /**
-     * temp
-     */
-    public Resource getResource(int posX, int posY) {
-        return wGenerator.getField(posX, posY).getResource();
-    }
-
-    /**
-     * Inner class of a tuple with two elements.<br>
-     * Used for storing coordinates of a 2D space and comparing them.
-     */
-    private class Tuple {
-        private int a;
-        private int b;
-
-        public Tuple(int pA, int pB) {
-            a = pA;
-            b = pB;
-        }
-
-        public int getA() {
-            return a;
-        }
-
-        public int getB() {
-            return b;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            Tuple other = (Tuple) obj;
-            if (a == other.getA() && b == other.getB()) {
-                return true;
-            }
-            return false;
-        }
+    public Building getBuildingToBePlaced() {
+        return buildingToBePlaced;
     }
 
     /**
@@ -562,6 +561,15 @@ public class GameController {
      */
     public int getYLengthMap() {
         return wGenerator.getYLengthMap();
+    }
+
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
+    public HashMap<Item, Integer> getInventory() {
+        return inventory;
     }
 
     /**
