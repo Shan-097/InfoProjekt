@@ -863,6 +863,7 @@ public class GamePanel extends JPanel implements Runnable {
                     g2d.drawImage(images.get("stone"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
                             null, null);
                     break;
+
                 case 5:
                     g2d.drawImage(images.get("copper"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
                             null, null);
