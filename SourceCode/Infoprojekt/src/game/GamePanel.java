@@ -99,18 +99,24 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("stone", "./Graphics/StoneConveyor.png");
         imgPaths.put("copper", "./Graphics/CopperConveyor.png");
 
+        imgPaths.put("copperIngot", "./Graphics/CopperIngotFinal.png");
+        imgPaths.put("goldIngot", "./Graphics/GoldIngotFinal.png");
+        imgPaths.put("ironIngot", "./Graphics/IronIngotFinal.png");
+        //imgPaths.put("stoneIngot", "./Graphics/Stein.png");
+
+
         // Conveyor belts
-        imgPaths.put("conveyorUP", "./Graphics/ConveyerBelt-oben.png");
-        imgPaths.put("conveyorUP2", "./Graphics/ConveyerBelt-oben f7.png");
+        imgPaths.put("conveyorUP0", "./Graphics/ConveyerBelt-oben.png");
+        imgPaths.put("conveyorUP1", "./Graphics/ConveyerBelt-oben f7.png");
 
-        imgPaths.put("conveyorLEFT", "./Graphics/ConveyerBelt-links.png");
-        imgPaths.put("conveyorLEFT2", "./Graphics/ConveyerBelt-links f7.png");
+        imgPaths.put("conveyorLEFT0", "./Graphics/ConveyerBelt-links.png");
+        imgPaths.put("conveyorLEFT1", "./Graphics/ConveyerBelt-links f7.png");
 
-        imgPaths.put("conveyorDOWN", "./Graphics/ConveyerBelt-unten f1.png");
-        imgPaths.put("conveyorDOWN2", "./Graphics/ConveyerBelt-unten f7.png");
+        imgPaths.put("conveyorDOWN0", "./Graphics/ConveyerBelt-unten f1.png");
+        imgPaths.put("conveyorDOWN1", "./Graphics/ConveyerBelt-unten f7.png");
 
-        imgPaths.put("conveyorRIGHT", "./Graphics/ConveyerBelt-rechts.png");
-        imgPaths.put("conveyorRIGHT2", "./Graphics/ConveyerBelt-rechts f7.png");
+        imgPaths.put("conveyorRIGHT0", "./Graphics/ConveyerBelt-rechts.png");
+        imgPaths.put("conveyorRIGHT1", "./Graphics/ConveyerBelt-rechts f7.png");
 
         imgPaths.put("conveyorUPtoLEFT", "./Graphics/CB - rotiert oben Links.png");
         imgPaths.put("conveyorLEFTtoDOWN", "./Graphics/CB - rotiert oben Rechts.png");
@@ -121,7 +127,6 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("conveyorDOWNtoLEFT", "./Graphics/CB - rotiert oben Rechts.png");
         imgPaths.put("conveyorRIGHTtoDOWN", "./Graphics/CB - rotiert unten Links.png");
         imgPaths.put("conveyorUPtoRIGHT", "./Graphics/CB - rotiert unten Rechts.png");
-
 
         // Extractors
         imgPaths.put("extractorUP", "./Graphics/drillTop.png");
@@ -293,12 +298,12 @@ public class GamePanel extends JPanel implements Runnable {
                 break;
             }
 
-            int x = startingPoints.getFirst().getA();
-            int y = startingPoints.getFirst().getB();
+            int x = startingPoints.get(0).getA();
+            int y = startingPoints.get(0).getB();
 
             Building b = gameController.getField(x, y).getBuilding();
             if (b == null) {
-                startingPoints.removeFirst();
+                startingPoints.remove(0);
                 continue;
             }
             byte[] inputDirections = b.getInputDirections();
@@ -340,12 +345,12 @@ public class GamePanel extends JPanel implements Runnable {
                 byte rotationOfOtherBuilding = temp2.getBuilding().getRotation();
                 for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++) {
                     if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction) {
-                        startingPoints.addLast(new Tuple(newX, newY));
+                        startingPoints.add(new Tuple(newX, newY));
                     }
                 }
             }
 
-            startingPoints.removeFirst();
+            startingPoints.remove(0);
 
             if (x >= minX || x <= maxX || y >= minY || y <= maxY) {
                 x = (int) (TileCenterX + (x - posXinArray - gameController.getOffsetX()) * tileSize);
@@ -699,7 +704,7 @@ public class GamePanel extends JPanel implements Runnable {
             itemCoordinates[0][0] = movedItems.contains(0) ? middle + 22 + state : middle + 22;
             itemCoordinates[0][1] = middle - 4;
         } else if (input == 0 && output == 2) {
-            conveyor = "conveyorDOWN" + drawState % 2;
+            conveyor = drawState < 2 ? "conveyorDOWN0" : "conveyorDOWN1";
             itemCoordinates[4][0] = middle - 4;
             itemCoordinates[4][1] = movedItems.contains(4) ? middle - 30 + state : middle - 30;
             itemCoordinates[3][0] = middle - 4;
@@ -735,7 +740,7 @@ public class GamePanel extends JPanel implements Runnable {
             itemCoordinates[0][0] = middle - 4;
             itemCoordinates[0][1] = movedItems.contains(0) ? middle + 22 + state : middle + 22;
         } else if (input == 1 && output == 2) {
-            conveyor = "conveyorLEFT" + drawState % 2;
+            conveyor = drawState < 2 ? "conveyorLEFT0" : "conveyorLEFT1";
             itemCoordinates[4][0] = movedItems.contains(4) ? middle + 22 - state : middle + 22;
             itemCoordinates[4][1] = middle - 4;
             itemCoordinates[3][0] = movedItems.contains(3) ? middle + 9 - state : middle + 9;
@@ -771,7 +776,7 @@ public class GamePanel extends JPanel implements Runnable {
             itemCoordinates[0][0] = movedItems.contains(0) ? middle - 30 - state : middle - 30;
             itemCoordinates[0][1] = middle - 4;
         } else if (input == 2 && output == 2) {
-            conveyor = "conveyorUP" + drawState % 2;
+            conveyor = drawState < 2 ? "conveyorUP0" : "conveyorUP1";
             itemCoordinates[4][0] = middle - 4;
             itemCoordinates[4][1] = movedItems.contains(4) ? middle + 22 - state : middle + 22;
             itemCoordinates[3][0] = middle - 4;
@@ -807,7 +812,7 @@ public class GamePanel extends JPanel implements Runnable {
             itemCoordinates[0][0] = middle - 4;
             itemCoordinates[0][1] = movedItems.contains(0) ? middle - 30 - state : middle - 30;
         } else if (input == 3 && output == 2) {
-            conveyor = "conveyorRIGHT" + drawState % 2;
+            conveyor = drawState < 2 ? "conveyorRIGHT0" : "conveyorRIGHT1";
             itemCoordinates[4][0] = movedItems.contains(4) ? middle - 30 + state : middle - 30;
             itemCoordinates[4][1] = middle - 4;
             itemCoordinates[3][0] = movedItems.contains(3) ? middle - 17 + state : middle - 17;
@@ -839,18 +844,25 @@ public class GamePanel extends JPanel implements Runnable {
             }
             switch (content.get(i).getItemID()) {
                 case 0:
-                    // TODO
+                    g2d.drawImage(images.get("stoneIngot"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
+                null, null);
+                    break;
                 case 1:
-                    // TODO
+                    g2d.drawImage(images.get("copperIngot"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
+                null, null);
+                    break;
                 case 2:
-                    // TODO
+                    g2d.drawImage(images.get("ironIngot"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
+                null, null);
+                    break;
                 case 3:
-                    // TODO
+                    g2d.drawImage(images.get("goldIngot"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
+                null, null);
+                    break;
                 case 4:
                     g2d.drawImage(images.get("stone"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
                             null, null);
                     break;
-
                 case 5:
                     g2d.drawImage(images.get("copper"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
                             null, null);

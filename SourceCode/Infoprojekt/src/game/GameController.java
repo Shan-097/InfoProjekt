@@ -199,8 +199,8 @@ public class GameController {
             if (startingPoints.size() == 0) {
                 return;
             }
-            int x = startingPoints.getFirst().getA();
-            int y = startingPoints.getFirst().getB();
+            int x = startingPoints.get(0).getA();
+            int y = startingPoints.get(0).getB();
             Building b = wGenerator.getField(x, y).getBuilding();
             byte[] inputDirectionsOfBuilding = b.getInputDirections();
             byte rotation = b.getRotation();
@@ -243,12 +243,12 @@ public class GameController {
                 for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++) {
                     if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction) {
                         b2.moveItemToNextBuilding(b);
-                        startingPoints.addLast(new Tuple(newX, newY));
+                        startingPoints.add(new Tuple(newX, newY));
                         break;
                     }
                 }
             }
-            startingPoints.removeFirst();
+            startingPoints.remove(0);
         }
     }
 
