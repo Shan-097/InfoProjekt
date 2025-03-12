@@ -5,25 +5,92 @@ import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
+/**
+ * to be done
+ */
 public class Music {
+    /**
+     * to be done
+     */
+    private static Clip clip;
+    /**
+     * to be done
+     */
+    private static float Volume = 6.0f;
+    /**
+     * to be done
+     */
+    private static FloatControl fc;
 
+    /**
+     * to be done
+     * 
+     * @param location to be done
+     */
     public static void LoopMusic(String location) {
         try {
             File musicPath = new File(location);
 
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+            clip = AudioSystem.getClip();
+            clip.open(audioInput);
+            fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            fc.setValue(Volume);
+
+            clip.loop(3);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * to be done
+     * 
+     * @param location to be done
+     */
+    public static void SpawnMusic(String location) {
+        try {
+            File musicPath = new File(location);
             if (musicPath.exists()) {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-                Clip clip = AudioSystem.getClip();
+                clip = AudioSystem.getClip();
+
                 clip.open(audioInput);
-
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-
-            } else {
-                System.out.println("Can't find file");
+                clip.start();
             }
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    /**
+     * to be done
+     */
+    public static void stopMusic() {
+        clip.stop();
+    }
+
+    /**
+     * to be done
+     */
+    public static void setVolumeHigher() {
+        Volume = Volume + 1.0f;
+        if (Volume > 6.0f) {
+            Volume = 6.0f;
+        }
+        fc.setValue(Volume);
+    }
+
+    /**
+     * to be done
+     */
+    public static void setVolumeLower() {
+        Volume = Volume - 1.0f;
+        if (Volume < -80.0f) {
+            Volume = -80.0f;
+        }
+        fc.setValue(Volume);
     }
 }

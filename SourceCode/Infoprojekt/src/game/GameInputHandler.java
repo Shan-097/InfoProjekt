@@ -110,6 +110,10 @@ public class GameInputHandler {
             actions.remove("placeBuilding");
             actions.remove("deleteBuilding");
         }
+        if (actions.contains("decreaseVolume") && actions.contains("increaseVolume")) {
+            actions.remove("decreaseVolume");
+            actions.remove("increaseVolume");
+        }
 
         // run combinations
         if (actions.contains("moveUp") && actions.contains("moveLeft")) {
@@ -163,6 +167,12 @@ public class GameInputHandler {
         }
         if (actions.contains("deleteBuilding")) {
             gameController.removeBuilding();
+        }
+        if (actions.contains("increaseVolume")) {
+            Music.setVolumeHigher();
+        }
+        if (actions.contains("decreaseVolume")) { 
+            Music.setVolumeLower();
         }
     }
 }

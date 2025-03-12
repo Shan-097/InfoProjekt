@@ -49,6 +49,8 @@ public class LoadStoreHotKeys {
         STANDARD_INPUT_MAP_HOLDABLE = new HashMap<String, Character>(2);
         STANDARD_INPUT_MAP_HOLDABLE.put("placeBuilding", 'b');
         STANDARD_INPUT_MAP_HOLDABLE.put("deleteBuilding", 'x');
+        STANDARD_INPUT_MAP_HOLDABLE.put("increaseVolume", '+');
+        STANDARD_INPUT_MAP_HOLDABLE.put("decreaseVolume", '-');
     }
 
     /**

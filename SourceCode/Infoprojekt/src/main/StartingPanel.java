@@ -1,6 +1,7 @@
 package main;
 
 import game.GameController;
+import game.Music;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -109,6 +110,7 @@ public class StartingPanel extends JPanel implements Runnable {
             System.out.println("aaaaa");
             e1.printStackTrace();
         }
+        Music.LoopMusic(".\\Music\\mainmenu.wav");
     }
 
     /**

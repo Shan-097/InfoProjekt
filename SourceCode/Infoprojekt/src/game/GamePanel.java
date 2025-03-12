@@ -97,7 +97,11 @@ public class GamePanel extends JPanel implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Music.LoopMusic(".\\Music\\Wizard.wav");
+
+        Music.stopMusic();
+        Music.SpawnMusic(".\\Music\\spawn sound.wav");
+        Music.stopMusic();        
+        Music.LoopMusic(".\\Music\\Hintergrund.wav");
     }
 
     /**
