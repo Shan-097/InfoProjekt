@@ -437,6 +437,8 @@ public class GameController {
      * @return Returns wheter the item has been added sucessfully or not
      */
     public static boolean addItemToInventory(Item item) {
+        if (item == null)
+            return true;
         if (inventory.containsKey(item)) {
             if (inventory.get(item) == Integer.MAX_VALUE) {
                 return false;

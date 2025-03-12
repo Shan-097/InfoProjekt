@@ -96,11 +96,19 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Conveyor belts
         imgPaths.put("conveyorUP", "./Graphics/ConveyerBelt-oben.png");
-        imgPaths.put("conveyorLEFT", "./Graphics/ConveyerBelt-links.png");
-        imgPaths.put("conveyorDOWN", "./Graphics/ConveyerBelt-unten.png");
-        imgPaths.put("conveyorRIGHT", "./Graphics/ConveyerBelt-rechts.png");
+        imgPaths.put("conveyorUP2", "./Graphics/ConveyerBelt-oben f7.png");
 
-        // Corner conveyor belts
+        imgPaths.put("conveyorLEFT", "./Graphics/ConveyerBelt-links.png");
+        imgPaths.put("conveyorLEFT2", "./Graphics/ConveyerBelt-links f7.png");
+
+        imgPaths.put("conveyorDOWN", "./Graphics/ConveyerBelt-unten f1.png");
+        imgPaths.put("conveyorDOWN2", "./Graphics/ConveyerBelt-unten f7.png");
+
+        imgPaths.put("conveyorRIGHT", "./Graphics/ConveyerBelt-rechts.png");
+        imgPaths.put("conveyorRIGHT2", "./Graphics/ConveyerBelt-rechts f7.png");
+
+        // Corner conveyor belts 
+        /*
         imgPaths.put("conveyorUPtoRIGHT", "./Graphics/conveyorUPtoRIGHT.png");
         imgPaths.put("conveyorRIGHTtoDOWN", "./Graphics/conveyorRIGHTtoDOWN.png");
         imgPaths.put("conveyorDOWNtoLEFT", "./Graphics/conveyorDOWNtoLEFT.png");
@@ -108,7 +116,18 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("conveyorRIGHTtoUP", "./Graphics/conveyorRIGHTtoUP.png");
         imgPaths.put("conveyorDOWNtoRIGHT", "./Graphics/conveyorDOWNtoRIGHT.png");
         imgPaths.put("conveyorLEFTtoDOWN", "./Graphics/conveyorLEFTtoDOWN.png");
-        imgPaths.put("conveyorUPtoLEFT", "./Graphics/conveyorUPtoLEFT.png");
+        imgPaths.put("conveyorUPtoLEFT", "./Graphics/conveyorUPtoLEFT.png");*/
+
+        imgPaths.put("conveyorUPtoLEFT", "./Graphics/CB - rotiert oben Links.png");
+        imgPaths.put("conveyorLEFTtoDOWN", "./Graphics/CB - rotiert oben Rechts.png");
+        imgPaths.put("conveyorDOWNtoRIGHT", "./Graphics/CB - rotiert unten Links.png");
+        imgPaths.put("conveyorRIGHTtoUP", "./Graphics/CB - rotiert unten Rechts.png");
+
+        imgPaths.put("conveyorLEFTtoUP", "./Graphics/CB - rotiert oben Links.png");
+        imgPaths.put("conveyorDOWNtoLEFT", "./Graphics/CB - rotiert oben Rechts.png");
+        imgPaths.put("conveyorRIGHTtoDOWN", "./Graphics/CB - rotiert unten Links.png");
+        imgPaths.put("conveyorUPtoRIGHT", "./Graphics/CB - rotiert unten Rechts.png");
+
 
         // Extractors
         imgPaths.put("extractorUP", "./Graphics/drillTop.png");
@@ -184,6 +203,9 @@ public class GamePanel extends JPanel implements Runnable {
                 gameController.update();
 
                 // draw updated
+                count = (count+1)%15;
+                if (count == 14)
+                    vers = !vers;
                 repaint();
                 delta--;
             }
@@ -193,7 +215,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Image newImage = yourImage.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
 
-
+    private int count = 0;
+    private boolean vers = false;
     /**
      * Repaints the panel
      * Always keeps player centered and redraws the background to imitate movement
@@ -203,6 +226,8 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) { 
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        //f (count == 9)
 
         // tile on which player is standing, center tile Field-coordinates
         int posXinArray = gameController.getPosX();
@@ -297,7 +322,7 @@ public class GamePanel extends JPanel implements Runnable {
                     } else if (field.getBuilding().getClass() == ConveyorBelt.class) {
                         g2d.drawImage(images.get(rotateConveyorBelt(field.getBuilding().getRotation(), field.getBuilding().getOutputDirections()[0])), movementX, movementY, null);
                     } else if (field.getBuilding().getClass() == Extractor.class) {
-                        switch (rotation) {
+                        switch ((rotation+2)%4) {
                             case 0:
                                 g2d.drawImage(images.get("extractorUP"), movementX, movementY, null);
                                 break;
@@ -350,7 +375,7 @@ public class GamePanel extends JPanel implements Runnable {
             if (gameController.getBuildingToBePlaced().getClass() == ConveyorBelt.class) {
                 g2d.drawImage(images.get(rotateConveyorBelt(gameController.getBuildingToBePlaced().getRotation(), gameController.getBuildingToBePlaced().getOutputDirections()[0])), previewCoords, previewCoords, null);
             } else if (gameController.getBuildingToBePlaced().getClass() == Extractor.class) {
-                switch (gameController.getBuildingToBePlaced().getRotation()) {
+                switch ((gameController.getBuildingToBePlaced().getRotation()+2)%4) {
                     case 0:
                         g2d.drawImage(images.get("extractorUP"), previewCoords, previewCoords, null);
                         break;
@@ -462,6 +487,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 
+        
         // add wolken?
     }
 
@@ -602,16 +628,20 @@ public class GamePanel extends JPanel implements Runnable {
             return 0;
     }
 
+    
     public String rotateConveyorBelt(byte input, byte output) {
-        
         if (input == 0 && output == 1)
-            return "conveyorUPtoLEFT";
-
-        else if (input == 0 && output == 2)
-            return "conveyorDOWN";
-
-        else if (input == 0 && output == 3)
             return "conveyorUPtoRIGHT";
+
+        else if (input == 0 && output == 2) {
+            if (vers)
+                return "conveyorDOWN";
+            else 
+                return "conveyorDOWN2";
+        }
+            
+        else if (input == 0 && output == 3)
+            return "conveyorUPtoLEFT";
 
 
 
@@ -619,7 +649,10 @@ public class GamePanel extends JPanel implements Runnable {
             return "conveyorRIGHTtoDOWN";
 
         else if (input == 1 && output == 2)
-            return "conveyorLEFT";
+            if (vers)
+                return "conveyorLEFT";
+            else 
+                return "conveyorLEFT2";
 
         else if (input == 1 && output == 3)
             return "conveyorRIGHTtoUP";
@@ -630,7 +663,10 @@ public class GamePanel extends JPanel implements Runnable {
             return "conveyorDOWNtoLEFT";
 
         else if (input == 2 && output == 2)
-            return "conveyorUP";
+            if (vers)
+                return "conveyorUP";
+            else 
+                return "conveyorUP2";
 
         else if (input == 2 && output == 3)
             return "conveyorDOWNtoRIGHT";
@@ -641,7 +677,10 @@ public class GamePanel extends JPanel implements Runnable {
             return "conveyorLEFTtoUP";
 
         else if (input == 3 && output == 2)
-            return "conveyorRIGHT";
+            if (vers)
+                return "conveyorRIGHT";
+            else 
+                return "conveyorRIGHT2";
 
         else if (input == 3 && output == 3)
             return "conveyorLEFTtoDOWN";
