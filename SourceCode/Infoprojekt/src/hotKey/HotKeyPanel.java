@@ -48,7 +48,8 @@ public class HotKeyPanel extends JPanel implements Runnable {
     private JButton returnToMainMenu;
 
     /**
-     * The collection linking the buttons for starting the reasignment process to their action name.
+     * The collection linking the buttons for starting the reasignment process to
+     * their action name.
      */
     private HashMap<String, JButton> buttons;
 

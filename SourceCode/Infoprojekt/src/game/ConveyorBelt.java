@@ -39,7 +39,8 @@ public class ConveyorBelt extends Building {
     }
 
     /**
-     * The constructor of ConveyorBelt is calling the super constructor and setting the standard output direction.
+     * The constructor of ConveyorBelt is calling the super constructor and setting
+     * the standard output direction.
      */
     public ConveyorBelt() {
         super();
@@ -85,7 +86,8 @@ public class ConveyorBelt extends Building {
     }
 
     /**
-     * Overwrites the rotate method from building to account for the possibility to bend a conveyor belt.
+     * Overwrites the rotate method from building to account for the possibility to
+     * bend a conveyor belt.
      */
     @Override
     public void rotate() {

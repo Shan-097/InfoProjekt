@@ -42,7 +42,7 @@ public class WorldGenerator {
 
                 if (i <= 1 && i >= -1 && j <= 1 && j >= -1) {
                     CollectionSite temp = new CollectionSite();
-                    temp.setRotation((byte)(5+3*j+i));
+                    temp.setRotation((byte) (5 + 3 * j + i));
                     map[posX + i][posY + j].setBuilding(temp);
                 }
             }

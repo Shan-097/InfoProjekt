@@ -9,7 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 import java.io.File;
 
@@ -81,12 +80,12 @@ public class StartingPanel extends JPanel implements Runnable {
         Image imgButton1;
         Image imgButton2;
         Image imgButton3;
-     
-        startNewGame = new JButton();        
-        loadGame = new JButton(); 
-        controls = new JButton();       
 
-        try {   
+        startNewGame = new JButton();
+        loadGame = new JButton();
+        controls = new JButton();
+
+        try {
             imgButton1 = ImageIO.read(new File("./Graphics/button1.png"));
             imgButton1 = imgButton1.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_DEFAULT);
             imgButton2 = ImageIO.read(new File("./Graphics/button2.png"));
@@ -100,7 +99,7 @@ public class StartingPanel extends JPanel implements Runnable {
 
             imgBackground = ImageIO.read(new File("./Graphics/hintergrundbild(latest).png"));
             imgBackground = imgBackground.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_DEFAULT);
-            //this.drawImage(imgBackground);
+            // this.drawImage(imgBackground);
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -137,9 +136,12 @@ public class StartingPanel extends JPanel implements Runnable {
      * correct height and width.
      */
     public void moveButtons() {
-        startNewGame.setBounds((this.getWidth() - buttonWidth) / 2, (int) ((this.getHeight() - buttonHeight) / 2 - 1.1*buttonHeight), buttonWidth, buttonHeight);
-        controls.setBounds((this.getWidth() - buttonWidth) / 2, (int) ((this.getHeight() - buttonHeight) / 2 + 1.1*buttonHeight), buttonWidth, buttonHeight);
-        loadGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
+        startNewGame.setBounds((this.getWidth() - buttonWidth) / 2,
+                (int) ((this.getHeight() - buttonHeight) / 2 - 1.1 * buttonHeight), buttonWidth, buttonHeight);
+        controls.setBounds((this.getWidth() - buttonWidth) / 2,
+                (int) ((this.getHeight() - buttonHeight) / 2 + 1.1 * buttonHeight), buttonWidth, buttonHeight);
+        loadGame.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2, buttonWidth,
+                buttonHeight);
         this.validate();
         this.setVisible(true);
     }
@@ -189,7 +191,7 @@ public class StartingPanel extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
 
         if (imgBackground != null) {
-            g2d.drawImage(imgBackground, 0, 0, getWidth(), getHeight(), null);  
+            g2d.drawImage(imgBackground, 0, 0, getWidth(), getHeight(), null);
         }
     }
 }

@@ -59,7 +59,7 @@ public class GamePanel extends JPanel implements Runnable {
      * HashMap to load the textures displayed in the game (e.g. grass, buildings)
      */
     HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>(60);
-    
+
     /**
      * to be done
      */
@@ -110,8 +110,7 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("copperIngot", "./Graphics/CopperIngotFinal.png");
         imgPaths.put("goldIngot", "./Graphics/GoldIngotFinal.png");
         imgPaths.put("ironIngot", "./Graphics/IronIngotFinal.png");
-        //imgPaths.put("stoneIngot", "./Graphics/Stein.png");
-
+        // imgPaths.put("stoneIngot", "./Graphics/Stein.png");
 
         // Conveyor belts
         imgPaths.put("conveyorUP0", "./Graphics/ConveyerBelt-oben.png");
@@ -176,7 +175,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         Music.stopMusic();
         Music.SpawnMusic(".\\Music\\spawn sound.wav");
-        Music.stopMusic();        
+        Music.stopMusic();
         Music.LoopMusic(".\\Music\\Hintergrund.wav");
     }
 
@@ -444,7 +443,7 @@ public class GamePanel extends JPanel implements Runnable {
             if (gameController.getBuildingToBePlaced().getClass() == ConveyorBelt.class) {
                 this.drawConveyorBelt(g2d, gameController.getBuildingToBePlaced(), previewCoords, previewCoords);
             } else if (gameController.getBuildingToBePlaced().getClass() == Extractor.class) {
-                switch ((gameController.getBuildingToBePlaced().getRotation()+2)%4) {
+                switch ((gameController.getBuildingToBePlaced().getRotation() + 2) % 4) {
                     case 0:
                         g2d.drawImage(images.get("extractorUP"), previewCoords, previewCoords, null);
                         break;
@@ -836,38 +835,46 @@ public class GamePanel extends JPanel implements Runnable {
             }
             switch (content.get(i).getItemID()) {
                 case 0:
-                    g2d.drawImage(images.get("stoneIngot"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
-                null, null);
+                    g2d.drawImage(images.get("stoneIngot"), itemCoordinates[i][0] + posX - 4,
+                            itemCoordinates[i][1] + posY - 4, 16, 16,
+                            null, null);
                     break;
                 case 1:
-                    g2d.drawImage(images.get("copperIngot"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
-                null, null);
+                    g2d.drawImage(images.get("copperIngot"), itemCoordinates[i][0] + posX - 4,
+                            itemCoordinates[i][1] + posY - 4, 16, 16,
+                            null, null);
                     break;
                 case 2:
-                    g2d.drawImage(images.get("ironIngot"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
-                null, null);
+                    g2d.drawImage(images.get("ironIngot"), itemCoordinates[i][0] + posX - 4,
+                            itemCoordinates[i][1] + posY - 4, 16, 16,
+                            null, null);
                     break;
                 case 3:
-                    g2d.drawImage(images.get("goldIngot"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
-                null, null);
+                    g2d.drawImage(images.get("goldIngot"), itemCoordinates[i][0] + posX - 4,
+                            itemCoordinates[i][1] + posY - 4, 16, 16,
+                            null, null);
                     break;
                 case 4:
-                    g2d.drawImage(images.get("stone"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
+                    g2d.drawImage(images.get("stone"), itemCoordinates[i][0] + posX - 4,
+                            itemCoordinates[i][1] + posY - 4, 16, 16,
                             null, null);
                     break;
 
                 case 5:
-                    g2d.drawImage(images.get("copper"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
+                    g2d.drawImage(images.get("copper"), itemCoordinates[i][0] + posX - 4,
+                            itemCoordinates[i][1] + posY - 4, 16, 16,
                             null, null);
                     break;
 
                 case 6:
-                    g2d.drawImage(images.get("iron"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
+                    g2d.drawImage(images.get("iron"), itemCoordinates[i][0] + posX - 4,
+                            itemCoordinates[i][1] + posY - 4, 16, 16,
                             null, null);
                     break;
 
                 case 7:
-                    g2d.drawImage(images.get("gold"), itemCoordinates[i][0] + posX -4, itemCoordinates[i][1] + posY -4, 16, 16,
+                    g2d.drawImage(images.get("gold"), itemCoordinates[i][0] + posX - 4,
+                            itemCoordinates[i][1] + posY - 4, 16, 16,
                             null, null);
                     break;
             }

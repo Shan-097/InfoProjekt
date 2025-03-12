@@ -39,7 +39,8 @@ public class GameInputHandler {
 
     /**
      * The constructor of GameInputHandler sets the gameController object of this
-     * instance of the game and the inputHandler of the JPanel. It also loads the inputMap. 
+     * instance of the game and the inputHandler of the JPanel. It also loads the
+     * inputMap.
      * 
      * @param pGC The gameController object of this instance
      * @param pIH The inputHandler of the JPanel
@@ -65,7 +66,8 @@ public class GameInputHandler {
     }
 
     /**
-     * Invokes the methods of which the keys associated with their action is pressed.
+     * Invokes the methods of which the keys associated with their action is
+     * pressed.
      */
     public void invokeMethodsFromInput() {
         ArrayList<String> actions = new ArrayList<String>();
@@ -171,7 +173,7 @@ public class GameInputHandler {
         if (actions.contains("increaseVolume")) {
             Music.setVolumeHigher();
         }
-        if (actions.contains("decreaseVolume")) { 
+        if (actions.contains("decreaseVolume")) {
             Music.setVolumeLower();
         }
     }

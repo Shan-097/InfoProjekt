@@ -22,7 +22,8 @@ public class HotKeyInputHandler {
     }
 
     /**
-     * If exactly one character is pressed it is returned. Otherwise null will be returned.
+     * If exactly one character is pressed it is returned. Otherwise null will be
+     * returned.
      * 
      * @return The character or null
      */

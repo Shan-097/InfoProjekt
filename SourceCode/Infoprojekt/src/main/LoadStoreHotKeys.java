@@ -56,9 +56,9 @@ public class LoadStoreHotKeys {
     /**
      * Stores the given input maps.
      * 
-     * @param iMN to be done
+     * @param iMN  to be done
      * @param iMNH to be done
-     * @param iMH to be done
+     * @param iMH  to be done
      */
     public static void storeHotKeys(HashMap<String, Character> iMN, HashMap<String, Character> iMNH,
             HashMap<String, Character> iMH) {
@@ -91,7 +91,8 @@ public class LoadStoreHotKeys {
     }
 
     /**
-     * Loads and returns the stored input maps or returns the standard input maps if an error occurs.
+     * Loads and returns the stored input maps or returns the standard input maps if
+     * an error occurs.
      * 
      * @return to be done
      */
@@ -136,13 +137,13 @@ public class LoadStoreHotKeys {
                         return standard;
                     }
                     if (key == "normal") {
-                        iMN.put(action, pressedKey);                    
+                        iMN.put(action, pressedKey);
                     }
                     if (key == "not_holdable") {
-                        iMNH.put(action, pressedKey);                    
+                        iMNH.put(action, pressedKey);
                     }
                     if (key == "holdable") {
-                        iMH.put(action, pressedKey);                    
+                        iMH.put(action, pressedKey);
                     }
                 }
             } catch (Error e) {

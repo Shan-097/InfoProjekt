@@ -86,11 +86,12 @@ public class InputHandler implements KeyListener {
 
     /**
      * to be done
+     * 
      * @param c to be done
      * @return to be done
      */
-    public boolean keyIsHold(Character c){
-        if(keysDown.contains(c)) {
+    public boolean keyIsHold(Character c) {
+        if (keysDown.contains(c)) {
             keysDown.remove(c);
             return true;
         }
@@ -99,11 +100,12 @@ public class InputHandler implements KeyListener {
 
     /**
      * to be done
+     * 
      * @param c to be done
      * @return to be done
      */
-    public boolean keyIsClicked(Character c){
-        if(keysDown.contains(c)) {
+    public boolean keyIsClicked(Character c) {
+        if (keysDown.contains(c)) {
             keysToIgnoreUntilReleased.add(c);
             keysDown.remove(c);
             return true;

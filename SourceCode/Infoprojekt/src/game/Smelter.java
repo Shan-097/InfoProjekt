@@ -47,7 +47,8 @@ public class Smelter extends Building {
     }
 
     /**
-     * As this building smelts items it returns the smelted variant of the given one.<br>
+     * As this building smelts items it returns the smelted variant of the given
+     * one.<br>
      * null is defined as the smelted item of null.
      * 
      * @param item The item to be smelted
