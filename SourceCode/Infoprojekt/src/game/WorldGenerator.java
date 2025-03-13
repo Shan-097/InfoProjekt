@@ -31,6 +31,9 @@ public class WorldGenerator {
      * @param sizeY The number of tiles in the y dimension.
      */
     public WorldGenerator(int sizeX, int sizeY, Field[][] worldMap) {
+        if(worldMap != null) {
+            map = worldMap;
+        } else {
             map = new Field[sizeX][sizeY];
             int posX = sizeX / 2;
             int posY = sizeY / 2;
@@ -47,6 +50,7 @@ public class WorldGenerator {
                     }
                 }
             }
+        }
     }
 
     /**

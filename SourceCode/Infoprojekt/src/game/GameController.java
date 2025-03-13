@@ -721,7 +721,7 @@ public class GameController {
      * @param filePath FilePath of the saved World
      * @return boolean successfully loaded or not?
      */
-    private JSONObject loadWorld(String filepath) {
+    public JSONObject loadWorld(String filepath) {
         JSONObject savedObject = readJsonFile(filepath);
 
         /*worldName = savedObject.getString("worldName");

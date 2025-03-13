@@ -14,6 +14,9 @@ import java.util.Hashtable;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import org.json.JSONObject;
+
 import main.InputHandler;
 
 /**
@@ -75,11 +78,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
         this.setDoubleBuffered(true);
         frameRate = pFr;
-        worldFilePath = pFilePath;
         gameController = new GameController(pFilePath, pWindow);
-        //if(pFilePath != null) {
-        //    gameController.loadWorld(worldFilePath);
-        //}
         InputHandler inputHandler = new InputHandler();
         this.addKeyListener(inputHandler);
         this.setFocusable(true);
