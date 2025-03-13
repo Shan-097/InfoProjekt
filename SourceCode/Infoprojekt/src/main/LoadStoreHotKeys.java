@@ -2,7 +2,6 @@ package main;
 
 import java.io.File;
 import java.io.FileWriter;
-
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -56,14 +55,28 @@ public class LoadStoreHotKeys {
     /**
      * Stores the given input maps.
      * 
+     * @return to be done
      * @param iMN  to be done
      * @param iMNH to be done
      * @param iMH  to be done
      */
-    public static void storeHotKeys(HashMap<String, Character> iMN, HashMap<String, Character> iMNH,
+    public static boolean storeHotKeys(HashMap<String, Character> iMN, HashMap<String, Character> iMNH,
             HashMap<String, Character> iMH) {
-        if (!new File("./config/HotKeys.json").isFile()) {
-
+        try {
+            File directory = new File("./config/");
+            if (!directory.isDirectory()) {
+                directory.mkdir();
+            }
+        } catch (SecurityException e) {
+            return false;
+        }
+        try {
+            File file = new File("./config/HotKeys.json");
+            if (!file.isFile()) {
+                file.createNewFile();
+            }
+        } catch (Exception e) {
+            return false;
         }
         try (FileWriter file = new FileWriter("./config/HotKeys.json")) {
             JSONObject hotkeys = new JSONObject();
@@ -85,8 +98,9 @@ public class LoadStoreHotKeys {
             }
             hotkeys.put("holdable", hotkeysHoldable);
             file.write(hotkeys.toString(0));
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            return false;
         }
     }
 
