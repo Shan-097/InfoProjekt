@@ -29,6 +29,9 @@ public class HotKeyInputHandler {
      */
     public Character getPressedChar() {
         LinkedList<Character> pressed = inputHandler.getPressedCharacters();
+        if (pressed == null) {
+            return null;
+        }
         if (pressed.size() == 1) {
             return pressed.getFirst();
         }

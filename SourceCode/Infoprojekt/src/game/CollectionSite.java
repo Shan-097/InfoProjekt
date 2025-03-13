@@ -1,6 +1,7 @@
 package game;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * The collection site is a building that collects the items moved to it and
@@ -36,6 +37,17 @@ public class CollectionSite extends Building {
     }
 
     /**
+     * The constructor of CollectionSite for cloning an object.
+     * 
+     * @param rotation  The rotation
+     * @param inventory The inventory
+     * @throws IllegalArgumentException to be done
+     */
+    private CollectionSite(byte rotation, LinkedList<Item> inventory) throws IllegalArgumentException {
+        super(rotation, inventory);
+    }
+
+    /**
      * Overrides the addItem(Item item) method from Building.<br>
      * Items moved to a collection site are added to the players inventory.
      * 
@@ -45,7 +57,11 @@ public class CollectionSite extends Building {
      */
     @Override
     public boolean addItem(Item item) {
-        return GameController.addItemToInventory(item);
+        try {
+            return GameController.addItemToInventory(item);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     /**
@@ -74,7 +90,7 @@ public class CollectionSite extends Building {
      * @return The input directions.
      */
     public byte[] getInputDirections() {
-        return INPUT_DIRECTIONS;
+        return INPUT_DIRECTIONS.clone();
     }
 
     /**
@@ -83,6 +99,21 @@ public class CollectionSite extends Building {
      * @return The output directions.
      */
     public byte[] getOutputDirections() {
-        return OUTPUT_DIRECTIONS;
+        return OUTPUT_DIRECTIONS.clone();
+    }
+
+    /**
+     * Clones the object so that the original can't be modified but the values can
+     * still be used.
+     * 
+     * @return The cloned building or null if something went wrong.
+     */
+    @Override
+    public Building clone() {
+        try {
+            return new CollectionSite(this.getRotation(), this.getInventory());
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

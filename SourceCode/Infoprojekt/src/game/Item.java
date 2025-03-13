@@ -48,8 +48,15 @@ public class Item {
      * 
      * @param item The item to be smelted
      * @return The smelted item
+     * @throws IllegalArgumentException to be done
      */
-    public static Item getSmeltedItem(Item item) {
+    public static Item getSmeltedItem(Item item) throws IllegalArgumentException {
+        if (item == null) {
+            throw new IllegalArgumentException("The item can't be null.");
+        }
+        if (!ID_MAP.containsValue(item)) {
+            throw new IllegalArgumentException("The item is unknown.");
+        }
         switch (item.getItemID()) {
             case 4:
                 return ID_MAP.get(0);
@@ -73,8 +80,12 @@ public class Item {
      * 
      * @param pItemID The id of the requested item
      * @return The item with the specified id
+     * @throws IllegalArgumentException to be done
      */
-    public static Item getItemWithID(int pItemID) {
+    public static Item getItemWithID(int pItemID) throws IllegalArgumentException {
+        if (!ID_MAP.containsKey(pItemID)) {
+            throw new IllegalArgumentException("The id is not associated with an item.");
+        }
         return ID_MAP.get(pItemID);
     }
 
@@ -83,8 +94,12 @@ public class Item {
      * 
      * @param resource The resource the item is requested from
      * @return The item of the specified resource
+     * @throws IllegalArgumentException to be done
      */
-    public static Item getItemFromResource(Resource resource) {
+    public static Item getItemFromResource(Resource resource) throws IllegalArgumentException {
+        if (resource ==  null) {
+            throw new IllegalArgumentException("The resource can't be null");
+        }
         switch (resource.getResourceID()) {
             case 1:
                 return ID_MAP.get(4);

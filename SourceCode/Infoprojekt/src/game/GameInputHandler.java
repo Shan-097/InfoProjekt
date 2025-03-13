@@ -121,42 +121,75 @@ public class GameInputHandler {
         if (actions.contains("moveUp") && actions.contains("moveLeft")) {
             actions.remove("moveUp");
             actions.remove("moveLeft");
-            gameController.movePlayer('Q');
+            try {
+                gameController.movePlayer('Q');
+            } catch (IllegalArgumentException e) {
+            }
         } else if (actions.contains("moveUp") && actions.contains("moveRight")) {
             actions.remove("moveUp");
             actions.remove("moveRight");
-            gameController.movePlayer('E');
+            try {
+                gameController.movePlayer('E');
+            } catch (IllegalArgumentException e) {
+            }
         } else if (actions.contains("moveDown") && actions.contains("moveLeft")) {
             actions.remove("moveDown");
             actions.remove("moveLeft");
-            gameController.movePlayer('Y');
+            try {
+                gameController.movePlayer('Y');
+            } catch (IllegalArgumentException e) {
+            }
         } else if (actions.contains("moveDown") && actions.contains("moveRight")) {
             actions.remove("moveDown");
             actions.remove("moveRight");
-            gameController.movePlayer('C');
+            try {
+                gameController.movePlayer('C');
+            } catch (IllegalArgumentException e) {
+            }
         }
 
         // run everything else
         if (actions.contains("moveUp")) {
-            gameController.movePlayer('W');
+            try {
+                gameController.movePlayer('W');
+            } catch (IllegalArgumentException e) {
+            }
         }
         if (actions.contains("moveDown")) {
-            gameController.movePlayer('S');
+            try {
+                gameController.movePlayer('S');
+            } catch (IllegalArgumentException e) {
+            }
         }
         if (actions.contains("moveLeft")) {
-            gameController.movePlayer('A');
+            try {
+                gameController.movePlayer('A');
+            } catch (IllegalArgumentException e) {
+            }
         }
         if (actions.contains("moveRight")) {
-            gameController.movePlayer('D');
+            try {
+                gameController.movePlayer('D');
+            } catch (IllegalArgumentException e) {
+            }
         }
         if (actions.contains("placeConveyorBelt")) {
-            gameController.chooseBuildingToPlace("ConveyorBelt");
+            try {
+                gameController.chooseBuildingToPlace("ConveyorBelt");
+            } catch (IllegalArgumentException e) {
+            }
         }
         if (actions.contains("placeExtractor")) {
-            gameController.chooseBuildingToPlace("Extractor");
+            try {
+                gameController.chooseBuildingToPlace("Extractor");
+            } catch (IllegalArgumentException e) {
+            }
         }
         if (actions.contains("placeSmelter")) {
-            gameController.chooseBuildingToPlace("Smelter");
+            try {
+                gameController.chooseBuildingToPlace("Smelter");
+            } catch (IllegalArgumentException e) {
+            }
         }
         if (actions.contains("cancelPlacement")) {
             gameController.cancelPlacement();

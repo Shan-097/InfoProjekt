@@ -16,7 +16,7 @@ public class Field {
      * The resource vein of the tile.<br>
      * null represents not generated yet.
      */
-    private Resource resource;
+    private final Resource resource;
 
     /**
      * The constructor for a field if both the resource and building are known.
@@ -30,21 +30,17 @@ public class Field {
     }
 
     /**
-     * The constructor for a field when only the resource is known.
-     * 
-     * @param pResource The resource vein of the new field.
-     */
-    public Field(Resource pResource) {
-        resource = pResource;
-    }
-
-    /**
      * The constructor for a field when only the resource id is known.
      * 
      * @param pResourceID The id of the resource of the vein of the new field.
+     * @throws IllegalArgumentException to be done
      */
-    public Field(int pResourceID) {
-        resource = Resource.getResourceWithID(pResourceID);
+    public Field(int pResourceID) throws IllegalArgumentException {
+        try {
+            resource = Resource.getResourceWithID(pResourceID);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
     }
 
     /**
@@ -53,7 +49,10 @@ public class Field {
      * @return The building on this field
      */
     public Building getBuilding() {
-        return building;
+        if (building == null) {
+            return null;
+        }
+        return building.clone();
     }
 
     /**
@@ -81,6 +80,17 @@ public class Field {
      */
     public void setBuilding(Building pBuilding) {
         building = pBuilding;
+    }
+
+    /**
+     * Clones the object so that the original can't be modified but the values can
+     * still be used.
+     * 
+     * @return The clone of the object
+     */
+    @Override
+    public Field clone() {
+        return new Field(this.getBuilding(), resource);
     }
 
     /**

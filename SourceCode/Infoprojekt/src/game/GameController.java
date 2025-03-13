@@ -76,18 +76,23 @@ public class GameController {
     /**
      * Instantiates a new Object of type GameController.<br>
      * Sets for example the starting position of the player.
+     * 
+     * @throws IllegalArgumentException to be done
      */
-    public GameController() {
+    public GameController() throws IllegalArgumentException {
         inventory = new HashMap<Item, Integer>();
-        inventory.put(Item.getItemWithID(0), 0);
-        inventory.put(Item.getItemWithID(1), 0);
-        inventory.put(Item.getItemWithID(2), 0);
-        inventory.put(Item.getItemWithID(3), 0);
-        inventory.put(Item.getItemWithID(4), 0);
-        inventory.put(Item.getItemWithID(5), 0);
-        inventory.put(Item.getItemWithID(6), 0);
-        inventory.put(Item.getItemWithID(7), 0);
-        wGenerator = new WorldGenerator(100, 100);
+        for (int i = 0; i < 8; i++) {
+            try {
+                inventory.put(Item.getItemWithID(i), 0);
+            } catch (IllegalArgumentException e) {
+            }
+        }
+
+        try {
+            wGenerator = new WorldGenerator(101, 101);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
 
         posXinArray = wGenerator.getXLengthMap() / 2;
         posYinArray = wGenerator.getYLengthMap() / 2;
@@ -101,7 +106,11 @@ public class GameController {
      * E.g. moves the items on the conveyor belts.
      */
     public void update() {
-        moveItems(getStartingPoints());
+        try {
+            moveItems(getStartingPoints());
+        } catch (IllegalArgumentException e) {
+            return;
+        }
     }
 
     /**
@@ -118,8 +127,13 @@ public class GameController {
 
         for (int i = 0; i < mapLengthX; i++) {
             for (int j = 0; j < mapLengthY; j++) {
-                Field temp = wGenerator.getField(i, j);
-                if (temp != null && temp.getBuilding() != null) {
+                Building b;
+                try {
+                    b = wGenerator.getField(i, j).getBuilding();
+                } catch (IllegalArgumentException e) {
+                    continue;
+                }
+                if (b != null) {
                     buildingList.add(new Tuple(i, j));
                 }
             }
@@ -129,81 +143,17 @@ public class GameController {
         for (Tuple tuple : buildingList) {
             int x = tuple.getA();
             int y = tuple.getB();
-            Field temp = wGenerator.getField(x, y);
-            byte[] inputDirectionsOfBuilding = temp.getBuilding().getInputDirections();
-            byte rotation = temp.getBuilding().getRotation();
-            for (int i = 0; i < inputDirectionsOfBuilding.length; i++) {
-                byte direction;
-                if (temp.getBuilding().getClass() == CollectionSite.class) {
-                    direction = (byte) (inputDirectionsOfBuilding[i] % 4);
-                } else {
-                    direction = (byte) ((inputDirectionsOfBuilding[i] + rotation) % 4);
-                }
-                int newX = x;
-                int newY = y;
-                switch (direction) {
-                    case 0:
-                        newY--;
-                        break;
-
-                    case 1:
-                        newX++;
-                        break;
-
-                    case 2:
-                        newY++;
-                        break;
-
-                    case 3:
-                        newX--;
-                        break;
-                }
-                if (newX < 0 || newX >= mapLengthX || newY < 0 || newY >= mapLengthY) {
-                    continue;
-                }
-                Field temp2 = wGenerator.getField(newX, newY);
-                if (temp2 == null || temp2.getBuilding() == null) {
-                    continue;
-                }
-                byte[] outputDirectionsOfOtherBuilding = temp2.getBuilding().getOutputDirections();
-                byte rotationOfOtherBuilding = temp2.getBuilding().getRotation();
-                for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++) {
-                    if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction) {
-                        listOfStartingPoints.remove(new Tuple(newX, newY));
-                    }
-                }
+            Building b;
+            byte[] inputDirectionsOfBuilding;
+            byte rotation;
+            try {
+                b = wGenerator.getField(x, y).getBuilding();
+                inputDirectionsOfBuilding = b.getInputDirections();
+                rotation = b.getRotation();
+            } catch (Exception e) {
+                continue;
             }
-        }
-        return listOfStartingPoints;
-    }
 
-    /**
-     * Moves the items of for example conveyor belts to the next building.<br>
-     * The movement is from the "inside outwards".
-     * 
-     * @param startingPoints A list of coordinates of the building nothing is moved
-     *                       away from.
-     */
-    private void moveItems(ArrayList<Tuple> startingPoints) {
-        int mapLengthX = wGenerator.getXLengthMap();
-        int mapLengthY = wGenerator.getYLengthMap();
-
-        for (Tuple point : startingPoints) {
-            int x = point.getA();
-            int y = point.getB();
-            Building b = wGenerator.getField(x, y).getBuilding();
-            b.moveItemInsideBuilding();
-        }
-
-        while (true) {
-            if (startingPoints.size() == 0) {
-                return;
-            }
-            int x = startingPoints.get(0).getA();
-            int y = startingPoints.get(0).getB();
-            Building b = wGenerator.getField(x, y).getBuilding();
-            byte[] inputDirectionsOfBuilding = b.getInputDirections();
-            byte rotation = b.getRotation();
             for (int i = 0; i < inputDirectionsOfBuilding.length; i++) {
                 byte direction;
                 if (b.getClass() == CollectionSite.class) {
@@ -233,13 +183,103 @@ public class GameController {
                 if (newX < 0 || newX >= mapLengthX || newY < 0 || newY >= mapLengthY) {
                     continue;
                 }
-                Field temp2 = wGenerator.getField(newX, newY);
-                if (temp2 == null || temp2.getBuilding() == null) {
+
+                byte[] outputDirectionsOfOtherBuilding;
+                byte rotationOfOtherBuilding;
+                try {
+                    Building b2 = wGenerator.getField(newX, newY).getBuilding();
+                    outputDirectionsOfOtherBuilding = b2.getOutputDirections();
+                    rotationOfOtherBuilding = b2.getRotation();
+                } catch (Exception e) {
                     continue;
                 }
-                Building b2 = temp2.getBuilding();
-                byte[] outputDirectionsOfOtherBuilding = b2.getOutputDirections();
-                byte rotationOfOtherBuilding = b2.getRotation();
+
+                for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++) {
+                    if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction) {
+                        listOfStartingPoints.remove(new Tuple(newX, newY));
+                    }
+                }
+            }
+        }
+        return listOfStartingPoints;
+    }
+
+    /**
+     * Moves the items of for example conveyor belts to the next building.<br>
+     * The movement is from the "inside outwards".
+     * 
+     * @param startingPoints A list of coordinates of the building nothing is moved
+     *                       away from.
+     * @throws IllegalArgumentException to be done
+     */
+    private void moveItems(ArrayList<Tuple> startingPoints) throws IllegalArgumentException {
+        if (startingPoints == null) {
+            throw new IllegalArgumentException("The list of coordinates is null.");
+        }
+
+        for (Tuple point : startingPoints) {
+            int x = point.getA();
+            int y = point.getB();
+            try {
+                wGenerator.getField(x, y).getBuilding().moveItemInsideBuilding();
+            } catch (Exception e) {
+                throw new IllegalArgumentException(
+                        "One of the given coordinates is not valid or there is no building at this point.");
+            }
+        }
+
+        while (true) {
+            if (startingPoints.size() == 0) {
+                return;
+            }
+            int x = startingPoints.get(0).getA();
+            int y = startingPoints.get(0).getB();
+            Building b;
+            try {
+                b = wGenerator.getField(x, y).getBuilding();
+            } catch (Exception e) {
+                continue;
+            }
+            byte[] inputDirectionsOfBuilding = b.getInputDirections();
+            byte rotation = b.getRotation();
+            for (int i = 0; i < inputDirectionsOfBuilding.length; i++) {
+                byte direction;
+                if (b.getClass() == CollectionSite.class) {
+                    direction = (byte) (inputDirectionsOfBuilding[i] % 4);
+                } else {
+                    direction = (byte) ((inputDirectionsOfBuilding[i] + rotation) % 4);
+                }
+                int newX = x;
+                int newY = y;
+                switch (direction) {
+                    case 0:
+                        newY--;
+                        break;
+
+                    case 1:
+                        newX++;
+                        break;
+
+                    case 2:
+                        newY++;
+                        break;
+
+                    case 3:
+                        newX--;
+                        break;
+                }
+
+                Building b2;
+                byte[] outputDirectionsOfOtherBuilding;
+                byte rotationOfOtherBuilding;
+                try {
+                    b2 = wGenerator.getField(x, y).getBuilding();
+                    outputDirectionsOfOtherBuilding = b2.getOutputDirections();
+                    rotationOfOtherBuilding = b2.getRotation();
+                } catch (Exception e) {
+                    continue;
+                }
+
                 for (int j = 0; j < outputDirectionsOfOtherBuilding.length; j++) {
                     if ((outputDirectionsOfOtherBuilding[j] + rotationOfOtherBuilding + 2) % 4 == direction) {
                         b2.moveItemToNextBuilding(b);
@@ -260,8 +300,9 @@ public class GameController {
      * Y S C
      * 
      * @param direction The direction the player is moving in.
+     * @throws IllegalArgumentException to be done
      */
-    public void movePlayer(char direction) {
+    public void movePlayer(char direction) throws IllegalArgumentException {
         if ("QWEADYSC".indexOf(direction) == -1) {
             throw new IllegalArgumentException(
                     "The supplied direction is expected to be one of Q, W, E, A, D, Y, S or C.");
@@ -345,10 +386,11 @@ public class GameController {
         // generate new fields if necessary
         for (int i = -50; i <= 50; i++) {
             for (int j = -50; j <= 50; j++) {
-                if (posXinArray + i < 0 || posYinArray + j < 0 || maxX <= posXinArray + i || maxY <= posYinArray + j) {
+                try {
+                    wGenerator.generateTile(posXinArray + i, posYinArray + j);
+                } catch (IllegalArgumentException e) {
                     continue;
                 }
-                wGenerator.generateTile(posXinArray + i, posYinArray + j);
             }
         }
     }
@@ -357,21 +399,26 @@ public class GameController {
      * Sets the building that the player plans to place next.
      * 
      * @param buildingType The type of building given by a string.
+     * @throws IllegalArgumentException to be done
      */
-    public void chooseBuildingToPlace(String buildingType) {
+    public void chooseBuildingToPlace(String buildingType) throws IllegalArgumentException {
+        if (buildingType == null) {
+            throw new IllegalArgumentException("The given builting type is null.");
+        }
         switch (buildingType) {
             case "ConveyorBelt":
                 buildingToBePlaced = new ConveyorBelt();
-                break;
+                return;
 
             case "Extractor":
                 buildingToBePlaced = new Extractor();
-                break;
+                return;
 
             case "Smelter":
                 buildingToBePlaced = new Smelter();
-                break;
+                return;
         }
+        throw new IllegalArgumentException("The given builting type is not known.");
     }
 
     /**
@@ -396,7 +443,15 @@ public class GameController {
      * Makes also small but necessary changes to some building types.
      */
     public void placeBuilding() {
-        if (wGenerator.getField(posXinArray, posYinArray).getBuilding() != null) {
+        try {
+            if (wGenerator.getField(posXinArray, posYinArray).getBuilding() != null) {
+                return;
+            }
+        } catch (Exception e) {
+            posXinArray = wGenerator.getXLengthMap() / 2;
+            posYinArray = wGenerator.getYLengthMap() / 2;
+            posXonTile = 0;
+            posYonTile = 0;
             return;
         }
         if (buildingToBePlaced == null) {
@@ -410,12 +465,25 @@ public class GameController {
         }
 
         if (buildingToBePlaced.getClass() == Extractor.class) {
-            Resource resource = wGenerator.getField(posXinArray, posYinArray).getResource();
-            if (resource.getResourceID() == 0) {
+            Resource resource;
+            try {
+                resource = wGenerator.getField(posXinArray, posYinArray).getResource();
+            } catch (Exception e) {
+                posXinArray = wGenerator.getXLengthMap() / 2;
+                posYinArray = wGenerator.getYLengthMap() / 2;
+                posXonTile = 0;
+                posYonTile = 0;
+                return;
+            }
+            if (resource == null || resource.getResourceID() == 0) {
                 return;
             }
             Extractor temp = (Extractor) buildingToBePlaced;
-            temp.setResourceToBeExtracted(resource);
+            try {
+                temp.setResourceToBeExtracted(resource);
+            } catch (IllegalArgumentException e) {
+                return;
+            }
             buildingToBePlaced = temp;
         }
 
@@ -423,7 +491,11 @@ public class GameController {
             inventory.replace(cost.getKey(), inventory.get(cost.getKey()) - cost.getValue());
         }
 
-        wGenerator.placeBuilding(posXinArray, posYinArray, buildingToBePlaced);
+        try {
+            wGenerator.placeBuilding(posXinArray, posYinArray, buildingToBePlaced);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
 
         if (buildingToBePlaced.getClass() == ConveyorBelt.class) {
             ConveyorBelt temp = new ConveyorBelt();
@@ -441,9 +513,26 @@ public class GameController {
      * Removes the building on the tile the player is standing on.
      */
     public void removeBuilding() {
-        Building b = wGenerator.getField(posXinArray, posYinArray).getBuilding();
-        if (b != null && b.getClass() != CollectionSite.class) {
-            wGenerator.deleteBuilding(posXinArray, posYinArray);
+        Building b;
+        try {
+            b = wGenerator.getField(posXinArray, posYinArray).getBuilding();
+        } catch (Exception e) {
+            posXinArray = wGenerator.getXLengthMap() / 2;
+            posYinArray = wGenerator.getYLengthMap() / 2;
+            posXonTile = 0;
+            posYonTile = 0;
+            return;
+        }
+        if (b != null) {
+            try {
+                wGenerator.deleteBuilding(posXinArray, posYinArray);
+            } catch (Exception e) {
+                posXinArray = wGenerator.getXLengthMap() / 2;
+                posYinArray = wGenerator.getYLengthMap() / 2;
+                posXonTile = 0;
+                posYonTile = 0;
+                return;
+            }
             for (Entry<Item, Integer> cost : b.getCost().entrySet()) {
                 inventory.replace(cost.getKey(), inventory.get(cost.getKey()) + cost.getValue());
             }
@@ -455,19 +544,19 @@ public class GameController {
      * 
      * @param item The item to be added to the inventory.
      * @return Returns wheter the item has been added sucessfully or not
+     * @throws IllegalArgumentException to be done
      */
-    public static boolean addItemToInventory(Item item) {
+    public static boolean addItemToInventory(Item item) throws IllegalArgumentException {
         if (item == null) {
             return true;
         }
-        if (inventory.containsKey(item)) {
-            if (inventory.get(item) == Integer.MAX_VALUE) {
-                return false;
-            }
-            inventory.replace(item, inventory.get(item) + 1);
-        } else {
-            inventory.put(item, 1);
+        if (!inventory.containsKey(item)) {
+            throw new IllegalArgumentException("Unknown item");
         }
+        if (inventory.get(item) == Integer.MAX_VALUE) {
+            return false;
+        }
+        inventory.replace(item, inventory.get(item) + 1);
         return true;
     }
 
@@ -538,9 +627,14 @@ public class GameController {
      * @param posXinArray The x coordinate in the map
      * @param posYinArray The y coordinate in the map
      * @return The Field object
+     * @throws IllegalArgumentException to be done
      */
-    public Field getField(int posXinArray, int posYinArray) {
-        return wGenerator.getField(posXinArray, posYinArray);
+    public Field getField(int posXinArray, int posYinArray) throws IllegalArgumentException {
+        try {
+            return wGenerator.getField(posXinArray, posYinArray);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
     }
 
     /**

@@ -44,8 +44,12 @@ public class Resource {
      * 
      * @param pResourceID The id of the requested resource
      * @return The resource with the specified id
+     * @throws IllegalArgumentException to be done
      */
-    public static Resource getResourceWithID(int pResourceID) {
+    public static Resource getResourceWithID(int pResourceID) throws IllegalArgumentException {
+        if (!ID_MAP.containsKey(pResourceID)) {
+            throw new IllegalArgumentException("The id is not associated with a resource.");
+        }
         return ID_MAP.get(pResourceID);
     }
 

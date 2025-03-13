@@ -23,16 +23,6 @@ import main.LoadStoreHotKeys;
  */
 public class HotKeyPanel extends JPanel implements Runnable {
     /**
-     * generic width of the buttons in the starting menu
-     */
-    private final int buttonWidth = 230;
-
-    /**
-     * generic height of the buttons in the starting menu
-     */
-    private final int buttonHeight = 35;
-
-    /**
      * desired frame rate of the game, it can't be higher but can drop under load
      */
     private final int frameRate;
@@ -148,7 +138,7 @@ public class HotKeyPanel extends JPanel implements Runnable {
      * correct height and width.
      */
     public void updateGraphicElements() {
-        returnToMainMenu.setBounds(10, 10, buttonWidth, buttonHeight);
+        returnToMainMenu.setBounds(10, 10, 230, 35);
 
         int actionCount = actions.size();
         int height = this.getHeight();
@@ -208,21 +198,26 @@ public class HotKeyPanel extends JPanel implements Runnable {
     private void checkForNewKey() {
         Character pressed = hotKeyInputHandler.getPressedChar();
         if (pressed != null && nameOfActionToChange != null) {
-            if (iMN.containsValue(pressed) || iMNH.containsValue(pressed)
-                    || iMH.containsValue(pressed)) {
+            if (iMN.containsValue(pressed) || iMNH.containsValue(pressed) || iMH.containsValue(pressed)) {
                 nameOfActionToChange = null;
                 return;
             }
+            HashMap<String, Character> temp;
             if (iMN.containsKey(nameOfActionToChange)) {
-                iMN.replace(nameOfActionToChange, pressed);
+                temp = iMN;
             } else if (iMNH.containsKey(nameOfActionToChange)) {
-                iMNH.replace(nameOfActionToChange, pressed);
+                temp = iMNH;
             } else {
-                iMH.replace(nameOfActionToChange, pressed);
+                temp = iMH;
+            }
+            temp.replace(nameOfActionToChange, pressed);
+            char old = iMNH.get(nameOfActionToChange);
+            if (!LoadStoreHotKeys.storeHotKeys(iMN, iMNH, iMH)) {
+                iMNH.replace(nameOfActionToChange, old);
+                return;
             }
             buttons.get(nameOfActionToChange).setText(charToHumanReadableString(pressed));
             nameOfActionToChange = null;
-            LoadStoreHotKeys.storeHotKeys(iMN, iMNH, iMH);
         }
     }
 

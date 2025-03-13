@@ -1,6 +1,7 @@
 package game;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * The conveyor belt is a building for item transportation.
@@ -27,14 +28,12 @@ public class ConveyorBelt extends Building {
      */
     static {
         COST = new HashMap<Item, Integer>(4);
-        COST.put(Item.getItemWithID(0), 0);
-        COST.put(Item.getItemWithID(1), 0);
-        COST.put(Item.getItemWithID(2), 0);
-        COST.put(Item.getItemWithID(3), 0);
-        COST.put(Item.getItemWithID(4), 0);
-        COST.put(Item.getItemWithID(5), 0);
-        COST.put(Item.getItemWithID(6), 0);
-        COST.put(Item.getItemWithID(7), 0);
+        for (int i = 0; i < 8; i++) {
+            try {
+                COST.put(Item.getItemWithID(i), 0);
+            } catch (Exception e) {
+            }
+        }
         INPUT_DIRECTIONS = new byte[] { 0 };
     }
 
@@ -45,6 +44,22 @@ public class ConveyorBelt extends Building {
     public ConveyorBelt() {
         super();
         outputDirections = new byte[] { 2 };
+    }
+
+    /**
+     * The constructor of ConveyorBelt for cloning an object.
+     * 
+     * @param rotation  The rotation
+     * @param inventory The inventory
+     * @throws IllegalArgumentException to be done
+     */
+    private ConveyorBelt(byte rotation, LinkedList<Item> inventory, byte[] pOutputDirections)
+            throws IllegalArgumentException {
+        super(rotation, inventory);
+        if (pOutputDirections == null || pOutputDirections.length != 1) {
+            throw new IllegalArgumentException("Bad output directions.");
+        }
+        outputDirections = pOutputDirections;
     }
 
     /**
@@ -64,7 +79,7 @@ public class ConveyorBelt extends Building {
      * @return The cost of this building.
      */
     public HashMap<Item, Integer> getCost() {
-        return COST;
+        return (HashMap<Item, Integer>) COST.clone();
     }
 
     /**
@@ -73,7 +88,7 @@ public class ConveyorBelt extends Building {
      * @return The input directions.
      */
     public byte[] getInputDirections() {
-        return INPUT_DIRECTIONS;
+        return INPUT_DIRECTIONS.clone();
     }
 
     /**
@@ -82,7 +97,7 @@ public class ConveyorBelt extends Building {
      * @return The output directions.
      */
     public byte[] getOutputDirections() {
-        return outputDirections;
+        return outputDirections.clone();
     }
 
     /**
@@ -91,11 +106,26 @@ public class ConveyorBelt extends Building {
      */
     @Override
     public void rotate() {
-        if (outputDirections[0] == 3) {
+        if (outputDirections[0] >= 3) {
             this.setRotation((byte) ((getRotation() + 1) % 4));
             outputDirections[0] = 1;
         } else {
             outputDirections[0]++;
+        }
+    }
+
+    /**
+     * Clones the object so that the original can't be modified but the values can
+     * still be used.
+     * 
+     * @return The cloned building or null if something went wrong.
+     */
+    @Override
+    public Building clone() {
+        try {
+            return new ConveyorBelt(this.getRotation(), this.getInventory(), this.getOutputDirections());
+        } catch (IllegalArgumentException e) {
+            return null;
         }
     }
 }
