@@ -20,7 +20,7 @@ public abstract class Building {
     /**
      * The length of the inventory.
      */
-    private static final int INVENTORY_SIZE = 5;
+    private static final int INVENTORY_SIZE = 3;
 
     /**
      * The inventory of the building.<br>
