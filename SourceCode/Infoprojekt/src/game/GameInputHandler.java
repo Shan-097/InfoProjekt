@@ -47,6 +47,8 @@ public class GameInputHandler {
     }
 
     public void invokeMethodsFromInput() {
+        System.out.println("invokeMethodsFromInput called");
+
         ArrayList<String> actions = new ArrayList<String>();
         for (Character c : inputMap.keySet()) {
             if (inputHandler.keyIsPressed(c)) {
@@ -125,7 +127,10 @@ public class GameInputHandler {
             gameController.cancelPlacement();
         }
         if (actions.contains("pauseMenu")) {
+            System.out.println(actions);
             gameController.showPauseMenu();
+            actions.remove("pauseMenu");
+            System.out.println(actions);
         }
         if (actions.contains("rotateBuilding")) {
             gameController.rotateBuilding();

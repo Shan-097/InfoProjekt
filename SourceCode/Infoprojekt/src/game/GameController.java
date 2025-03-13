@@ -1,6 +1,10 @@
 package game;
 
 import com.sun.security.auth.module.NTLoginModule;
+import java.awt.Dimension;
+
+import main.StartingPanel;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -18,6 +22,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import main.App;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -231,35 +236,56 @@ public class GameController {
     }
 
     public void showPauseMenu() {
-            isPaused = true;
+        System.out.println("showPauseMenu called");
 
-            JDialog pauseDialog = new JDialog(window, "Pause", true);
+        isPaused = true;
 
-            pauseDialog.setSize(500, 400);
-            pauseDialog.setLayout(null);
+        JDialog pauseDialog = new JDialog(window, "Pause", true);
+
+        pauseDialog.setSize(500, 400);
+        pauseDialog.setLayout(null);
             
-            JButton resumeButton = new JButton("Resume");
-            JButton exitButton = new JButton("Exit");
-            JButton saveAndExit = new JButton("Save and Exit");
+        JButton resumeButton = new JButton("Resume");
+        JButton exitButton = new JButton("Exit");
+        JButton saveAndExit = new JButton("Save and Exit");
 
-            resumeButton.setFont(new Font("Arial", Font.BOLD, 15));
-            exitButton.setFont(new Font("Arial", Font.BOLD, 15));
-            saveAndExit.setFont(new Font("Arial", Font.BOLD, 15));
+        resumeButton.setFont(new Font("Arial", Font.BOLD, 15));
+        exitButton.setFont(new Font("Arial", Font.BOLD, 15));
+        saveAndExit.setFont(new Font("Arial", Font.BOLD, 15));
 
-            resumeButton.setBounds((window.getWidth() - buttonWidth) / 2, (window.getHeight() - buttonHeight) / 2 - 45, buttonWidth, buttonHeight);
-            exitButton.setBounds((window.getWidth() - buttonWidth) / 2, (window.getHeight() - buttonHeight) / 2 + 45, buttonWidth, buttonHeight);
-            saveAndExit.setBounds((window.getWidth() - buttonWidth) / 2, (window.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
+        resumeButton.setBounds((pauseDialog.getWidth() - buttonWidth) / 2, (pauseDialog.getHeight() - buttonHeight) / 2 - 45, buttonWidth, buttonHeight);
+        saveAndExit.setBounds((pauseDialog.getWidth() - buttonWidth) / 2, (pauseDialog.getHeight() - buttonHeight) / 2 + 45, buttonWidth, buttonHeight);
+        exitButton.setBounds((pauseDialog.getWidth() - buttonWidth) / 2, (pauseDialog.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
             
-            resumeButton.addActionListener((ActionEvent e) -> {
-                isPaused = false;
-                pauseDialog.dispose();
-            });
+        resumeButton.addActionListener((ActionEvent e) -> {
+            isPaused = false;
+            pauseDialog.dispose();
+        });
 
-            pauseDialog.add(resumeButton);
-            pauseDialog.add(exitButton);
-            pauseDialog.add(saveAndExit);
-            pauseDialog.setLocationRelativeTo(window);
-            pauseDialog.setVisible(true);
+        saveAndExit.addActionListener((ActionEvent e) -> {
+            isPaused = false;
+            saveWorld();
+
+            pauseDialog.dispose();
+
+            StartingPanel startingPanel = new StartingPanel(App.FRAME_RATE, window);
+            window.setContentPane(startingPanel);
+        });
+
+        exitButton.addActionListener((ActionEvent e) -> {
+            isPaused = false;
+
+            // get starting panel from App.java
+                
+            pauseDialog.dispose();
+        });
+
+        pauseDialog.add(resumeButton);
+        pauseDialog.add(exitButton);
+        pauseDialog.add(saveAndExit);
+
+        pauseDialog.setLocationRelativeTo(window);
+        pauseDialog.setVisible(true);
     }
 
     /**
@@ -680,7 +706,7 @@ public class GameController {
 
             properties.put("worldMap", outerArray);
 
-            file.write(properties.toString(1));
+            file.write(properties.toString(0));
 
             return true;
         } catch (IOException e) {

@@ -18,7 +18,7 @@ public class App {
     /**
      * Specifies the frame rate of the programm.
      */
-    private final static int FRAME_RATE = 60;
+    public final static int FRAME_RATE = 60;
 
     /**
      * The main method loads the game upon launch of the programm.

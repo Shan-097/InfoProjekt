@@ -91,8 +91,6 @@ public class StartingPanel extends JPanel implements Runnable {
         loadGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 showLoadGamePanel();
-                // GameController controller = new GameController();
-                // controller.loadWorld("./SourceCode/Infoprojekt/saves/testWorld.json");
             }
         });
         controls = new JButton("Controls");
