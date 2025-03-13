@@ -273,7 +273,7 @@ public class GameController {
                 byte[] outputDirectionsOfOtherBuilding;
                 byte rotationOfOtherBuilding;
                 try {
-                    b2 = wGenerator.getField(x, y).getBuilding();
+                    b2 = wGenerator.getField(newX, newY).getBuilding();
                     outputDirectionsOfOtherBuilding = b2.getOutputDirections();
                     rotationOfOtherBuilding = b2.getRotation();
                 } catch (Exception e) {

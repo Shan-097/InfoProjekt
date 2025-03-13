@@ -49,10 +49,7 @@ public class Field {
      * @return The building on this field
      */
     public Building getBuilding() {
-        if (building == null) {
-            return null;
-        }
-        return building.clone();
+        return building;
     }
 
     /**
@@ -80,17 +77,6 @@ public class Field {
      */
     public void setBuilding(Building pBuilding) {
         building = pBuilding;
-    }
-
-    /**
-     * Clones the object so that the original can't be modified but the values can
-     * still be used.
-     * 
-     * @return The clone of the object
-     */
-    @Override
-    public Field clone() {
-        return new Field(this.getBuilding(), resource);
     }
 
     /**

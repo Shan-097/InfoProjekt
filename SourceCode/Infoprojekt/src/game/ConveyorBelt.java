@@ -1,7 +1,6 @@
 package game;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * The conveyor belt is a building for item transportation.
@@ -47,22 +46,6 @@ public class ConveyorBelt extends Building {
     }
 
     /**
-     * The constructor of ConveyorBelt for cloning an object.
-     * 
-     * @param rotation  The rotation
-     * @param inventory The inventory
-     * @throws IllegalArgumentException to be done
-     */
-    private ConveyorBelt(byte rotation, LinkedList<Item> inventory, byte[] pOutputDirections)
-            throws IllegalArgumentException {
-        super(rotation, inventory);
-        if (pOutputDirections == null || pOutputDirections.length != 1) {
-            throw new IllegalArgumentException("Bad output directions.");
-        }
-        outputDirections = pOutputDirections;
-    }
-
-    /**
      * As this building type isn't modifying any items it just returns the given
      * item.
      * 
@@ -79,7 +62,7 @@ public class ConveyorBelt extends Building {
      * @return The cost of this building.
      */
     public HashMap<Item, Integer> getCost() {
-        return (HashMap<Item, Integer>) COST.clone();
+        return COST;
     }
 
     /**
@@ -88,7 +71,7 @@ public class ConveyorBelt extends Building {
      * @return The input directions.
      */
     public byte[] getInputDirections() {
-        return INPUT_DIRECTIONS.clone();
+        return INPUT_DIRECTIONS;
     }
 
     /**
@@ -97,7 +80,7 @@ public class ConveyorBelt extends Building {
      * @return The output directions.
      */
     public byte[] getOutputDirections() {
-        return outputDirections.clone();
+        return outputDirections;
     }
 
     /**
@@ -111,21 +94,6 @@ public class ConveyorBelt extends Building {
             outputDirections[0] = 1;
         } else {
             outputDirections[0]++;
-        }
-    }
-
-    /**
-     * Clones the object so that the original can't be modified but the values can
-     * still be used.
-     * 
-     * @return The cloned building or null if something went wrong.
-     */
-    @Override
-    public Building clone() {
-        try {
-            return new ConveyorBelt(this.getRotation(), this.getInventory(), this.getOutputDirections());
-        } catch (IllegalArgumentException e) {
-            return null;
         }
     }
 }

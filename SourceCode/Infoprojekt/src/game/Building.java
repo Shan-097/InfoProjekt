@@ -44,22 +44,7 @@ public abstract class Building {
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             content.add(null);
         }
-        movedIndices = new HashSet<>(INVENTORY_SIZE);
-    }
-
-    /**
-     * A constructor of Building if all values are known.
-     * 
-     * @param pRotation The rotation
-     * @param pContent  The inventory
-     * @throws IllegalArgumentException to be done
-     */
-    public Building(byte pRotation, LinkedList<Item> pContent) throws IllegalArgumentException {
-        rotation = pRotation;
-        if (pContent == null || pContent.size() != INVENTORY_SIZE) {
-            throw new IllegalArgumentException("The inventory has to be not null and have a size of INVENTORY_SIZE.");
-        }
-        content = pContent;
+        movedIndices = new HashSet<Integer>(INVENTORY_SIZE);
     }
 
     /**
@@ -167,7 +152,7 @@ public abstract class Building {
      * @return The inventory
      */
     public LinkedList<Item> getInventory() {
-        return (LinkedList<Item>) content.clone();
+        return content;
     }
 
     /**
@@ -176,7 +161,7 @@ public abstract class Building {
      * @return to be done
      */
     public HashSet<Integer> getMovedItems() {
-        return (HashSet<Integer>) movedIndices.clone();
+        return movedIndices;
     }
 
     /**
@@ -233,14 +218,4 @@ public abstract class Building {
     public void setRotation(byte pRotation) {
         rotation = pRotation;
     }
-
-    /**
-     * Clones the object so that the original can't be modified but the values can
-     * still be used.<br>
-     * It has to be abstract because a object of type Building can't be constructed.
-     * 
-     * @return The clone of the object
-     */
-    @Override
-    public abstract Building clone();
 }

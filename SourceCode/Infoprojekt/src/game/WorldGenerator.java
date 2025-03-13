@@ -377,7 +377,7 @@ public class WorldGenerator {
         if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
             throw new IllegalArgumentException("The coordinates have to be valid.");
         }
-        return map[posX][posY].clone();
+        return map[posX][posY];
     }
 
     /**

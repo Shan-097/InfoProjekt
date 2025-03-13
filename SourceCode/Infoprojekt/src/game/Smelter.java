@@ -1,7 +1,6 @@
 package game;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * The smelter is a building that turns passing through items into their semlted
@@ -46,17 +45,6 @@ public class Smelter extends Building {
     }
 
     /**
-     * The constructor of Smelter for cloning an object.
-     * 
-     * @param rotation  The rotation
-     * @param inventory The inventory
-     * @throws IllegalArgumentException to be done
-     */
-    private Smelter(byte rotation, LinkedList<Item> inventory) throws IllegalArgumentException {
-        super(rotation, inventory);
-    }
-
-    /**
      * As this building smelts items it returns the smelted variant of the given
      * one.<br>
      * null is defined as the smelted item of null.
@@ -97,20 +85,5 @@ public class Smelter extends Building {
      */
     public byte[] getOutputDirections() {
         return OUTPUT_DIRECTIONS;
-    }
-
-    /**
-     * Clones the object so that the original can't be modified but the values can
-     * still be used.<br>
-     * 
-     * @return The cloned building or null if something went wrong.
-     */
-    @Override
-    public Building clone() {
-        try {
-            return new Smelter(this.getRotation(), this.getInventory());
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
     }
 }
