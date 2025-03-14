@@ -210,4 +210,32 @@ public class GameInputHandler {
             Music.setVolumeLower();
         }
     }
+
+    /**
+     * to be done
+     * 
+     * @param s to be done
+     * @return to be done
+     */
+    public String getKey(String s){
+        if (s == null) {
+            return "";
+        }
+        for (Entry<Character, String> entry : reversedInputMapNormal.entrySet()) {
+            if (entry.getValue().equals(s)) {
+                return String.valueOf(entry.getKey());
+            }
+        }
+        for (Entry<Character, String> entry : reversedInputMapHoldable.entrySet()) {
+            if (entry.getValue().equals(s)) {
+                return String.valueOf(entry.getKey());
+            }
+        }
+        for (Entry<Character, String> entry : reversedInputMapNotHoldable.entrySet()) {
+            if (entry.getValue().equals(s)) {
+                return String.valueOf(entry.getKey());
+            }
+        }
+        return "";
+    }
 }

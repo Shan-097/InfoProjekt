@@ -1,18 +1,26 @@
 package hotKey;
 
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import java.io.File;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
+import javax.imageio.ImageIO;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import game.Music;
+
 import main.App;
 import main.InputHandler;
 import main.LoadStoreHotKeys;
@@ -75,6 +83,11 @@ public class HotKeyPanel extends JPanel implements Runnable {
     private Thread thread;
 
     /**
+     * to be done
+     */
+    private Image imgBackground;
+
+    /**
      * Constructor of the starting panel.
      * Instantiates the buttons, adds listeners to them and
      * sets important values of the frame.
@@ -132,6 +145,14 @@ public class HotKeyPanel extends JPanel implements Runnable {
             buttons.put(inputMapping.getKey(), temp);
             add(temp);
         }
+
+        try {
+            imgBackground = ImageIO.read(new File("./Graphics/hintergrundbild(latest).png"));
+            imgBackground = imgBackground.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_DEFAULT);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
         Music.stopMusic();
     }
 
@@ -251,6 +272,16 @@ public class HotKeyPanel extends JPanel implements Runnable {
                 return "delete";
             default:
                 return String.valueOf((char) c);
+        }
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); // Call this first!
+
+        Graphics2D g2d = (Graphics2D) g;
+
+        if (imgBackground != null) {
+            g2d.drawImage(imgBackground, 0, 0, getWidth(), getHeight(), null);
         }
     }
 }

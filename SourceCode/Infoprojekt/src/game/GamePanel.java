@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -488,10 +491,27 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Draw the sidebar
         int border = 30;
-        g2d.drawImage(images.get("sideBar"), (int) Math.round(0.6 * tileSize),
-                (int) (this.getHeight() / 2 - 2 * tileSize), null); // Draw sidebar Image
-        g2d.drawImage(images.get("conveyorUP"), (int) Math.round(0.6 * tileSize) + border / 2,
-                (int) (this.getHeight() / 2 - 2 * tileSize) + border / 2, null); // Draw Buildings inside
+        g2d.drawImage(images.get("sideBar"),(int) Math.round(0.6 * tileSize), (int) (this.getHeight() / 2 - 2 * tileSize),null); // Draw sidebar Image
+        g2d.drawImage(images.get("conveyor020"), (int) Math.round(0.6 * tileSize)+ border/2, (int) (this.getHeight() / 2 - 2 * tileSize)+ border/2, null); // Draw Buildings inside
+        g2d.drawImage(images.get("extractorDOWN"), (int) Math.round(0.6 * tileSize)+ border/2, (int) (this.getHeight() / 2 - (border-5)), null);
+        g2d.drawImage(images.get("smelterDOWN"),(int) Math.round(0.6 * tileSize)+border/2, (int) (this.getHeight() / 2 + tileSize) , null);
+        // Implement Font 
+        try{
+            File fontFile = new File("./Graphics/D3Litebitmapism.ttf");
+            Font D3Litemapism = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(16f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(D3Litemapism);
+            g2d.setFont(D3Litemapism);
+            g2d.setColor(Color.black);
+            g2d.drawString(gameInputHandler.getKey("placeConveyorBelt"),(int) Math.round(0.6 * tileSize)+7, (int) (this.getHeight() / 2 - 2 * tileSize)+tileSize+border-6); //Draw Keybinds
+            g2d.drawString(gameInputHandler.getKey("placeExtractor"),(int) Math.round(0.6 * tileSize)+7, (int) (this.getHeight() / 2)+border*2-12);
+            g2d.drawString(gameInputHandler.getKey("placeSmelter"),(int) Math.round(0.6 * tileSize)+7, (int) (this.getHeight() / 2 +  tileSize)+border*2+14);
+
+
+        }
+        catch(FontFormatException | IOException e){
+            e.printStackTrace();
+        }
 
         // Draw the player [IN EIGENE METHODE AUSLAGERN???]
         if (gameController.getDirection() != '0') {
