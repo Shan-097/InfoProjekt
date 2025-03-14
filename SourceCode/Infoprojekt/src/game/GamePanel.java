@@ -2,9 +2,11 @@ package game;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,12 +14,15 @@ import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.json.JSONObject;
 
+import main.App;
 import main.InputHandler;
+import main.StartingPanel;
 
 /**
  * Responsible for the entirety of visual output in the main game and therefore
@@ -26,6 +31,16 @@ import main.InputHandler;
  * Updates constantly at a set rate.
  */
 public class GamePanel extends JPanel implements Runnable {
+    /**
+     * generic width of the buttons in the starting menu
+     */
+    private final int buttonWidth = 230;
+
+    /**
+     * generic height of the buttons in the starting menu
+     */
+    private final int buttonHeight = 35;
+
     /**
      * Size of a tile
      */
@@ -67,12 +82,39 @@ public class GamePanel extends JPanel implements Runnable {
     Dictionary<Character, BufferedImage> falke = new Hashtable<>();
 
     /**
+     * to be done
+     */
+    private boolean gamePaused;
+
+    /**
+     * to be done
+     */
+    private JButton resumeButton;
+
+    /**
+     * to be done
+     */
+    private JButton exitButton;
+
+    /**
+     * to be done
+     */
+    private JButton saveAndExitButton;
+
+    /**
+     * to be done
+     */
+    private JFrame window;
+
+    /**
      * Constructor of the GamePanel class
      * Sets up the frame and the GameController, InputHandler and GameInputHandler
      * to allow for interaction later.
      * Loads all textures needed into their respective dictionary
      * 
      * @param pFr Frame rate
+     * @param pFilePath to be done
+     * @param pWindow to be done
      */
     public GamePanel(int pFr, String pFilePath, JFrame pWindow) {
         this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
@@ -82,7 +124,9 @@ public class GamePanel extends JPanel implements Runnable {
         InputHandler inputHandler = new InputHandler();
         this.addKeyListener(inputHandler);
         this.setFocusable(true);
-        gameInputHandler = new GameInputHandler(gameController, inputHandler);
+        gameInputHandler = new GameInputHandler(gameController, this, inputHandler);
+
+        window = pWindow;
 
         try {
             images.put("grass", ImageIO.read(new File("./Graphics/between grass (64x64).png")));
@@ -102,6 +146,35 @@ public class GamePanel extends JPanel implements Runnable {
             e.printStackTrace();
         }
         Music.LoopMusic("./Music/Wizard.wav");
+
+        resumeButton = new JButton("Resume");
+        exitButton = new JButton("Exit");
+        saveAndExitButton = new JButton("Save and Exit");
+
+        resumeButton.setFont(new Font("Arial", Font.BOLD, 15));
+        exitButton.setFont(new Font("Arial", Font.BOLD, 15));
+        saveAndExitButton.setFont(new Font("Arial", Font.BOLD, 15));
+
+        resumeButton.addActionListener((ActionEvent e) -> {
+            showPauseMenu();
+        });
+
+        saveAndExitButton.addActionListener((ActionEvent e) -> {
+            showPauseMenu();
+            gameController.saveWorld();
+
+            App.loadStartingScreen();
+        });
+
+        exitButton.addActionListener((ActionEvent e) -> {
+            showPauseMenu();
+
+            App.loadStartingScreen();
+        });
+
+        add(resumeButton);
+        add(saveAndExitButton);
+        add(exitButton);
     }
 
     /**
@@ -137,6 +210,10 @@ public class GamePanel extends JPanel implements Runnable {
                 delta--;
             }
         }
+    }
+
+    public void showPauseMenu() {
+        gamePaused = !gamePaused;
     }
 
     /**
@@ -222,12 +299,18 @@ public class GamePanel extends JPanel implements Runnable {
             g2d.drawImage(falke.get('W'), TileCenterX, TileCenterY, null);
         }
 
+        if(gamePaused == true) {
+            g2d.setColor(Color.WHITE);
+            g2d.fillRect((width/2)-(width/3)/2, (height/2)-(height/3)/2, width/3, height/3);
+
+            resumeButton.setBounds((window.getWidth() - buttonWidth) / 2, (window.getHeight() - buttonHeight) / 2 - 45, buttonWidth, buttonHeight);
+            saveAndExitButton.setBounds((window.getWidth() - buttonWidth) / 2, (window.getHeight() - buttonHeight) / 2 + 45, buttonWidth, buttonHeight);
+            exitButton.setBounds((window.getWidth() - buttonWidth) / 2, (window.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
+        }
+
         AffineTransform tx = rotateArrow(images.get("arrow"), numWidth, numHeight);
         if (tx != null)
             g2d.drawImage(images.get("arrow"), tx, null);
-
-        // add wolken
-        g2d.dispose();
     }
 
     /**

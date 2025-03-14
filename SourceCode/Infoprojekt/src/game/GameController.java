@@ -20,8 +20,6 @@ import java.util.Map.Entry;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import main.App;
 
 import org.json.JSONArray;
@@ -233,59 +231,6 @@ public class GameController {
             }
         }
         return listOfStartingPoints;
-    }
-
-    public void showPauseMenu() {
-        System.out.println("showPauseMenu called");
-
-        isPaused = true;
-
-        JDialog pauseDialog = new JDialog(window, "Pause", true);
-
-        pauseDialog.setSize(500, 400);
-        pauseDialog.setLayout(null);
-            
-        JButton resumeButton = new JButton("Resume");
-        JButton exitButton = new JButton("Exit");
-        JButton saveAndExit = new JButton("Save and Exit");
-
-        resumeButton.setFont(new Font("Arial", Font.BOLD, 15));
-        exitButton.setFont(new Font("Arial", Font.BOLD, 15));
-        saveAndExit.setFont(new Font("Arial", Font.BOLD, 15));
-
-        resumeButton.setBounds((pauseDialog.getWidth() - buttonWidth) / 2, (pauseDialog.getHeight() - buttonHeight) / 2 - 45, buttonWidth, buttonHeight);
-        saveAndExit.setBounds((pauseDialog.getWidth() - buttonWidth) / 2, (pauseDialog.getHeight() - buttonHeight) / 2 + 45, buttonWidth, buttonHeight);
-        exitButton.setBounds((pauseDialog.getWidth() - buttonWidth) / 2, (pauseDialog.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
-            
-        resumeButton.addActionListener((ActionEvent e) -> {
-            isPaused = false;
-            pauseDialog.dispose();
-        });
-
-        saveAndExit.addActionListener((ActionEvent e) -> {
-            isPaused = false;
-            saveWorld();
-
-            pauseDialog.dispose();
-
-            StartingPanel startingPanel = new StartingPanel(App.FRAME_RATE, window);
-            window.setContentPane(startingPanel);
-        });
-
-        exitButton.addActionListener((ActionEvent e) -> {
-            isPaused = false;
-
-            // get starting panel from App.java
-                
-            pauseDialog.dispose();
-        });
-
-        pauseDialog.add(resumeButton);
-        pauseDialog.add(exitButton);
-        pauseDialog.add(saveAndExit);
-
-        pauseDialog.setLocationRelativeTo(window);
-        pauseDialog.setVisible(true);
     }
 
     /**

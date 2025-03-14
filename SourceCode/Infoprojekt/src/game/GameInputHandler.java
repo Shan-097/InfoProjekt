@@ -27,8 +27,14 @@ public class GameInputHandler {
     /**
      * to be done
      */
-    public GameInputHandler(GameController pGC, InputHandler pIH) {
+    private GamePanel gamePanel;
+
+    /**
+     * to be done
+     */
+    public GameInputHandler(GameController pGC, GamePanel pGP, InputHandler pIH) {
         gameController = pGC;
+        gamePanel = pGP;
         inputHandler = pIH;
 
         inputMap = new HashMap<Character, String>();
@@ -127,10 +133,7 @@ public class GameInputHandler {
             gameController.cancelPlacement();
         }
         if (actions.contains("pauseMenu")) {
-            System.out.println(actions);
-            gameController.showPauseMenu();
-            actions.remove("pauseMenu");
-            System.out.println(actions);
+            gamePanel.showPauseMenu();
         }
         if (actions.contains("rotateBuilding")) {
             gameController.rotateBuilding();
