@@ -1,6 +1,5 @@
 package main;
 
-import game.GameController;
 import game.Music;
 
 import java.awt.Font;
@@ -106,14 +105,13 @@ public class StartingPanel extends JPanel implements Runnable {
 
         startNewGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                App.loadGameScreen();
-                thread = null;
+                // TODO: Implement a way to create world with custom size and name.
+                App.loadGameScreen("newWorld");
             }
         });
         loadGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GameController controller = new GameController();
-                controller.loadWorld("./SourceCode/Infoprojekt/saves/testWorld.json");
+                App.loadLoadGameScreen();
             }
         });
         controls.addActionListener(new ActionListener() {

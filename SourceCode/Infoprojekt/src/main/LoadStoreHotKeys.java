@@ -43,7 +43,8 @@ public class LoadStoreHotKeys {
         STANDARD_INPUT_MAP_NOT_HOLDABLE.put("placeExtractor", '2');
         STANDARD_INPUT_MAP_NOT_HOLDABLE.put("placeSmelter", '3');
         STANDARD_INPUT_MAP_NOT_HOLDABLE.put("rotateBuilding", 'r');
-        STANDARD_INPUT_MAP_NOT_HOLDABLE.put("cancelPlacement", (char) 27);
+        STANDARD_INPUT_MAP_NOT_HOLDABLE.put("cancelPlacement", 'q');
+        STANDARD_INPUT_MAP_NOT_HOLDABLE.put("pauseMenu", '\u001B');
 
         STANDARD_INPUT_MAP_HOLDABLE = new HashMap<String, Character>(2);
         STANDARD_INPUT_MAP_HOLDABLE.put("placeBuilding", 'b');

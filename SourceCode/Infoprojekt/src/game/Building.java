@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * Abstract class Building defines the necessary methods and variables of a
  * building.<br>
@@ -217,5 +220,19 @@ public abstract class Building {
      */
     public void setRotation(byte pRotation) {
         rotation = pRotation;
+    }
+
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
+    public JSONObject toJSONObject() {
+        // TODO: Implement building specific overrides for buildings that need that.
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("rotation", rotation);
+        jsonObject.put("content", new JSONArray(content));
+
+        return jsonObject;
     }
 }

@@ -61,6 +61,20 @@ public class WorldGenerator {
     }
 
     /**
+     * to be done
+     * 
+     * @param worldMap to be done
+     * @throws IllegalArgumentException to be done
+     */
+    public WorldGenerator(Field[][] worldMap) throws IllegalArgumentException {
+        if(worldMap == null) {
+            throw new IllegalArgumentException("The given map can't be null.");
+        }
+        map = worldMap;
+        // TODO: Test if map is valid.
+    }
+
+    /**
      * This method generates a specified tile (Field object of the map) and then
      * collapses the wave according to very simple rules (generates other tiles that
      * should only have one value).

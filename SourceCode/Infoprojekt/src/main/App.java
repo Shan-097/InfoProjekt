@@ -53,6 +53,18 @@ public class App {
     }
 
     /**
+     * loadLoadGameScreen sets the necessary values and creates the window of and
+     * for the load game screen closing the others in the process.
+     */
+    public static void loadLoadGameScreen() {
+        LoadGamePanel loadGamePanel = new LoadGamePanel(FRAME_RATE);
+        setStandardProperties(loadGamePanel);
+
+        // random values, TODO: choose better
+        window.setMinimumSize(new Dimension(500, 300));
+    }
+
+    /**
      * loadHotKeyScreen sets the necessary values and creates the window of and for
      * the hot key screen closing the others in the process.
      */
@@ -69,8 +81,8 @@ public class App {
      * loadGameScreen sets the necessary values and creates the window of and for
      * the game screen closing the others in the process.
      */
-    public static void loadGameScreen() {
-        GamePanel gamePanel = new GamePanel(FRAME_RATE);
+    public static void loadGameScreen(String worldPath) {
+        GamePanel gamePanel = new GamePanel(FRAME_RATE, worldPath);
         setStandardProperties(gamePanel);
 
         // random values, TODO: choose better

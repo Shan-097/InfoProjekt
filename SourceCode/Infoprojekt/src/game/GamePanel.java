@@ -3,11 +3,13 @@ package game;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -20,9 +22,12 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 
+import main.App;
 import main.InputHandler;
 import main.Tuple;
 
@@ -33,6 +38,16 @@ import main.Tuple;
  * Updates constantly at a set rate.
  */
 public class GamePanel extends JPanel implements Runnable {
+    /**
+     * generic width of the buttons in the starting menu
+     */
+    private final int buttonWidth = 230;
+
+    /**
+     * generic height of the buttons in the starting menu
+     */
+    private final int buttonHeight = 35;
+
     /**
      * Size of a tile
      */
@@ -79,22 +94,43 @@ public class GamePanel extends JPanel implements Runnable {
     private int drawState = 0;
 
     /**
+     * to be done
+     */
+    private boolean gamePaused;
+
+    /**
+     * to be done
+     */
+    private JButton resumeButton;
+
+    /**
+     * to be done
+     */
+    private JButton exitButton;
+
+    /**
+     * to be done
+     */
+    private JButton saveAndExitButton;
+
+    /**
      * Constructor of the GamePanel class
      * Sets up the frame and the GameController, InputHandler and GameInputHandler
      * to allow for interaction later.
      * Loads all textures needed into their respective dictionary
      * 
-     * @param pFr Frame rate
+     * @param pFr       Frame rate
+     * @param pFilePath to be done
      */
-    public GamePanel(int pFr) {
+    public GamePanel(int pFr, String pFilePath) {
         this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
         this.setDoubleBuffered(true);
         frameRate = pFr;
-        gameController = new GameController();
+        gameController = new GameController(pFilePath);
         InputHandler inputHandler = new InputHandler();
         this.addKeyListener(inputHandler);
         this.setFocusable(true);
-        gameInputHandler = new GameInputHandler(gameController, inputHandler);
+        gameInputHandler = new GameInputHandler(gameController, this, inputHandler);
 
         // Load images into dictionary
         // Misc
@@ -148,12 +184,12 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("extractorLEFT1", "./Graphics/drillLeft.png");
         imgPaths.put("extractorLEFT2", "./Graphics/drillLeft.png");
         imgPaths.put("extractorLEFT3", "./Graphics/drillLeft.png");
-        
+
         imgPaths.put("extractorDOWN0", "./Graphics/drill.png");
         imgPaths.put("extractorDOWN1", "./Graphics/drill.png");
         imgPaths.put("extractorDOWN2", "./Graphics/drill.png");
         imgPaths.put("extractorDOWN3", "./Graphics/drill.png");
-        
+
         imgPaths.put("extractorRIGHT0", "./Graphics/drillRIGHT.png");
         imgPaths.put("extractorRIGHT1", "./Graphics/drillRIGHT.png");
         imgPaths.put("extractorRIGHT2", "./Graphics/drillRIGHT.png");
@@ -215,11 +251,44 @@ public class GamePanel extends JPanel implements Runnable {
             resourceLabels.put(entry.getKey(), temp);
             add(resourceLabels.get(entry.getKey()));
         }
-        
+
         Music.stopMusic();
         Music.SpawnMusic(".\\Music\\spawn sound.wav");
         Music.stopMusic();
         Music.LoopMusic(".\\Music\\Hintergrund.wav");
+
+        resumeButton = new JButton("Resume");
+        exitButton = new JButton("Exit");
+        saveAndExitButton = new JButton("Save and Exit");
+
+        resumeButton.setFont(new Font("Arial", Font.BOLD, 15));
+        exitButton.setFont(new Font("Arial", Font.BOLD, 15));
+        saveAndExitButton.setFont(new Font("Arial", Font.BOLD, 15));
+
+        resumeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                showPauseMenu();
+            }
+        });
+
+        saveAndExitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                showPauseMenu();
+                gameController.saveWorld();
+                App.loadStartingScreen();
+            }
+        });
+
+        exitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                showPauseMenu();
+                App.loadStartingScreen();
+            }
+        });
+
+        add(resumeButton);
+        add(saveAndExitButton);
+        add(exitButton);
     }
 
     /**
@@ -259,6 +328,10 @@ public class GamePanel extends JPanel implements Runnable {
                 delta--;
             }
         }
+    }
+
+    public void showPauseMenu() {
+        gamePaused = !gamePaused;
     }
 
     /**
@@ -403,7 +476,7 @@ public class GamePanel extends JPanel implements Runnable {
                 x = (int) (TileCenterX + (x - posXinArray - gameController.getOffsetX()) * tileSize);
                 y = (int) (TileCenterY + (y - posYinArray - gameController.getOffsetY()) * tileSize);
                 if (b.getClass() == CollectionSite.class) {
-                    g2d.drawImage(images.get("collectionSite" + b.getRotation() + (drawState/2)), x, y, null);
+                    g2d.drawImage(images.get("collectionSite" + b.getRotation() + (drawState / 2)), x, y, null);
                 } else if (b.getClass() == ConveyorBelt.class) {
                     this.drawConveyorBelt(g2d, b, x, y);
                 } else if (b.getClass() == Extractor.class) {
@@ -491,25 +564,30 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Draw the sidebar
         int border = 30;
-        g2d.drawImage(images.get("sideBar"),(int) Math.round(0.6 * tileSize), (int) (this.getHeight() / 2 - 2 * tileSize),null); // Draw sidebar Image
-        g2d.drawImage(images.get("conveyor020"), (int) Math.round(0.6 * tileSize)+ border/2, (int) (this.getHeight() / 2 - 2 * tileSize)+ border/2, null); // Draw Buildings inside
-        g2d.drawImage(images.get("extractorDOWN"), (int) Math.round(0.6 * tileSize)+ border/2, (int) (this.getHeight() / 2 - (border-5)), null);
-        g2d.drawImage(images.get("smelterDOWN"),(int) Math.round(0.6 * tileSize)+border/2, (int) (this.getHeight() / 2 + tileSize) , null);
-        // Implement Font 
-        try{
+        g2d.drawImage(images.get("sideBar"), (int) Math.round(0.6 * tileSize),
+                (int) (this.getHeight() / 2 - 2 * tileSize), null); // Draw sidebar Image
+        g2d.drawImage(images.get("conveyor020"), (int) Math.round(0.6 * tileSize) + border / 2,
+                (int) (this.getHeight() / 2 - 2 * tileSize) + border / 2, null); // Draw Buildings inside
+        g2d.drawImage(images.get("extractorDOWN"), (int) Math.round(0.6 * tileSize) + border / 2,
+                (int) (this.getHeight() / 2 - (border - 5)), null);
+        g2d.drawImage(images.get("smelterDOWN"), (int) Math.round(0.6 * tileSize) + border / 2,
+                (int) (this.getHeight() / 2 + tileSize), null);
+        // Implement Font
+        try {
             File fontFile = new File("./Graphics/D3Litebitmapism.ttf");
             Font D3Litemapism = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(16f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(D3Litemapism);
             g2d.setFont(D3Litemapism);
             g2d.setColor(Color.black);
-            g2d.drawString(gameInputHandler.getKey("placeConveyorBelt"),(int) Math.round(0.6 * tileSize)+7, (int) (this.getHeight() / 2 - 2 * tileSize)+tileSize+border-6); //Draw Keybinds
-            g2d.drawString(gameInputHandler.getKey("placeExtractor"),(int) Math.round(0.6 * tileSize)+7, (int) (this.getHeight() / 2)+border*2-12);
-            g2d.drawString(gameInputHandler.getKey("placeSmelter"),(int) Math.round(0.6 * tileSize)+7, (int) (this.getHeight() / 2 +  tileSize)+border*2+14);
+            g2d.drawString(gameInputHandler.getKey("placeConveyorBelt"), (int) Math.round(0.6 * tileSize) + 7,
+                    (int) (this.getHeight() / 2 - 2 * tileSize) + tileSize + border - 6); // Draw Keybinds
+            g2d.drawString(gameInputHandler.getKey("placeExtractor"), (int) Math.round(0.6 * tileSize) + 7,
+                    (int) (this.getHeight() / 2) + border * 2 - 12);
+            g2d.drawString(gameInputHandler.getKey("placeSmelter"), (int) Math.round(0.6 * tileSize) + 7,
+                    (int) (this.getHeight() / 2 + tileSize) + border * 2 + 14);
 
-
-        }
-        catch(FontFormatException | IOException e){
+        } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
 
@@ -567,6 +645,18 @@ public class GamePanel extends JPanel implements Runnable {
             temp.setText("" + entry.getValue());
             // temp.setLocation(, );
 
+        }
+
+        if (gamePaused) {
+            g2d.setColor(Color.WHITE);
+            g2d.fillRect((width / 2) - (width / 3) / 2, (height / 2) - (height / 3) / 2, width / 3, height / 3);
+
+            resumeButton.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 - 45,
+                    buttonWidth, buttonHeight);
+            saveAndExitButton.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 + 45,
+                    buttonWidth, buttonHeight);
+            exitButton.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2,
+                    buttonWidth, buttonHeight);
         }
     }
 
@@ -706,7 +796,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void drawConveyorBelt(Graphics2D g2d, Building b, int posX, int posY) {
-        byte input =  b.getRotation();
+        byte input = b.getRotation();
         byte output = (byte) ((b.getOutputDirections()[0] + input) % 4);
         ArrayList<Item> content = new ArrayList<Item>(b.getInventory()); // 16 by 16 pixels for items on conveyor belts
         HashSet<Integer> movedItems = b.getMovedItems();

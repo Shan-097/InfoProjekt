@@ -86,8 +86,14 @@ public class Field {
      */
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("building", building);
-        jsonObject.put("resource", resource);
+        
+        if(building != null) {
+            jsonObject.put("building", building.toJSONObject());
+        }
+        if(resource != null) {
+            jsonObject.put("resource", resource.toJSONObject());
+        }
+
         return jsonObject;
     }
 }

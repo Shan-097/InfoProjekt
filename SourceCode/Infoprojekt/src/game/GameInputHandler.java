@@ -38,15 +38,22 @@ public class GameInputHandler {
     private GameController gameController;
 
     /**
+     * to be done
+     */
+    private GamePanel gamePanel;
+
+    /**
      * The constructor of GameInputHandler sets the gameController object of this
      * instance of the game and the inputHandler of the JPanel. It also loads the
      * inputMap.
      * 
      * @param pGC The gameController object of this instance
      * @param pIH The inputHandler of the JPanel
+     * @param pGP to be done
      */
-    public GameInputHandler(GameController pGC, InputHandler pIH) {
+    public GameInputHandler(GameController pGC, GamePanel pGP, InputHandler pIH) {
         gameController = pGC;
+        gamePanel = pGP;
         inputHandler = pIH;
 
         HashMap<String, HashMap<String, Character>> inputMaps = LoadStoreHotKeys.loadHotKeys();
@@ -193,6 +200,9 @@ public class GameInputHandler {
         }
         if (actions.contains("cancelPlacement")) {
             gameController.cancelPlacement();
+        }
+        if (actions.contains("pauseMenu")) {
+            gamePanel.showPauseMenu();
         }
         if (actions.contains("rotateBuilding")) {
             gameController.rotateBuilding();

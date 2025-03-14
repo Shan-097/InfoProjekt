@@ -2,6 +2,8 @@ package game;
 
 import java.util.HashMap;
 
+import org.json.JSONObject;
+
 /**
  * The Resource class manages the resources in the game.<br>
  * For every unique resource one object is created. All references to resources
@@ -60,5 +62,15 @@ public class Resource {
      */
     public int getResourceID() {
         return resourceID;
+    }
+
+    /**
+     * to be done
+     * @return
+     */
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("resourceID", resourceID);
+        return jsonObject;
     }
 }

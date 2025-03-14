@@ -102,6 +102,40 @@ public class GameController {
     }
 
     /**
+     * to be done
+     * 
+     * @param pFilePath to be done
+     * @throws IllegalArgumentException to be done
+     */
+    public GameController(String pFilePath) throws IllegalArgumentException {
+        if (pFilePath == null) {
+            throw new IllegalArgumentException("If the world is loaded from a file the path should not be null.");
+        }
+        // TODO: Load all other attributs and values. E.g. inventory, position
+        try {
+            JSONObject savedWorld = readJsonFile(pFilePath);
+            JSONArray worldMap = savedWorld.getJSONArray("worldMap");
+
+            int rows = worldMap.length();
+            int cols = worldMap.getJSONArray(0).length();
+            Field[][] fieldArray = new Field[rows][cols];
+
+            for (int i = 0; i < rows; i++) {
+                JSONArray rowArray = worldMap.getJSONArray(i);
+                for (int j = 0; j < cols; j++) {
+                    fieldArray[i][j] = new Field(
+                            rowArray.getJSONObject(j).getJSONObject("resource").getInt("resourceID"));
+                    // rowArray.getJSONObject(j)
+                }
+            }
+
+            wGenerator = new WorldGenerator(fieldArray);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Something is wrong with the input file or something went wrong while loading it.");
+        }
+    }
+
+    /**
      * Makes the changes to the world that are directely timed by ticks.<br>
      * E.g. moves the items on the conveyor belts.
      */
@@ -691,33 +725,13 @@ public class GameController {
 
             properties.put("worldMap", outerArray);
 
-            file.write(properties.toString(4));
+            file.write(properties.toString(0));
 
             return true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-    }
-
-    /**
-     * loads all world parameters from the previously saved json file
-     * 
-     * @param filePath FilePath of the saved World
-     * @return boolean successfully loaded or not?
-     */
-    public boolean loadWorld(String filepath) {
-        JSONObject savedObject = readJsonFile(filepath);
-
-        worldName = savedObject.getString("worldName");
-        posXinArray = Integer.parseInt(savedObject.getString("posX"));
-        posYinArray = Integer.parseInt(savedObject.getString("posY"));
-        JSONArray worldMap = savedObject.getJSONArray("worldMap");
-
-        System.out.println(worldName);
-        System.out.println(posXinArray);
-        System.out.println(posYinArray);
-        return true;
     }
 
     /**
