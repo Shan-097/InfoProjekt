@@ -200,7 +200,6 @@ public class HotKeyPanel extends JPanel implements Runnable {
     private void checkForNewKey() {
         Character pressed = hotKeyInputHandler.getPressedChar();
         if (pressed != null && nameOfActionToChange != null) {
-            System.out.println(pressed + "   " + nameOfActionToChange);
             if (iMN.containsValue(pressed) || iMNH.containsValue(pressed) || iMH.containsValue(pressed)) {
                 nameOfActionToChange = null;
                 return;
@@ -216,7 +215,7 @@ public class HotKeyPanel extends JPanel implements Runnable {
             temp.replace(nameOfActionToChange, pressed);
             char old = temp.get(nameOfActionToChange);
             if (!LoadStoreHotKeys.storeHotKeys(iMN, iMNH, iMH)) {
-                iMNH.replace(nameOfActionToChange, old);
+                temp.replace(nameOfActionToChange, old);
                 return;
             }
             buttons.get(nameOfActionToChange).setText(charToHumanReadableString(pressed));

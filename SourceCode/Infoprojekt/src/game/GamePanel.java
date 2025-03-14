@@ -125,38 +125,78 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("conveyor310", "./Graphics/ConveyerBelt-rechts.png"); // rechts 0
         imgPaths.put("conveyor311", "./Graphics/ConveyerBelt-rechts f7.png"); // rechts 1
 
-        imgPaths.put("conveyor03", "./Graphics/CB - rotiert oben Links.png"); // oben zu links
-        imgPaths.put("conveyor32", "./Graphics/CB - rotiert oben Rechts.png"); // links zu unten
-        imgPaths.put("conveyor21", "./Graphics/CB - rotiert unten Links.png"); // unten zu rechts
-        imgPaths.put("conveyor10", "./Graphics/CB - rotiert unten Rechts.png"); // rechts zu oben
+        imgPaths.put("conveyor03", "./Graphics/CB - Rotiert unten Rechts final.png"); // oben zu links
+        imgPaths.put("conveyor32", "./Graphics/CB - Rotiert oben Rechts final.png"); // links zu unten
+        imgPaths.put("conveyor21", "./Graphics/CB - Rotiert oben Links final.png"); // unten zu rechts
+        imgPaths.put("conveyor10", "./Graphics/CB - Rotiert unten Links final.png"); // rechts zu oben
 
-        imgPaths.put("conveyor30", "./Graphics/CB - rotiert oben Links.png"); // links zu oben
-        imgPaths.put("conveyor23", "./Graphics/CB - rotiert oben Rechts.png"); // unten zu links
-        imgPaths.put("conveyor12", "./Graphics/CB - rotiert unten Links.png"); // rechts zu unten
-        imgPaths.put("conveyor01", "./Graphics/CB - rotiert unten Rechts.png"); // oben zu rechts
+        imgPaths.put("conveyor30", "./Graphics/CB - Rotiert unten Rechts(gespiegelt) final.png"); // links zu oben
+        imgPaths.put("conveyor23", "./Graphics/CB - Rotiert oben Rechts(gespiegelt) final.png"); // unten zu links
+        imgPaths.put("conveyor12", "./Graphics/CB - Rotiert oben Rechts (gespiegelt final).png"); // rechts zu unten
+        imgPaths.put("conveyor01", "./Graphics/CB - Rotiert unten Links (gespiegelt)final.png"); // oben zu rechts
 
         // Extractors
-        imgPaths.put("extractorUP", "./Graphics/drillTop.png");
-        imgPaths.put("extractorLEFT", "./Graphics/drillLeft.png");
-        imgPaths.put("extractorDOWN", "./Graphics/drill.png");
-        imgPaths.put("extractorRIGHT", "./Graphics/drillRIGHT.png");
+        imgPaths.put("extractorUP0", "./Graphics/drillTop.png");
+        imgPaths.put("extractorUP1", "./Graphics/drillTop.png");
+        imgPaths.put("extractorUP2", "./Graphics/drillTop.png");
+        imgPaths.put("extractorUP3", "./Graphics/drillTop.png");
+
+        imgPaths.put("extractorLEFT0", "./Graphics/drillLeft.png");
+        imgPaths.put("extractorLEFT1", "./Graphics/drillLeft.png");
+        imgPaths.put("extractorLEFT2", "./Graphics/drillLeft.png");
+        imgPaths.put("extractorLEFT3", "./Graphics/drillLeft.png");
+        
+        imgPaths.put("extractorDOWN0", "./Graphics/drill.png");
+        imgPaths.put("extractorDOWN1", "./Graphics/drill.png");
+        imgPaths.put("extractorDOWN2", "./Graphics/drill.png");
+        imgPaths.put("extractorDOWN3", "./Graphics/drill.png");
+        
+        imgPaths.put("extractorRIGHT0", "./Graphics/drillRIGHT.png");
+        imgPaths.put("extractorRIGHT1", "./Graphics/drillRIGHT.png");
+        imgPaths.put("extractorRIGHT2", "./Graphics/drillRIGHT.png");
+        imgPaths.put("extractorRIGHT3", "./Graphics/drillRIGHT.png");
 
         // Smelters
-        imgPaths.put("smelterUP", "./Graphics/Furnace final.png");
-        imgPaths.put("smelterLEFT", "./Graphics/faceLEFT.png");
-        imgPaths.put("smelterDOWN", "./Graphics/faceDOWN.png");
-        imgPaths.put("smelterRIGHT", "./Graphics/faceRIGHT.png");
+        imgPaths.put("smelterUP0", "./Graphics/Furnace f1 unten.png");
+        imgPaths.put("smelterUP1", "./Graphics/Furnace f2 unten.png");
+        imgPaths.put("smelterUP2", "./Graphics/Furnace f3 unten.png");
+        imgPaths.put("smelterUP3", "./Graphics/Furnace f4 unten .png");
+
+        imgPaths.put("smelterLEFT0", "./Graphics/Furnace f1 links.png");
+        imgPaths.put("smelterLEFT1", "./Graphics/Furnace f2 links.png");
+        imgPaths.put("smelterLEFT2", "./Graphics/Furnace f3 links.png");
+        imgPaths.put("smelterLEFT3", "./Graphics/Furnace f4 links .png");
+
+        imgPaths.put("smelterDOWN0", "./Graphics/Furnace f1 oben.png");
+        imgPaths.put("smelterDOWN1", "./Graphics/Furnace f2 oben.png");
+        imgPaths.put("smelterDOWN2", "./Graphics/Furnace f3 oben.png");
+        imgPaths.put("smelterDOWN3", "./Graphics/Furnace f4 oben .png");
+
+        imgPaths.put("smelterRIGHT0", "./Graphics/Furnace f1 rechts.png");
+        imgPaths.put("smelterRIGHT1", "./Graphics/Furnace f2 rechts.png");
+        imgPaths.put("smelterRIGHT2", "./Graphics/Furnace f3 rechts.png");
+        imgPaths.put("smelterRIGHT3", "./Graphics/Furnace f4 rechts .png");
 
         // Collection Sites
-        // imgPaths.put("collectionSiteQ", "./Graphics/collectionSiteQ.jpg");
-        // imgPaths.put("collectionSiteW", "./Graphics/collectionSiteW.jpg");
-        // imgPaths.put("collectionSiteE", "./Graphics/collectionSiteE.jpg");
-        // imgPaths.put("collectionSiteA", "./Graphics/collectionSiteA.jpg");
-        // imgPaths.put("collectionSiteS", "./Graphics/collectionSiteS.jpg");
-        // imgPaths.put("collectionSiteD", "./Graphics/collectionSiteD.jpg");
-        // imgPaths.put("collectionSiteY", "./Graphics/collectionSiteY.jpg");
-        // imgPaths.put("collectionSiteX", "./Graphics/collectionSiteX.jpg");
-        // imgPaths.put("collectionSiteC", "./Graphics/collectionSiteC.jpg");
+        imgPaths.put("collectionSite10", "./Graphics/collectionEdgeTopLeft.png");
+        imgPaths.put("collectionSite20", "./Graphics/collectionMiddleTop.png");
+        imgPaths.put("collectionSite30", "./Graphics/collectionEdgeTopRight.png");
+        imgPaths.put("collectionSite40", "./Graphics/collectionMiddleLeft.png");
+        imgPaths.put("collectionSite50", "./Graphics/collectionSiteMitte.jpg");
+        imgPaths.put("collectionSite60", "./Graphics/collectionMidRight.png");
+        imgPaths.put("collectionSite70", "./Graphics/CollectionEdgeBotLeft.png");
+        imgPaths.put("collectionSite80", "./Graphics/CollectionMiddleBottom.png");
+        imgPaths.put("collectionSite90", "./Graphics/CollectionEdgeBotRight.png");
+
+        imgPaths.put("collectionSite11", "./Graphics/collectionEdgeTopLeft.png");
+        imgPaths.put("collectionSite21", "./Graphics/collectionMiddleTop.png");
+        imgPaths.put("collectionSite31", "./Graphics/collectionEdgeTopRight.png");
+        imgPaths.put("collectionSite41", "./Graphics/collectionMiddleLeft.png");
+        imgPaths.put("collectionSite51", "./Graphics/collectionSiteMitte.jpg");
+        imgPaths.put("collectionSite61", "./Graphics/collectionMidRight.png");
+        imgPaths.put("collectionSite71", "./Graphics/CollectionEdgeBotLeft.png");
+        imgPaths.put("collectionSite81", "./Graphics/CollectionMiddleBottom.png");
+        imgPaths.put("collectionSite91", "./Graphics/CollectionEdgeBotRight.png");
 
         for (String key : imgPaths.keySet()) {
             try {
@@ -172,7 +212,7 @@ public class GamePanel extends JPanel implements Runnable {
             resourceLabels.put(entry.getKey(), temp);
             add(resourceLabels.get(entry.getKey()));
         }
-
+        
         Music.stopMusic();
         Music.SpawnMusic(".\\Music\\spawn sound.wav");
         Music.stopMusic();
@@ -360,63 +400,36 @@ public class GamePanel extends JPanel implements Runnable {
                 x = (int) (TileCenterX + (x - posXinArray - gameController.getOffsetX()) * tileSize);
                 y = (int) (TileCenterY + (y - posYinArray - gameController.getOffsetY()) * tileSize);
                 if (b.getClass() == CollectionSite.class) {
-                    switch (rotation) {
-                        case 1:
-                            g2d.drawImage(images.get("extractorUP"), x, y, null);
-                            break;
-                        case 2:
-                            g2d.drawImage(images.get("collectionSiteSide"), x, y, null);
-                            break;
-                        case 3:
-                            g2d.drawImage(images.get("extractorDOWN"), x, y, null);
-                            break;
-                        case 4:
-                            g2d.drawImage(images.get("collectionSiteSide"), x, y, null);
-                            break;
-                        case 5:
-                            g2d.drawImage(images.get("collectionSiteMid"), x, y, null);
-                            break;
-                        case 6:
-                            g2d.drawImage(images.get("collectionSiteSide"), x, y, null);
-                            break;
-                        case 7:
-                            g2d.drawImage(images.get("extractorLEFT"), x, y, null);
-                            break;
-                        case 8:
-                            g2d.drawImage(images.get("collectionSiteSide"), x, y, null);
-                            break;
-                        case 9:
-                            g2d.drawImage(images.get("extractorLEFT"), x, y, null);
-                    }
+                    g2d.drawImage(images.get("collectionSite" + b.getRotation() + (drawState/2)), x, y, null);
                 } else if (b.getClass() == ConveyorBelt.class) {
                     this.drawConveyorBelt(g2d, b, x, y);
                 } else if (b.getClass() == Extractor.class) {
                     switch ((rotation + 2) % 4) {
                         case 0:
-                            g2d.drawImage(images.get("extractorUP"), x, y, null);
+                            g2d.drawImage(images.get("extractorUP" + drawState), x, y, null);
                             break;
                         case 1:
-                            g2d.drawImage(images.get("extractorRIGHT"), x, y, null);
+                            g2d.drawImage(images.get("extractorRIGHT" + drawState), x, y, null);
                             break;
                         case 2:
-                            g2d.drawImage(images.get("extractorDOWN"), x, y, null);
+                            g2d.drawImage(images.get("extractorDOWN" + drawState), x, y, null);
                             break;
                         case 3:
-                            g2d.drawImage(images.get("extractorLEFT"), x, y, null);
+                            g2d.drawImage(images.get("extractorLEFT" + drawState), x, y, null);
                     }
                 } else if (b.getClass() == Smelter.class) {
                     switch (rotation) {
                         case 0:
-                            g2d.drawImage(images.get("smelterUP"), x, y, null);
+                            g2d.drawImage(images.get("smelterUP" + drawState), x, y, null);
                             break;
                         case 1:
-                            g2d.drawImage(images.get("smelterRIGHT"), x, y, null);
+                            g2d.drawImage(images.get("smelterRIGHT" + drawState), x, y, null);
                             break;
                         case 2:
-                            g2d.drawImage(images.get("smelterDOWN"), x, y, null);
+                            g2d.drawImage(images.get("smelterDOWN" + drawState), x, y, null);
                             break;
                         case 3:
-                            g2d.drawImage(images.get("smelterLEFT"), x, y, null);
+                            g2d.drawImage(images.get("smelterLEFT" + drawState), x, y, null);
                     }
                 }
             }
@@ -445,30 +458,30 @@ public class GamePanel extends JPanel implements Runnable {
             } else if (gameController.getBuildingToBePlaced().getClass() == Extractor.class) {
                 switch ((gameController.getBuildingToBePlaced().getRotation() + 2) % 4) {
                     case 0:
-                        g2d.drawImage(images.get("extractorUP"), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("extractorUP" + drawState), previewCoords, previewCoords, null);
                         break;
                     case 1:
-                        g2d.drawImage(images.get("extractorRIGHT"), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("extractorRIGHT" + drawState), previewCoords, previewCoords, null);
                         break;
                     case 2:
-                        g2d.drawImage(images.get("extractorDOWN"), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("extractorDOWN" + drawState), previewCoords, previewCoords, null);
                         break;
                     case 3:
-                        g2d.drawImage(images.get("extractorLEFT"), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("extractorLEFT" + drawState), previewCoords, previewCoords, null);
                 }
             } else if (gameController.getBuildingToBePlaced().getClass() == Smelter.class) {
                 switch (gameController.getBuildingToBePlaced().getRotation()) {
                     case 0:
-                        g2d.drawImage(images.get("smelterUP"), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("smelterUP" + drawState), previewCoords, previewCoords, null);
                         break;
                     case 1:
-                        g2d.drawImage(images.get("smelterRIGHT"), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("smelterRIGHT" + drawState), previewCoords, previewCoords, null);
                         break;
                     case 2:
-                        g2d.drawImage(images.get("smelterDOWN"), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("smelterDOWN" + drawState), previewCoords, previewCoords, null);
                         break;
                     case 3:
-                        g2d.drawImage(images.get("smelterLEFT"), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("smelterLEFT" + drawState), previewCoords, previewCoords, null);
                 }
             }
         }
