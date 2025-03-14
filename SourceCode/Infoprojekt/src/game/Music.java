@@ -69,6 +69,9 @@ public class Music {
      * to be done
      */
     public static void stopMusic() {
+        if (clip == null) {
+            return;
+        } 
         clip.stop();
     }
 
@@ -76,7 +79,7 @@ public class Music {
      * to be done
      */
     public static void setVolumeHigher() {
-        Volume = Volume + 1.0f;
+        Volume = Volume + 5.0f;
         if (Volume > 6.0f) {
             Volume = 6.0f;
         }
@@ -87,7 +90,7 @@ public class Music {
      * to be done
      */
     public static void setVolumeLower() {
-        Volume = Volume - 1.0f;
+        Volume = Volume - 5.0f;
         if (Volume < -80.0f) {
             Volume = -80.0f;
         }

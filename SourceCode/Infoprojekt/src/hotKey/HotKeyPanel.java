@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import game.Music;
 import main.App;
 import main.InputHandler;
 import main.LoadStoreHotKeys;
@@ -131,6 +132,7 @@ public class HotKeyPanel extends JPanel implements Runnable {
             buttons.put(inputMapping.getKey(), temp);
             add(temp);
         }
+        Music.stopMusic();
     }
 
     /**
@@ -198,6 +200,7 @@ public class HotKeyPanel extends JPanel implements Runnable {
     private void checkForNewKey() {
         Character pressed = hotKeyInputHandler.getPressedChar();
         if (pressed != null && nameOfActionToChange != null) {
+            System.out.println(pressed + "   " + nameOfActionToChange);
             if (iMN.containsValue(pressed) || iMNH.containsValue(pressed) || iMH.containsValue(pressed)) {
                 nameOfActionToChange = null;
                 return;
@@ -211,7 +214,7 @@ public class HotKeyPanel extends JPanel implements Runnable {
                 temp = iMH;
             }
             temp.replace(nameOfActionToChange, pressed);
-            char old = iMNH.get(nameOfActionToChange);
+            char old = temp.get(nameOfActionToChange);
             if (!LoadStoreHotKeys.storeHotKeys(iMN, iMNH, iMH)) {
                 iMNH.replace(nameOfActionToChange, old);
                 return;

@@ -93,7 +93,7 @@ public class LoadStoreHotKeys {
             hotkeys.put("not_holdable", hotkeysNotHoldable);
 
             JSONObject hotkeysHoldable = new JSONObject();
-            for (Entry<String, Character> inputMapping : iMN.entrySet()) {
+            for (Entry<String, Character> inputMapping : iMH.entrySet()) {
                 hotkeysHoldable.put(inputMapping.getKey(), inputMapping.getValue());
             }
             hotkeys.put("holdable", hotkeysHoldable);
@@ -131,7 +131,7 @@ public class LoadStoreHotKeys {
         JSONObject hotkeys = GameController.readJsonFile("./config/HotKeys.json");
 
         for (String key : hotkeys.keySet()) {
-            if (key != "normal" && key != "not_holdable" && key != "holdable") {
+            if (!(key.equals("normal") || key.equals("holdable") || key.equals("not_holdable"))) {
                 return standard;
             }
 
@@ -146,17 +146,17 @@ public class LoadStoreHotKeys {
                     } catch (Exception e) {
                         return standard;
                     }
-                    if (value.length() != 1 || (!unionInputMap.containsKey(key)) || iMN.containsValue(pressedKey)
+                    if (value.length() != 1 || (!unionInputMap.containsKey(action)) || iMN.containsValue(pressedKey)
                             || iMNH.containsValue(pressedKey) || iMH.containsValue(pressedKey)) {
                         return standard;
                     }
-                    if (key == "normal") {
+                    if (key.equals("normal")) {
                         iMN.put(action, pressedKey);
                     }
-                    if (key == "not_holdable") {
+                    if (key.equals("not_holdable")) {
                         iMNH.put(action, pressedKey);
                     }
-                    if (key == "holdable") {
+                    if (key.equals("holdable")) {
                         iMH.put(action, pressedKey);
                     }
                 }

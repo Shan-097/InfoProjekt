@@ -128,6 +128,7 @@ public class StartingPanel extends JPanel implements Runnable {
         add(controls);
         add(loadGame);
 
+        Music.stopMusic();
         Music.LoopMusic(".\\Music\\mainmenu.wav");
     }
 
