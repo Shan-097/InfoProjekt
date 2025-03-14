@@ -113,27 +113,27 @@ public class GamePanel extends JPanel implements Runnable {
         // imgPaths.put("stoneIngot", "./Graphics/Stein.png");
 
         // Conveyor belts
-        imgPaths.put("conveyorUP0", "./Graphics/ConveyerBelt-oben.png");
-        imgPaths.put("conveyorUP1", "./Graphics/ConveyerBelt-oben f7.png");
+        imgPaths.put("conveyor200", "./Graphics/ConveyerBelt-oben.png"); // oben 0
+        imgPaths.put("conveyor201", "./Graphics/ConveyerBelt-oben f7.png"); // oben 1
 
-        imgPaths.put("conveyorLEFT0", "./Graphics/ConveyerBelt-links.png");
-        imgPaths.put("conveyorLEFT1", "./Graphics/ConveyerBelt-links f7.png");
+        imgPaths.put("conveyor130", "./Graphics/ConveyerBelt-links.png"); // links 0
+        imgPaths.put("conveyor131", "./Graphics/ConveyerBelt-links f7.png"); // links 1
 
-        imgPaths.put("conveyorDOWN0", "./Graphics/ConveyerBelt-unten f1.png");
-        imgPaths.put("conveyorDOWN1", "./Graphics/ConveyerBelt-unten f7.png");
+        imgPaths.put("conveyor020", "./Graphics/ConveyerBelt-unten f1.png"); // unten 0
+        imgPaths.put("conveyor021", "./Graphics/ConveyerBelt-unten f7.png"); // unten 1
 
-        imgPaths.put("conveyorRIGHT0", "./Graphics/ConveyerBelt-rechts.png");
-        imgPaths.put("conveyorRIGHT1", "./Graphics/ConveyerBelt-rechts f7.png");
+        imgPaths.put("conveyor310", "./Graphics/ConveyerBelt-rechts.png"); // rechts 0
+        imgPaths.put("conveyor311", "./Graphics/ConveyerBelt-rechts f7.png"); // rechts 1
 
-        imgPaths.put("conveyorUPtoLEFT", "./Graphics/CB - rotiert oben Links.png");
-        imgPaths.put("conveyorLEFTtoDOWN", "./Graphics/CB - rotiert oben Rechts.png");
-        imgPaths.put("conveyorDOWNtoRIGHT", "./Graphics/CB - rotiert unten Links.png");
-        imgPaths.put("conveyorRIGHTtoUP", "./Graphics/CB - rotiert unten Rechts.png");
+        imgPaths.put("conveyor03", "./Graphics/CB - rotiert oben Links.png"); // oben zu links
+        imgPaths.put("conveyor32", "./Graphics/CB - rotiert oben Rechts.png"); // links zu unten
+        imgPaths.put("conveyor21", "./Graphics/CB - rotiert unten Links.png"); // unten zu rechts
+        imgPaths.put("conveyor10", "./Graphics/CB - rotiert unten Rechts.png"); // rechts zu oben
 
-        imgPaths.put("conveyorLEFTtoUP", "./Graphics/CB - rotiert oben Links.png");
-        imgPaths.put("conveyorDOWNtoLEFT", "./Graphics/CB - rotiert oben Rechts.png");
-        imgPaths.put("conveyorRIGHTtoDOWN", "./Graphics/CB - rotiert unten Links.png");
-        imgPaths.put("conveyorUPtoRIGHT", "./Graphics/CB - rotiert unten Rechts.png");
+        imgPaths.put("conveyor30", "./Graphics/CB - rotiert oben Links.png"); // links zu oben
+        imgPaths.put("conveyor23", "./Graphics/CB - rotiert oben Rechts.png"); // unten zu links
+        imgPaths.put("conveyor12", "./Graphics/CB - rotiert unten Links.png"); // rechts zu unten
+        imgPaths.put("conveyor01", "./Graphics/CB - rotiert unten Rechts.png"); // oben zu rechts
 
         // Extractors
         imgPaths.put("extractorUP", "./Graphics/drillTop.png");
@@ -673,111 +673,50 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void drawConveyorBelt(Graphics2D g2d, Building b, int posX, int posY) {
-        byte input = b.getRotation();
-        byte output = b.getOutputDirections()[0];
+        byte input =  b.getRotation();
+        byte output = (byte) ((b.getOutputDirections()[0] + input) % 4);
         ArrayList<Item> content = new ArrayList<Item>(b.getInventory()); // 16 by 16 pixels for items on conveyor belts
         HashSet<Integer> movedItems = b.getMovedItems();
         int[][] itemCoordinates = new int[3][2];
         int middle = tileSize / 2;
         int state = 3 * drawState;
-        String conveyor = "";
+        String conveyor = "conveyor" + input + output;
+        conveyor += input == ((output + 2) % 4) ? (drawState / 2) : "";
 
-        if (input == 0 && output == 1) {
-            conveyor = "conveyorUPtoRIGHT";
+        if (input == 0) {
             itemCoordinates[2][0] = middle - 4;
             itemCoordinates[2][1] = movedItems.contains(2) ? middle - 25 + state : middle - 25;
-            itemCoordinates[1][0] = movedItems.contains(1) ? middle - 4 + state : middle - 4;
-            itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[0][0] = movedItems.contains(0) ? middle + 17 + state : middle + 17;
-            itemCoordinates[0][1] = middle - 4;
-        } else if (input == 0 && output == 2) {
-            conveyor = drawState < 2 ? "conveyorDOWN0" : "conveyorDOWN1";
+        } else if (input == 1) {
+            itemCoordinates[2][0] = movedItems.contains(2) ? middle + 17 - state : middle + 17;
+            itemCoordinates[2][1] = middle - 4;
+        } else if (input == 2) {
             itemCoordinates[2][0] = middle - 4;
-            itemCoordinates[2][1] = movedItems.contains(2) ? middle - 25 + state : middle - 25;
-            itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = movedItems.contains(1) ? middle - 4 + state : middle - 4;
-            itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = movedItems.contains(0) ? middle + 17 + state : middle + 17;
-        } else if (input == 0 && output == 3) {
-            conveyor = "conveyorUPtoLEFT";
-            itemCoordinates[2][0] = middle - 4;
-            itemCoordinates[2][1] = movedItems.contains(2) ? middle - 25 + state : middle - 25;
-            itemCoordinates[1][0] = movedItems.contains(1) ? middle - 4 - state : middle - 4;
-            itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[0][0] = movedItems.contains(0) ? middle - 25 - state : middle - 25;
-            itemCoordinates[0][1] = middle - 4;
-        } else if (input == 1 && output == 1) {
-            conveyor = "conveyorRIGHTtoDOWN";
-            itemCoordinates[2][0] = movedItems.contains(2) ? middle + 17 - state : middle + 17;
+            itemCoordinates[2][1] = movedItems.contains(2) ? middle + 17 - state : middle + 17;
+        } else if (input == 3) {
+            itemCoordinates[2][0] = movedItems.contains(2) ? middle - 25 + state : middle - 25;
             itemCoordinates[2][1] = middle - 4;
-            itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = movedItems.contains(1) ? middle - 4 + state : middle - 4;
-            itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = movedItems.contains(0) ? middle + 17 + state : middle + 17;
-        } else if (input == 1 && output == 2) {
-            conveyor = drawState < 2 ? "conveyorLEFT0" : "conveyorLEFT1";
-            itemCoordinates[2][0] = movedItems.contains(2) ? middle + 17 - state : middle + 17;
-            itemCoordinates[2][1] = middle - 4;
-            itemCoordinates[1][0] = movedItems.contains(1) ? middle - 4 - state : middle - 4;
-            itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[0][0] = movedItems.contains(0) ? middle - 25 - state : middle - 25;
-            itemCoordinates[0][1] = middle - 4;
-        } else if (input == 1 && output == 3) {
-            conveyor = "conveyorRIGHTtoUP";
-            itemCoordinates[2][0] = movedItems.contains(2) ? middle + 17 - state : middle + 17;
-            itemCoordinates[2][1] = middle - 4;
+        }
+
+        if (output == 0) {
             itemCoordinates[1][0] = middle - 4;
             itemCoordinates[1][1] = movedItems.contains(1) ? middle - 4 - state : middle - 4;
             itemCoordinates[0][0] = middle - 4;
             itemCoordinates[0][1] = movedItems.contains(0) ? middle - 25 - state : middle - 25;
-        } else if (input == 2 && output == 1) {
-            conveyor = "conveyorDOWNtoLEFT";
-            itemCoordinates[2][0] = middle - 4;
-            itemCoordinates[2][1] = movedItems.contains(2) ? middle + 17 - state : middle + 17;
-            itemCoordinates[1][0] = movedItems.contains(1) ? middle - 4 - state : middle - 4;
-            itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[0][0] = movedItems.contains(0) ? middle - 25 - state : middle - 25;
-            itemCoordinates[0][1] = middle - 4;
-        } else if (input == 2 && output == 2) {
-            conveyor = drawState < 2 ? "conveyorUP0" : "conveyorUP1";
-            itemCoordinates[2][0] = middle - 4;
-            itemCoordinates[2][1] = movedItems.contains(2) ? middle + 17 - state : middle + 17;
-            itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = movedItems.contains(1) ? middle - 4 - state : middle - 4;
-            itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = movedItems.contains(0) ? middle - 25 - state : middle - 25;
-        } else if (input == 2 && output == 3) {
-            conveyor = "conveyorDOWNtoRIGHT";
-            itemCoordinates[2][0] = middle - 4;
-            itemCoordinates[2][1] = movedItems.contains(2) ? middle + 17 - state : middle + 17;
+        } else if (output == 1) {
             itemCoordinates[1][0] = movedItems.contains(1) ? middle - 4 + state : middle - 4;
             itemCoordinates[1][1] = middle - 4;
             itemCoordinates[0][0] = movedItems.contains(0) ? middle + 17 + state : middle + 17;
             itemCoordinates[0][1] = middle - 4;
-        } else if (input == 3 && output == 1) {
-            conveyor = "conveyorLEFTtoUP";
-            itemCoordinates[2][0] = movedItems.contains(2) ? middle - 25 + state : middle - 25;
-            itemCoordinates[2][1] = middle - 4;
-            itemCoordinates[1][0] = middle - 4;
-            itemCoordinates[1][1] = movedItems.contains(1) ? middle - 4 - state : middle - 4;
-            itemCoordinates[0][0] = middle - 4;
-            itemCoordinates[0][1] = movedItems.contains(0) ? middle - 25 - state : middle - 25;
-        } else if (input == 3 && output == 2) {
-            conveyor = drawState < 2 ? "conveyorRIGHT0" : "conveyorRIGHT1";
-            itemCoordinates[2][0] = movedItems.contains(2) ? middle - 25 + state : middle - 25;
-            itemCoordinates[2][1] = middle - 4;
-            itemCoordinates[1][0] = movedItems.contains(1) ? middle - 4 + state : middle - 4;
-            itemCoordinates[1][1] = middle - 4;
-            itemCoordinates[0][0] = movedItems.contains(0) ? middle + 17 + state : middle + 17;
-            itemCoordinates[0][1] = middle - 4;
-        } else if (input == 3 && output == 3) {
-            conveyor = "conveyorLEFTtoDOWN";
-            itemCoordinates[2][0] = movedItems.contains(2) ? middle - 25 + state : middle - 25;
-            itemCoordinates[2][1] = middle - 4;
+        } else if (output == 2) {
             itemCoordinates[1][0] = middle - 4;
             itemCoordinates[1][1] = movedItems.contains(1) ? middle - 4 + state : middle - 4;
             itemCoordinates[0][0] = middle - 4;
             itemCoordinates[0][1] = movedItems.contains(0) ? middle + 17 + state : middle + 17;
+        } else if (output == 3) {
+            itemCoordinates[1][0] = movedItems.contains(1) ? middle - 4 - state : middle - 4;
+            itemCoordinates[1][1] = middle - 4;
+            itemCoordinates[0][0] = movedItems.contains(0) ? middle - 25 - state : middle - 25;
+            itemCoordinates[0][1] = middle - 4;
         }
 
         g2d.drawImage(images.get(conveyor), posX, posY, null);
