@@ -126,7 +126,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
         this.setDoubleBuffered(true);
         frameRate = pFr;
-        gameController = new GameController(pFilePath);
+        if (pFilePath == null) {
+            gameController = new GameController();
+        } else {
+            gameController = new GameController(pFilePath);
+        }
         InputHandler inputHandler = new InputHandler();
         this.addKeyListener(inputHandler);
         this.setFocusable(true);
@@ -286,6 +290,9 @@ public class GamePanel extends JPanel implements Runnable {
             }
         });
 
+        resumeButton.setRequestFocusEnabled(false);
+        saveAndExitButton.setRequestFocusEnabled(false);
+        exitButton.setRequestFocusEnabled(false);
         add(resumeButton);
         add(saveAndExitButton);
         add(exitButton);

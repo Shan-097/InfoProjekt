@@ -106,7 +106,7 @@ public class StartingPanel extends JPanel implements Runnable {
         startNewGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // TODO: Implement a way to create world with custom size and name.
-                App.loadGameScreen("newWorld");
+                App.loadGameScreen(null);
             }
         });
         loadGame.addActionListener(new ActionListener() {
