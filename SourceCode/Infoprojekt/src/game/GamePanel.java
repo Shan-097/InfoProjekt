@@ -49,49 +49,49 @@ public class GamePanel extends JPanel implements Runnable {
     private final int buttonHeight = 35;
 
     /**
-     * Size of a tile
+     * size of a tile
      */
     private final int tileSize = 64;
 
     /**
-     * to be done
+     * desired frame rate of the game, it can't be higher but can drop under load
      */
     private final int frameRate;
 
     /**
-     * to be done
+     * thread that keeps the game running
      */
     private Thread gameThread;
 
     /**
-     * to be done
+     * instance of the gameController to allow interaction with the Model classes
      */
     private GameController gameController;
 
     /**
-     * to be done
+     * instance of the gameInputHandler to allow interaction with the Controller classes and player inputs
      */
     private GameInputHandler gameInputHandler;
 
     /**
-     * HashMap to load the textures displayed in the game (e.g. grass, buildings)
+     * HashMap to load the images displayed in the game (e.g. grass, buildings)
      */
     HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>(60);
 
     /**
-     * to be done
+     * HashMap to load the file paths of the images in the game
      */
     HashMap<String, String> imgPaths = new HashMap<String, String>();
 
     /**
-     * to be done
+     * HashMap of the JLabels used to display the current resource count in the top right
      */
     HashMap<Item, JLabel> resourceLabels = new HashMap<Item, JLabel>();
 
     /**
-     * to be done
+     * number to keep track of which frame of the animation to draw for each redraw
      */
-    private int drawState = 0;
+    private long drawState = 0;
 
     /**
      * to be done
@@ -117,7 +117,7 @@ public class GamePanel extends JPanel implements Runnable {
      * Constructor of the GamePanel class
      * Sets up the frame and the GameController, InputHandler and GameInputHandler
      * to allow for interaction later.
-     * Loads all textures needed into their respective dictionary
+     * Loads all of the required textures into their respective dictionary
      * 
      * @param pFr       Frame rate
      * @param pFilePath to be done
@@ -145,15 +145,15 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("preview", "./Graphics/Bauen Preview.png");
 
         // Items
-        imgPaths.put("gold", "./Graphics/GoldConveyor.png");
-        imgPaths.put("iron", "./Graphics/IronConveyor.png");
+        imgPaths.put("stoneIngot", "./Graphics/Ziegelstein.png");
+        imgPaths.put("copperIngot", "./Graphics/CopperIngotFinal.png");
+        imgPaths.put("ironIngot", "./Graphics/IronIngotFinal.png");
+        imgPaths.put("goldIngot", "./Graphics/GoldIngotFinal.png");
+        
         imgPaths.put("stone", "./Graphics/StoneConveyor.png");
         imgPaths.put("copper", "./Graphics/CopperConveyor.png");
-
-        imgPaths.put("copperIngot", "./Graphics/CopperIngotFinal.png");
-        imgPaths.put("goldIngot", "./Graphics/GoldIngotFinal.png");
-        imgPaths.put("ironIngot", "./Graphics/IronIngotFinal.png");
-        // imgPaths.put("stoneIngot", "./Graphics/Stein.png");
+        imgPaths.put("iron", "./Graphics/IronConveyor.png");
+        imgPaths.put("gold", "./Graphics/GoldConveyor.png");
 
         // Conveyor belts
         imgPaths.put("conveyor200", "./Graphics/ConveyerBelt-oben.png"); // oben 0
@@ -257,9 +257,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         Music.stopMusic();
-        Music.SpawnMusic(".\\Music\\spawn sound.wav");
+        Music.SpawnMusic("./Music/spawn sound.wav");
         Music.stopMusic();
-        Music.LoopMusic(".\\Music\\Hintergrund.wav");
+        Music.LoopMusic("./Music/Hintergrund.wav");
 
         resumeButton = new JButton("Resume");
         exitButton = new JButton("Exit");
@@ -325,8 +325,8 @@ public class GamePanel extends JPanel implements Runnable {
             if (delta >= 1) {
                 gameInputHandler.invokeMethodsFromInput();
                 if (count == 4) {
-                    drawState = (drawState + 1) % 4;
-                    if (drawState == 0) {
+                    drawState = drawState + 1;
+                    if (drawState % 4 == 0) {
                         gameController.update();
                     }
                 }
@@ -342,8 +342,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     /**
-     * Repaints the panel
+     * Repaints the panel 
      * Always keeps player centered and redraws the background to imitate movement
+     * Responsible for the majority of visuals displayed on the screen
      * 
      * @param g to be done
      */
@@ -483,36 +484,36 @@ public class GamePanel extends JPanel implements Runnable {
                 x = (int) (TileCenterX + (x - posXinArray - gameController.getOffsetX()) * tileSize);
                 y = (int) (TileCenterY + (y - posYinArray - gameController.getOffsetY()) * tileSize);
                 if (b.getClass() == CollectionSite.class) {
-                    g2d.drawImage(images.get("collectionSite" + b.getRotation() + (drawState / 2)), x, y, null);
+                    g2d.drawImage(images.get("collectionSite" + b.getRotation() + ((drawState % 4) / 2)), x, y, null);
                 } else if (b.getClass() == ConveyorBelt.class) {
                     this.drawConveyorBelt(g2d, b, x, y);
                 } else if (b.getClass() == Extractor.class) {
                     switch ((rotation + 2) % 4) {
                         case 0:
-                            g2d.drawImage(images.get("extractorUP" + drawState), x, y, null);
+                            g2d.drawImage(images.get("extractorUP" + drawState % 4), x, y, null);
                             break;
                         case 1:
-                            g2d.drawImage(images.get("extractorRIGHT" + drawState), x, y, null);
+                            g2d.drawImage(images.get("extractorRIGHT" + drawState % 4), x, y, null);
                             break;
                         case 2:
-                            g2d.drawImage(images.get("extractorDOWN" + drawState), x, y, null);
+                            g2d.drawImage(images.get("extractorDOWN" + drawState % 4), x, y, null);
                             break;
                         case 3:
-                            g2d.drawImage(images.get("extractorLEFT" + drawState), x, y, null);
+                            g2d.drawImage(images.get("extractorLEFT" + drawState % 4), x, y, null);
                     }
                 } else if (b.getClass() == Smelter.class) {
                     switch (rotation) {
                         case 0:
-                            g2d.drawImage(images.get("smelterUP" + drawState), x, y, null);
+                            g2d.drawImage(images.get("smelterUP" + (drawState/2) % 4), x, y, null);
                             break;
                         case 1:
-                            g2d.drawImage(images.get("smelterRIGHT" + drawState), x, y, null);
+                            g2d.drawImage(images.get("smelterLEFT" + (drawState/2) % 4), x, y, null);
                             break;
                         case 2:
-                            g2d.drawImage(images.get("smelterDOWN" + drawState), x, y, null);
+                            g2d.drawImage(images.get("smelterDOWN" + (drawState/2) % 4), x, y, null);
                             break;
                         case 3:
-                            g2d.drawImage(images.get("smelterLEFT" + drawState), x, y, null);
+                            g2d.drawImage(images.get("smelterRIGHT" + (drawState/2) % 4), x, y, null);
                     }
                 }
             }
@@ -541,32 +542,36 @@ public class GamePanel extends JPanel implements Runnable {
             } else if (gameController.getBuildingToBePlaced().getClass() == Extractor.class) {
                 switch ((gameController.getBuildingToBePlaced().getRotation() + 2) % 4) {
                     case 0:
-                        g2d.drawImage(images.get("extractorUP" + drawState), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("extractorUP" + drawState % 4), previewCoords, previewCoords, null);
                         break;
                     case 1:
-                        g2d.drawImage(images.get("extractorRIGHT" + drawState), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("extractorRIGHT" + drawState % 4), previewCoords, previewCoords, null);
                         break;
                     case 2:
-                        g2d.drawImage(images.get("extractorDOWN" + drawState), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("extractorDOWN" + drawState % 4), previewCoords, previewCoords, null);
                         break;
                     case 3:
-                        g2d.drawImage(images.get("extractorLEFT" + drawState), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("extractorLEFT" + drawState % 4), previewCoords, previewCoords, null);
                 }
             } else if (gameController.getBuildingToBePlaced().getClass() == Smelter.class) {
                 switch (gameController.getBuildingToBePlaced().getRotation()) {
                     case 0:
-                        g2d.drawImage(images.get("smelterUP" + drawState), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("smelterUP" + (drawState/2) % 4), previewCoords, previewCoords, null);
                         break;
                     case 1:
-                        g2d.drawImage(images.get("smelterRIGHT" + drawState), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("smelterLEFT" + (drawState/2) % 4), previewCoords, previewCoords, null);
                         break;
                     case 2:
-                        g2d.drawImage(images.get("smelterDOWN" + drawState), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("smelterDOWN" + (drawState/2) % 4), previewCoords, previewCoords, null);
                         break;
                     case 3:
-                        g2d.drawImage(images.get("smelterLEFT" + drawState), previewCoords, previewCoords, null);
+                        g2d.drawImage(images.get("smelterRIGHT" + (drawState/2) % 4), previewCoords, previewCoords, null);
                 }
             }
+
+            // draw control options (rotate, build, exit)
+            g2d.setColor(Color.BLACK);
+            g2d.fillRect(width - 50 - 256, height - 50 - 100, 256, 100);
         }
 
         // Draw the sidebar
@@ -579,6 +584,7 @@ public class GamePanel extends JPanel implements Runnable {
                 (int) (this.getHeight() / 2 - (border - 5)), null);
         g2d.drawImage(images.get("smelterDOWN"), (int) Math.round(0.6 * tileSize) + border / 2,
                 (int) (this.getHeight() / 2 + tileSize), null);
+
         // Implement Font
         try {
             File fontFile = new File("./Graphics/D3Litebitmapism.ttf");
@@ -598,7 +604,7 @@ public class GamePanel extends JPanel implements Runnable {
             e.printStackTrace();
         }
 
-        // Draw the player [IN EIGENE METHODE AUSLAGERN???]
+        // Draw the player 
         if (gameController.getDirection() != '0') {
             AffineTransform playerTX = new AffineTransform();
             char dir = gameController.getDirection();
@@ -639,19 +645,48 @@ public class GamePanel extends JPanel implements Runnable {
         if (tx != null)
             g2d.drawImage(images.get("arrow"), tx, null);
 
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect(width - 50 - 256, height - 50 - 100, 256, 100);
 
         // Draw resource count
         g2d.setColor(new Color(255, 255, 255, 127));
-        g2d.fillRect(width - 180, 30, 150, 270);
+        g2d.fillRect(width - 170, 30, 140, 265);
 
         HashMap<Item, Integer> tempResources = gameController.getInventory();
+        int i = 0;
+        Font resourceFont = new Font("Courier New", Font.BOLD, 15);
         for (Entry<Item, Integer> entry : tempResources.entrySet()) {
             JLabel temp = resourceLabels.get(entry.getKey());
+            temp.setForeground(Color.DARK_GRAY);
+            temp.setFont(resourceFont);
             temp.setText("" + entry.getValue());
-            // temp.setLocation(, );
-
+            temp.setLocation(width - 120, 50 + 30 * entry.getKey().getItemID());
+            String itemToDraw = "";
+            switch(i) {
+                case 0:
+                    itemToDraw = "stoneIngot";
+                    break;
+                case 1:
+                    itemToDraw = "copperIngot";
+                    break;
+                case 2:
+                    itemToDraw = "ironIngot";
+                    break;
+                case 3:
+                    itemToDraw = "goldIngot";
+                    break;
+                case 4:
+                    itemToDraw = "stone";
+                    break;
+                case 5:
+                    itemToDraw = "copper";
+                    break;
+                case 6:
+                    itemToDraw = "iron";
+                    break;
+                case 7:
+                    itemToDraw = "gold";
+            }
+            g2d.drawImage(images.get(itemToDraw), width - 155, (50 + 30*i)-5, 25, 25, null);
+            i++;
         }
 
         if (gamePaused) {
@@ -668,7 +703,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     /**
-     * Rotates and moves the arrow pointing 'home' (to Collection Site) using the
+     * Rotates and moves the arrow pointing to the centered Collection Site using the
      * AffineTransform data type
      * 
      * @return AffineTransform returns the correct translation of the arrow
@@ -743,7 +778,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     /**
-     * Calculates where the 'home' (or Collection Site) is relative to the player
+     * Checks where the the Collection Site is relative to the player
      * 
      * @return char returns the relative location in the form of a char according to
      *         the mapping:
@@ -754,7 +789,6 @@ public class GamePanel extends JPanel implements Runnable {
      *         is bottom-right)
      */
     char locateHome(int numWidth, int numHeight) {
-        // Temporary location of the Collection Site, need getter from GameController
         int xHome = gameController.getXLengthMap() / 2;
         int yHome = gameController.getYLengthMap() / 2;
 
@@ -802,6 +836,15 @@ public class GamePanel extends JPanel implements Runnable {
             return 0;
     }
 
+    /**
+     * draws the correct rotation of the conveyor belt
+     * draws the items that move along the conveyor belt
+     * 
+     * @param g2d   current Graphics2D object to draw outside of paintComponent()       
+     * @param b     conveyor belt that need to be placed
+     * @param posX  x-coordinate of the conveyor belt
+     * @param posY  y-coordinate of the conveyor belt   
+     */
     private void drawConveyorBelt(Graphics2D g2d, Building b, int posX, int posY) {
         byte input = b.getRotation();
         byte output = (byte) ((b.getOutputDirections()[0] + input) % 4);
@@ -809,9 +852,9 @@ public class GamePanel extends JPanel implements Runnable {
         HashSet<Integer> movedItems = b.getMovedItems();
         int[][] itemCoordinates = new int[3][2];
         int middle = tileSize / 2;
-        int state = 3 * drawState;
+        int state = (int) (3 * (drawState % 4));
         String conveyor = "conveyor" + input + output;
-        conveyor += input == ((output + 2) % 4) ? (drawState / 2) : "";
+        conveyor += input == ((output + 2) % 4) ? ((drawState % 4) / 2) : "";
 
         if (input == 0) {
             itemCoordinates[2][0] = middle - 4;
