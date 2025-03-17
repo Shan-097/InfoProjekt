@@ -40,7 +40,7 @@ public class ConveyorBelt extends Building {
      * The constructor of ConveyorBelt is calling the super constructor and setting
      * the standard output direction.
      */
-    public ConveyorBelt() {
+    protected ConveyorBelt() {
         super();
         outputDirections = new byte[] { 2 };
     }

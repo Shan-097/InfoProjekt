@@ -31,7 +31,7 @@ public class CollectionSite extends Building {
      * The empty constructor of CollectionSite is only calling the super
      * constructor.
      */
-    public CollectionSite() {
+    protected CollectionSite() {
         super();
     }
 
@@ -44,7 +44,7 @@ public class CollectionSite extends Building {
      *         players inventory.
      */
     @Override
-    public boolean addItem(Item item) {
+    protected boolean addItem(Item item) {
         try {
             return GameController.addItemToInventory(item);
         } catch (IllegalArgumentException e) {

@@ -1,19 +1,19 @@
 package main;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import java.io.File;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.Font;
+
+import java.io.File;
 
 /**
  * to be done
@@ -57,7 +57,7 @@ public class LoadGamePanel extends JPanel implements Runnable {
      * 
      * @param pFR the desired frame rate of the saves menu
      */
-    public LoadGamePanel(int pFR) {
+    protected LoadGamePanel(int pFR) {
         this.frameRate = pFR;
 
         this.setLayout(new BorderLayout());
@@ -79,7 +79,7 @@ public class LoadGamePanel extends JPanel implements Runnable {
         loadSelectedGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (!fileList.isSelectionEmpty()) {
-                    selectedFilePath = "SourceCode/Infoprojekt/saves/" + fileList.getSelectedValue();
+                    selectedFilePath = "./saves/" + fileList.getSelectedValue();
                     System.out.println("Selected file: " + selectedFilePath);
                     App.loadGameScreen(selectedFilePath);
                 }
@@ -94,7 +94,7 @@ public class LoadGamePanel extends JPanel implements Runnable {
      * to be done
      */
     private void loadFileList() {
-        File saveFolder = new File("SourceCode/Infoprojekt/saves");
+        File saveFolder = new File("./saves");
         if (saveFolder.exists() && saveFolder.isDirectory()) {
             File[] files = saveFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".json"));
             if (files != null) {

@@ -1,4 +1,4 @@
-package main;
+package util;
 
 /**
  * A tuple with two elements.<br>

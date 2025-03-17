@@ -1,11 +1,12 @@
-package game;
+package util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import main.InputHandler;
-import main.LoadStoreHotKeys;
+import game.GameController;
+
+import main.GamePanel;
 
 /**
  * The GameInputHandler calls the methods that have to be invoked because of

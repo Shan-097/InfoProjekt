@@ -1,4 +1,4 @@
-package game;
+package main;
 
 import java.awt.Color;
 import java.awt.Image;
@@ -13,23 +13,33 @@ import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-import java.io.File;
-import java.io.IOException;
+import game.Building;
+import game.CollectionSite;
+import game.ConveyorBelt;
+import game.Extractor;
+import game.Field;
+import game.GameController;
+import game.Item;
+import game.Smelter;
+
+import util.GameInputHandler;
+import util.InputHandler;
+import util.Music;
+import util.Tuple;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 
-import javax.imageio.ImageIO;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
-import main.App;
-import main.InputHandler;
-import main.Tuple;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 /**
  * Responsible for the entirety of visual output in the main game and therefore
@@ -122,7 +132,7 @@ public class GamePanel extends JPanel implements Runnable {
      * @param pFr       Frame rate
      * @param pFilePath to be done
      */
-    public GamePanel(int pFr, String pFilePath) {
+    protected GamePanel(int pFr, String pFilePath) {
         this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
         this.setDoubleBuffered(true);
         frameRate = pFr;
@@ -301,7 +311,7 @@ public class GamePanel extends JPanel implements Runnable {
     /**
      * Start game thread
      */
-    public void startGameThread() {
+    protected void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -348,7 +358,7 @@ public class GamePanel extends JPanel implements Runnable {
      * 
      * @param g to be done
      */
-    public void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
@@ -708,7 +718,7 @@ public class GamePanel extends JPanel implements Runnable {
      * 
      * @return AffineTransform returns the correct translation of the arrow
      */
-    AffineTransform rotateArrow(Image arrow, int numWidth, int numHeight) {
+    private AffineTransform rotateArrow(Image arrow, int numWidth, int numHeight) {
         AffineTransform tx = new AffineTransform();
 
         int imgWidth = arrow.getWidth(null);
@@ -788,7 +798,7 @@ public class GamePanel extends JPanel implements Runnable {
      *         where each letter symbolizes the direction (e.g. 'Q' is top-left, 'C'
      *         is bottom-right)
      */
-    char locateHome(int numWidth, int numHeight) {
+    private char locateHome(int numWidth, int numHeight) {
         int xHome = gameController.getXLengthMap() / 2;
         int yHome = gameController.getYLengthMap() / 2;
 

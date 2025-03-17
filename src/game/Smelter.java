@@ -40,7 +40,7 @@ public class Smelter extends Building {
     /**
      * The empty constructor of Smelter is only calling the super constructor.
      */
-    public Smelter() {
+    protected Smelter() {
         super();
     }
 
@@ -52,7 +52,7 @@ public class Smelter extends Building {
      * @param item The item to be smelted
      * @return The smelted item
      */
-    public Item executeFunction(Item item) {
+    protected Item executeFunction(Item item) {
         try {
             return Item.getSmeltedItem(item);
         } catch (IllegalArgumentException e) {

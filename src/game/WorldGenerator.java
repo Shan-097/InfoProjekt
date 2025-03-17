@@ -29,7 +29,7 @@ public class WorldGenerator {
      * @param sizeY The number of tiles in the y dimension.
      * @throws IllegalArgumentException to be done
      */
-    public WorldGenerator(int sizeX, int sizeY) throws IllegalArgumentException {
+    protected WorldGenerator(int sizeX, int sizeY) throws IllegalArgumentException {
         if (sizeX < 101 || sizeY < 101) {
             throw new IllegalArgumentException("The given size is considert to small");
         }
@@ -66,7 +66,7 @@ public class WorldGenerator {
      * @param worldMap to be done
      * @throws IllegalArgumentException to be done
      */
-    public WorldGenerator(Field[][] worldMap) throws IllegalArgumentException {
+    protected WorldGenerator(Field[][] worldMap) throws IllegalArgumentException {
         if(worldMap == null) {
             throw new IllegalArgumentException("The given map can't be null.");
         }
@@ -83,7 +83,7 @@ public class WorldGenerator {
      * @param posY The y coordinate of the tile to be generated.
      * @throws IllegalArgumentException to be done
      */
-    public void generateTile(int posX, int posY) throws IllegalArgumentException {
+    protected void generateTile(int posX, int posY) throws IllegalArgumentException {
         if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
             throw new IllegalArgumentException("The coordinates have to be valid.");
         }
@@ -433,7 +433,7 @@ public class WorldGenerator {
      * @param b    The Building to be placed on the tile.
      * @throws IllegalArgumentException to be done
      */
-    public void placeBuilding(int posX, int posY, Building b) throws IllegalArgumentException {
+    protected void placeBuilding(int posX, int posY, Building b) throws IllegalArgumentException {
         if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
             throw new IllegalArgumentException("The coordinates have to be valid.");
         }
@@ -451,7 +451,7 @@ public class WorldGenerator {
      * @param posY The y coordinate of the tile.
      * @throws IllegalArgumentException to be done
      */
-    public void deleteBuilding(int posX, int posY) throws IllegalArgumentException {
+    protected void deleteBuilding(int posX, int posY) throws IllegalArgumentException {
         if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
             throw new IllegalArgumentException("The coordinates have to be valid.");
         }

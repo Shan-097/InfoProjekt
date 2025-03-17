@@ -1,8 +1,6 @@
-package hotKey;
+package util;
 
 import java.util.LinkedList;
-
-import main.InputHandler;
 
 /**
  * The HotKeyInputHandler is used to get the only pressed char of the input

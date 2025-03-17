@@ -24,7 +24,7 @@ public class Field {
      * @param pBuilding The building on the new field.
      * @param pResource The resource vein of the new field.
      */
-    public Field(Building pBuilding, Resource pResource) {
+    protected Field(Building pBuilding, Resource pResource) {
         building = pBuilding;
         resource = pResource;
     }
@@ -35,7 +35,7 @@ public class Field {
      * @param pResourceID The id of the resource of the vein of the new field.
      * @throws IllegalArgumentException to be done
      */
-    public Field(int pResourceID) throws IllegalArgumentException {
+    protected Field(int pResourceID) throws IllegalArgumentException {
         try {
             resource = Resource.getResourceWithID(pResourceID);
         } catch (IllegalArgumentException e) {
@@ -75,7 +75,7 @@ public class Field {
      * 
      * @param pBuilding The new building
      */
-    public void setBuilding(Building pBuilding) {
+    protected void setBuilding(Building pBuilding) {
         building = pBuilding;
     }
 
@@ -84,7 +84,7 @@ public class Field {
      * 
      * @return to be done
      */
-    public JSONObject toJSONObject() {
+    protected JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
         
         if(building != null) {

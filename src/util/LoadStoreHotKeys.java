@@ -1,7 +1,8 @@
-package main;
+package util;
 
 import java.io.File;
 import java.io.FileWriter;
+
 import java.util.HashMap;
 import java.util.Map.Entry;
 

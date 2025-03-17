@@ -41,7 +41,7 @@ public abstract class Building {
      * Basic constructor of Building for super() calls.<br>
      * Initalizes the rotation and inventory of the building.
      */
-    public Building() {
+    protected Building() {
         rotation = 0;
         content = new LinkedList<Item>();
         for (int i = 0; i < INVENTORY_SIZE; i++) {
@@ -60,7 +60,7 @@ public abstract class Building {
      * @return True if and only if the last item in the inventory or the one to be
      *         added is null. And false otherwise.
      */
-    public boolean addItem(Item item) {
+    protected boolean addItem(Item item) {
         if (item == null) {
             return true;
         }
@@ -88,7 +88,7 @@ public abstract class Building {
      * 
      * @param otherBuilding The building the item should be transferred to.
      */
-    public void moveItemToNextBuilding(Building otherBuilding) {
+    protected void moveItemToNextBuilding(Building otherBuilding) {
         content.addFirst(executeFunction(content.pollFirst()));
         movedIndices.clear();
         if (content.size() != INVENTORY_SIZE) {
@@ -111,7 +111,7 @@ public abstract class Building {
     /**
      * to be done
      */
-    public void moveItemInsideBuilding() {
+    protected void moveItemInsideBuilding() {
         movedIndices.clear();
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             try {
@@ -136,7 +136,7 @@ public abstract class Building {
      * Rotates the builing by adding 1 to the rotation and making sure that the
      * result is valid.
      */
-    public void rotate() {
+    protected void rotate() {
         this.setRotation((byte) ((getRotation() + 1) % 4));
     }
 
@@ -218,7 +218,7 @@ public abstract class Building {
      * 
      * @param pRotation The new rotation.
      */
-    public void setRotation(byte pRotation) {
+    protected void setRotation(byte pRotation) {
         rotation = pRotation;
     }
 
@@ -227,7 +227,7 @@ public abstract class Building {
      * 
      * @return to be done
      */
-    public JSONObject toJSONObject() {
+    protected JSONObject toJSONObject() {
         // TODO: Implement building specific overrides for buildings that need that.
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("rotation", rotation);

@@ -1,12 +1,9 @@
 package main;
 
-import game.GamePanel;
-import hotKey.HotKeyPanel;
-
-import java.awt.Dimension;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import java.awt.Dimension;
 
 /**
  * Main class of the programm.
@@ -43,7 +40,7 @@ public class App {
      * loadStartingScreen sets the necessary values and creates the window of and
      * for the starting screen closing the others in the process.
      */
-    public static void loadStartingScreen() {
+    protected static void loadStartingScreen() {
         StartingPanel startingPanel = new StartingPanel(FRAME_RATE);
         setStandardProperties(startingPanel);
 
@@ -56,7 +53,7 @@ public class App {
      * loadLoadGameScreen sets the necessary values and creates the window of and
      * for the load game screen closing the others in the process.
      */
-    public static void loadLoadGameScreen() {
+    protected static void loadLoadGameScreen() {
         LoadGamePanel loadGamePanel = new LoadGamePanel(FRAME_RATE);
         setStandardProperties(loadGamePanel);
 
@@ -68,7 +65,7 @@ public class App {
      * loadHotKeyScreen sets the necessary values and creates the window of and for
      * the hot key screen closing the others in the process.
      */
-    public static void loadHotKeyScreen() {
+    protected static void loadHotKeyScreen() {
         HotKeyPanel hotKeyPanel = new HotKeyPanel(FRAME_RATE);
         setStandardProperties(hotKeyPanel);
 
@@ -81,7 +78,7 @@ public class App {
      * loadGameScreen sets the necessary values and creates the window of and for
      * the game screen closing the others in the process.
      */
-    public static void loadGameScreen(String worldPath) {
+    protected static void loadGameScreen(String worldPath) {
         GamePanel gamePanel = new GamePanel(FRAME_RATE, worldPath);
         setStandardProperties(gamePanel);
 

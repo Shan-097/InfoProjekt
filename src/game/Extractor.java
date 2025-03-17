@@ -44,7 +44,7 @@ public class Extractor extends Building {
     /**
      * The empty constructor of Extractor is only calling the super constructor.
      */
-    public Extractor() {
+    protected Extractor() {
         super();
     }
 
@@ -93,7 +93,7 @@ public class Extractor extends Building {
      * @param pResource The resource of the item that is to be extracted.
      * @throws IllegalArgumentException to be done
      */
-    public void setResourceToBeExtracted(Resource pResource) throws IllegalArgumentException {
+    protected void setResourceToBeExtracted(Resource pResource) throws IllegalArgumentException {
         try {
             itemToBeExtracted = Item.getItemFromResource(pResource);
         } catch (IllegalArgumentException e) {
