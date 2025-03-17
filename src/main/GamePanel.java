@@ -327,6 +327,8 @@ public class GamePanel extends JPanel implements Runnable {
         long currentTime;
         double delta = 0;
         int count = 0;
+        gameController.update();
+        repaint();
 
         while (gameThread != null) {
             currentTime = System.nanoTime();
@@ -342,7 +344,7 @@ public class GamePanel extends JPanel implements Runnable {
                 }
                 repaint();
                 count = (count + 1) % 5;
-                delta--;
+                delta = 0;
             }
         }
     }
@@ -590,9 +592,9 @@ public class GamePanel extends JPanel implements Runnable {
                 (int) (this.getHeight() / 2 - 2 * tileSize), null); // Draw sidebar Image
         g2d.drawImage(images.get("conveyor020"), (int) Math.round(0.6 * tileSize) + border / 2,
                 (int) (this.getHeight() / 2 - 2 * tileSize) + border / 2, null); // Draw Buildings inside
-        g2d.drawImage(images.get("extractorDOWN"), (int) Math.round(0.6 * tileSize) + border / 2,
+        g2d.drawImage(images.get("extractorDOWN0"), (int) Math.round(0.6 * tileSize) + border / 2,
                 (int) (this.getHeight() / 2 - (border - 5)), null);
-        g2d.drawImage(images.get("smelterDOWN"), (int) Math.round(0.6 * tileSize) + border / 2,
+        g2d.drawImage(images.get("smelterDOWN0"), (int) Math.round(0.6 * tileSize) + border / 2,
                 (int) (this.getHeight() / 2 + tileSize), null);
 
         // Implement Font
