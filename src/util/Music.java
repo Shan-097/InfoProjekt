@@ -25,6 +25,12 @@ public class Music {
     private static FloatControl fc;
 
     /**
+     * Empty and unused constructor of Music
+     */
+    public Music(){
+    }
+
+    /**
      * to be done
      * 
      * @param location to be done

@@ -14,6 +14,8 @@ public class HotKeyInputHandler {
 
     /**
      * The constructor of the HotKeyInputHandler only sets the input handler object.
+     * 
+     * @param pIH The input handler object that is to be used.
      */
     public HotKeyInputHandler(InputHandler pIH) {
         inputHandler = pIH;

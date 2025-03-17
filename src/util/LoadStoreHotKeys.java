@@ -55,6 +55,12 @@ public class LoadStoreHotKeys {
     }
 
     /**
+     * Empty and unused constructor of LoadStoreHotKeys
+     */
+    public LoadStoreHotKeys(){
+    }
+
+    /**
      * Stores the given input maps.
      * 
      * @return to be done

@@ -349,6 +349,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * to be done
+     */
     public void showPauseMenu() {
         gamePaused = !gamePaused;
     }
