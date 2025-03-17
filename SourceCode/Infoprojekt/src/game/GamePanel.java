@@ -221,13 +221,13 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("smelterRIGHT3", "./Graphics/Furnace f4 rechts .png");
 
         // Collection Sites
-        imgPaths.put("collectionSite10", "./Graphics/collectionEdgeTopLeft.png");
+        imgPaths.put("collectionSite10", "./Graphics/collectionEdge.png");
         imgPaths.put("collectionSite20", "./Graphics/collectionMiddleTop.png");
         imgPaths.put("collectionSite30", "./Graphics/collectionEdgeTopRight.png");
         imgPaths.put("collectionSite40", "./Graphics/collectionMiddleLeft.png");
         imgPaths.put("collectionSite50", "./Graphics/collectionSiteMitte.jpg");
         imgPaths.put("collectionSite60", "./Graphics/collectionMidRight.png");
-        imgPaths.put("collectionSite70", "./Graphics/CollectionEdgeBotLeft.png");
+        imgPaths.put("collectionSite70", "./Graphics/CollectionEdge2.png");
         imgPaths.put("collectionSite80", "./Graphics/CollectionMiddleBottom.png");
         imgPaths.put("collectionSite90", "./Graphics/CollectionEdgeBotRight.png");
 
