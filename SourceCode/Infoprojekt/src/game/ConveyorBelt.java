@@ -1,6 +1,10 @@
 package game;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * The conveyor belt is a building for item transportation.
@@ -43,6 +47,18 @@ public class ConveyorBelt extends Building {
     public ConveyorBelt() {
         super();
         outputDirections = new byte[] { 2 };
+    }
+
+    /**
+     * Constructor for ConveyorBelt that initializes the object with saved values.
+     * 
+     * @param rotation         The rotation of the conveyor belt.
+     * @param content          The inventory of the conveyor belt.
+     * @param outputDirections The output directions of the conveyor belt.
+     */
+    public ConveyorBelt(int rotation, LinkedList<Item> content, byte[] outputDirections) {
+        super(rotation, content); // Call the parent constructor with rotation and content
+        this.outputDirections = outputDirections; // Set the output directions
     }
 
     /**
@@ -95,5 +111,29 @@ public class ConveyorBelt extends Building {
         } else {
             outputDirections[0]++;
         }
+    }
+
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
+    @Override
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("rotation", rotation);
+        jsonObject.put("content", new JSONArray(content));
+        jsonObject.put("type", "conveyorBelt");
+
+        jsonObject.put("inputDirections", new JSONArray(INPUT_DIRECTIONS));
+        jsonObject.put("outputDirections", new JSONArray(outputDirections));
+
+        JSONObject costObject = new JSONObject();
+        for (Item item : COST.keySet()) {
+            costObject.put(String.valueOf(item.getItemID()), COST.get(item));
+        }
+        jsonObject.put("cost", costObject);
+
+        return jsonObject;
     }
 }

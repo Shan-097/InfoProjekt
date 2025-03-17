@@ -2,6 +2,9 @@ package game;
 
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * The collection site is a building that collects the items moved to it and
  * moves them to the players inventory.
@@ -88,5 +91,20 @@ public class CollectionSite extends Building {
      */
     public byte[] getOutputDirections() {
         return OUTPUT_DIRECTIONS;
+    }
+
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
+    @Override
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("rotation", rotation);
+        jsonObject.put("content", new JSONArray(content));
+        jsonObject.put("type", "collectionSite");
+
+        return jsonObject;
     }
 }

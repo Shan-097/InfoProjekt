@@ -16,9 +16,9 @@ import org.json.JSONObject;
 public abstract class Building {
     /**
      * The rotation of the building.<br>
-     * Rotation is in {0, 1, 2, 3}.
+     * Rotation csis in {0, 1, 2, 3}.
      */
-    private byte rotation;
+    protected byte rotation;
 
     /**
      * The length of the inventory.
@@ -30,7 +30,7 @@ public abstract class Building {
      * Always has INVENTORY_SIZE many items in it (if necessary null). Items are
      * moved one spot each time the items are moved.
      */
-    private LinkedList<Item> content;
+    protected LinkedList<Item> content;
 
     /**
      * to be done
@@ -47,6 +47,19 @@ public abstract class Building {
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             content.add(null);
         }
+        movedIndices = new HashSet<Integer>(INVENTORY_SIZE);
+    }
+
+    /**
+     * Constructor of Building for subclasses.<br>
+     * Initalizes the rotation and inventory of the building with given values.
+     * 
+     * @param pRotation The rotation of the building as an integer.
+     * @param pContent  The inventory of the building.
+     */
+    public Building(int pRotation, LinkedList<Item> pContent) {
+        rotation = (byte) pRotation;
+        content = pContent;
         movedIndices = new HashSet<Integer>(INVENTORY_SIZE);
     }
 
@@ -222,17 +235,5 @@ public abstract class Building {
         rotation = pRotation;
     }
 
-    /**
-     * to be done
-     * 
-     * @return to be done
-     */
-    public JSONObject toJSONObject() {
-        // TODO: Implement building specific overrides for buildings that need that.
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("rotation", rotation);
-        jsonObject.put("content", new JSONArray(content));
-
-        return jsonObject;
-    }
+    public abstract JSONObject toJSONObject();
 }

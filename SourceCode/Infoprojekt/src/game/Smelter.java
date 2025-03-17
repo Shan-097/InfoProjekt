@@ -2,6 +2,9 @@ package game;
 
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * The smelter is a building that turns passing through items into their semlted
  * variant.
@@ -85,5 +88,29 @@ public class Smelter extends Building {
      */
     public byte[] getOutputDirections() {
         return OUTPUT_DIRECTIONS;
+    }
+
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
+    @Override
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("rotation", rotation);
+        jsonObject.put("content", new JSONArray(content));
+        jsonObject.put("type", "smelter");
+
+        jsonObject.put("inputDirections", new JSONArray(INPUT_DIRECTIONS));
+        jsonObject.put("outputDirections", new JSONArray(OUTPUT_DIRECTIONS));
+
+        JSONObject costObject = new JSONObject();
+        for (Item item : COST.keySet()) {
+            costObject.put(String.valueOf(item.getItemID()), COST.get(item));
+        }
+        jsonObject.put("cost", costObject);
+
+        return jsonObject;
     }
 }

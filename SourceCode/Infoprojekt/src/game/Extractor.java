@@ -1,6 +1,10 @@
 package game;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * The extractor is a building for item extraction from resource tiles.
@@ -46,6 +50,19 @@ public class Extractor extends Building {
      */
     public Extractor() {
         super();
+    }
+
+    /**
+     * Constructor for Extractor that initializes the object with saved values.
+     * 
+     * @param rotation         The rotation of the extractor.
+     * @param content          The inventory of the extractor.
+     * @param outputDirections The output directions of the extractor.
+     */
+    public Extractor(int rotation, LinkedList<Item> content, int itemToBeExtracted) {
+        super(rotation, content); // Call the parent constructor with rotation and content
+        
+        this.itemToBeExtracted = Item.getItemWithID(itemToBeExtracted);
     }
 
     /**
@@ -99,5 +116,31 @@ public class Extractor extends Building {
         } catch (IllegalArgumentException e) {
             throw e;
         }
+    }
+
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
+    @Override
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("rotation", rotation);
+        jsonObject.put("content", new JSONArray(content));
+        jsonObject.put("type", "extractor");
+
+        jsonObject.put("inputDirections", new JSONArray(INPUT_DIRECTIONS));
+        jsonObject.put("outputDirections", new JSONArray(OUTPUT_DIRECTIONS));
+
+        jsonObject.put("itemToBeExtracted", itemToBeExtracted.getItemID());
+
+        JSONObject costObject = new JSONObject();
+        for (Item item : COST.keySet()) {
+            costObject.put(String.valueOf(item.getItemID()), COST.get(item));
+        }
+        jsonObject.put("cost", costObject);
+
+        return jsonObject;
     }
 }
