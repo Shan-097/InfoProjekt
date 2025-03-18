@@ -124,6 +124,11 @@ public class GamePanel extends JPanel implements Runnable {
     private JButton saveAndExitButton;
 
     /**
+     * to be done
+     */
+    private Font D3Litemapism;
+
+    /**
      * Constructor of the GamePanel class
      * Sets up the frame and the GameController, InputHandler and GameInputHandler
      * to allow for interaction later.
@@ -154,8 +159,12 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("arrow", "./Graphics/arrow.png");
         imgPaths.put("preview", "./Graphics/Bauen Preview.png");
 
+        imgPaths.put("quitImg", "./Graphics/Exit.png");
+        imgPaths.put("rotateImg", "./Graphics/Rotate.png");
+        imgPaths.put("placeImg", "./Graphics/Place.png");
+
         // Items
-        imgPaths.put("stoneIngot", "./Graphics/Ziegelstein.png");
+        imgPaths.put("stoneIngot", "./Graphics/MeltedStone.png");
         imgPaths.put("copperIngot", "./Graphics/CopperIngotFinal.png");
         imgPaths.put("ironIngot", "./Graphics/IronIngotFinal.png");
         imgPaths.put("goldIngot", "./Graphics/GoldIngotFinal.png");
@@ -164,6 +173,12 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("copper", "./Graphics/CopperConveyor.png");
         imgPaths.put("iron", "./Graphics/IronConveyor.png");
         imgPaths.put("gold", "./Graphics/GoldConveyor.png");
+
+        // Map ores
+        imgPaths.put("stoneMap", "./Graphics/StoneOreMap.png");
+        imgPaths.put("ironMap", "./Graphics/Iron.png");
+        imgPaths.put("copperMap", "./Graphics/CopperOreMap.png");
+        imgPaths.put("goldMap", "./Graphics/GoldOre.png");
 
         // Conveyor belts
         imgPaths.put("conveyor200", "./Graphics/ConveyerBelt-oben.png"); // oben 0
@@ -231,25 +246,15 @@ public class GamePanel extends JPanel implements Runnable {
         imgPaths.put("smelterRIGHT3", "./Graphics/Furnace f4 rechts .png");
 
         // Collection Sites
-        imgPaths.put("collectionSite10", "./Graphics/collectionEdgeTopLeft.png");
-        imgPaths.put("collectionSite20", "./Graphics/collectionMiddleTop.png");
-        imgPaths.put("collectionSite30", "./Graphics/collectionEdgeTopRight.png");
-        imgPaths.put("collectionSite40", "./Graphics/collectionMiddleLeft.png");
-        imgPaths.put("collectionSite50", "./Graphics/collectionSiteMitte.jpg");
-        imgPaths.put("collectionSite60", "./Graphics/collectionMidRight.png");
-        imgPaths.put("collectionSite70", "./Graphics/CollectionEdgeBotLeft.png");
-        imgPaths.put("collectionSite80", "./Graphics/CollectionMiddleBottom.png");
-        imgPaths.put("collectionSite90", "./Graphics/CollectionEdgeBotRight.png");
-
-        imgPaths.put("collectionSite11", "./Graphics/collectionEdgeTopLeft.png");
-        imgPaths.put("collectionSite21", "./Graphics/collectionMiddleTop.png");
-        imgPaths.put("collectionSite31", "./Graphics/collectionEdgeTopRight.png");
-        imgPaths.put("collectionSite41", "./Graphics/collectionMiddleLeft.png");
-        imgPaths.put("collectionSite51", "./Graphics/collectionSiteMitte.jpg");
-        imgPaths.put("collectionSite61", "./Graphics/collectionMidRight.png");
-        imgPaths.put("collectionSite71", "./Graphics/CollectionEdgeBotLeft.png");
-        imgPaths.put("collectionSite81", "./Graphics/CollectionMiddleBottom.png");
-        imgPaths.put("collectionSite91", "./Graphics/CollectionEdgeBotRight.png");
+        imgPaths.put("collectionSite1", "./Graphics/collectionEdgeTopLeft.png");
+        imgPaths.put("collectionSite2", "./Graphics/collectionMiddleTop.png");
+        imgPaths.put("collectionSite3", "./Graphics/collectionEdgeTopRight.png");
+        imgPaths.put("collectionSite4", "./Graphics/collectionMiddleLeft.png");
+        imgPaths.put("collectionSite5", "./Graphics/collectionSiteMitte.jpg");
+        imgPaths.put("collectionSite6", "./Graphics/collectionMidRight.png");
+        imgPaths.put("collectionSite7", "./Graphics/CollectionEdgeBotLeft.png");
+        imgPaths.put("collectionSite8", "./Graphics/CollectionMiddleBottom.png");
+        imgPaths.put("collectionSite9", "./Graphics/CollectionEdgeBotRight.png");
 
         for (String key : imgPaths.keySet()) {
             try {
@@ -306,6 +311,15 @@ public class GamePanel extends JPanel implements Runnable {
         add(resumeButton);
         add(saveAndExitButton);
         add(exitButton);
+
+        try {
+            File fontFile = new File("./Graphics/D3Litebitmapism.ttf");
+            D3Litemapism = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(20f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(D3Litemapism);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -417,16 +431,13 @@ public class GamePanel extends JPanel implements Runnable {
                 if (field.getResourceID() == 0) {
                     g2d.drawImage(images.get("grass"), movementX, movementY, null);
                 } else if (field.getResourceID() == 1) {
-                    g2d.setColor(Color.GRAY);
-                    g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                    g2d.drawImage(images.get("stoneMap"), movementX, movementY, null);
                 } else if (field.getResourceID() == 2) {
-                    g2d.drawImage(images.get("copper"), movementX, movementY, null);
+                    g2d.drawImage(images.get("copperMap"), movementX, movementY, null);
                 } else if (field.getResourceID() == 3) {
-                    g2d.setColor(Color.LIGHT_GRAY);
-                    g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                    g2d.drawImage(images.get("ironMap"), movementX, movementY, null);
                 } else if (field.getResourceID() == 4) {
-                    g2d.setColor(Color.YELLOW);
-                    g2d.fillRect(movementX, movementY, tileSize, tileSize);
+                    g2d.drawImage(images.get("goldMap"), movementX, movementY, null);
                 }
             }
         }
@@ -499,7 +510,7 @@ public class GamePanel extends JPanel implements Runnable {
                 x = (int) (TileCenterX + (x - posXinArray - gameController.getOffsetX()) * tileSize);
                 y = (int) (TileCenterY + (y - posYinArray - gameController.getOffsetY()) * tileSize);
                 if (b.getClass() == CollectionSite.class) {
-                    g2d.drawImage(images.get("collectionSite" + b.getRotation() + ((drawState % 4) / 2)), x, y, null);
+                    g2d.drawImage(images.get("collectionSite" + b.getRotation()), x, y, null);
                 } else if (b.getClass() == ConveyorBelt.class) {
                     this.drawConveyorBelt(g2d, b, x, y);
                 } else if (b.getClass() == Extractor.class) {
@@ -586,7 +597,24 @@ public class GamePanel extends JPanel implements Runnable {
 
             // draw control options (rotate, build, exit)
             g2d.setColor(Color.BLACK);
-            g2d.fillRect(width - 50 - 256, height - 50 - 100, 256, 100);
+            g2d.fillRect(width - 65 - 275, height - 50 - 100, 290, 100);
+            g2d.setColor(Color.WHITE);
+            
+            // REPLACE WITH GRAPHICS
+            //g2d.
+            g2d.fillRect(width-65-270, height-55-90, 90, 90);
+            g2d.drawImage(images.get("quitImg"), width-65-270, height-55-90, null);
+            g2d.fillRect(width-65-175, height-55-90, 90, 90);
+            g2d.drawImage(images.get("rotateImg"), width-65-175, height-55-90, null);
+            g2d.fillRect(width-65-80, height-55-90, 90, 90);
+            g2d.drawImage(images.get("placeImg"), width-65-80, height-55-90, null);
+
+
+            g2d.setFont(D3Litemapism);
+            g2d.setColor(Color.black);
+            g2d.drawString(gameInputHandler.getKey("cancelPlacement"), width-60-270, height-60);
+            g2d.drawString(gameInputHandler.getKey("rotateBuilding"), width-55-180, height-60);
+            g2d.drawString(gameInputHandler.getKey("placeBuilding"), width-50-90, height-60);
         }
 
         // Draw the sidebar
@@ -601,11 +629,6 @@ public class GamePanel extends JPanel implements Runnable {
                 (int) (this.getHeight() / 2 + tileSize), null);
 
         // Implement Font
-        try {
-            File fontFile = new File("./Graphics/D3Litebitmapism.ttf");
-            Font D3Litemapism = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(16f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(D3Litemapism);
             g2d.setFont(D3Litemapism);
             g2d.setColor(Color.black);
             g2d.drawString(gameInputHandler.getKey("placeConveyorBelt"), (int) Math.round(0.6 * tileSize) + 7,
@@ -615,9 +638,6 @@ public class GamePanel extends JPanel implements Runnable {
             g2d.drawString(gameInputHandler.getKey("placeSmelter"), (int) Math.round(0.6 * tileSize) + 7,
                     (int) (this.getHeight() / 2 + tileSize) + border * 2 + 14);
 
-        } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
-        }
 
         // Draw the player 
         if (gameController.getDirection() != '0') {

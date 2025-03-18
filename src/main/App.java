@@ -44,7 +44,6 @@ public class App {
         StartingPanel startingPanel = new StartingPanel(FRAME_RATE);
         setStandardProperties(startingPanel);
 
-        // random values, TODO: choose better
         window.setMinimumSize(new Dimension(600, 500));
         startingPanel.startGameThread();
     }
@@ -82,8 +81,7 @@ public class App {
         GamePanel gamePanel = new GamePanel(FRAME_RATE, worldPath);
         setStandardProperties(gamePanel);
 
-        // random values, TODO: choose better
-        window.setMinimumSize(new Dimension(500, 300));
+        window.setMinimumSize(new Dimension(1000, 600));
         gamePanel.startGameThread();
     }
 
