@@ -123,8 +123,8 @@ public class HotKeyPanel extends JPanel implements Runnable {
         unionInputMap.putAll(iMNH);
         unionInputMap.putAll(iMH);
 
-        actions = new HashMap<String, JLabel>(11);
-        buttons = new HashMap<String, JButton>(11);
+        actions = new HashMap<String, JLabel>(14);
+        buttons = new HashMap<String, JButton>(14);
         JButton temp;
         JLabel textField;
         for (Entry<String, Character> inputMapping : unionInputMap.entrySet()) {
