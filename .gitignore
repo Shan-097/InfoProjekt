@@ -1,5 +1,6 @@
 SourceCode/Infoprojekt/bin/
 docs/
 bin/
+org/
 *._*
 *.json
