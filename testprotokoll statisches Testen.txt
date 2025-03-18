@@ -1,0 +1,6 @@
+Testprotokoll Statisches Testen
+
+Quellcode wurde ohne Starten des Projekts erfolgreich inspiziert
+Überprüfung der Dokumentation: alle Klassen dokumentiert
+Programmierrichtlinien wurden eingehalten
+

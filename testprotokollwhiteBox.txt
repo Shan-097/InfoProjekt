@@ -1,0 +1,71 @@
+Testprotokoll White Box Test:
+
+StartingPanel: Startbutton funktioniert
+               Settings: -überschreiben von Steuerung durch raufklicken
+                         -ist der Button schon zugewiesen passiert nichts
+               LoadGame: konnte noch nicht getestet werden
+
+Bewegung: W Bewegung nach oben
+          S Bewegung nach unten
+          W+S passiert nichts
+          D Bewegung nach rechts
+          A Bewegung nach links
+          A+D passiert nichts
+          W+A Bewegung nach links oben
+          W+D Bewegung nach rechts oben
+          S+D Bewegung nach rechts unten
+          S+A Bewegung nach links unten
+          Bewegung außerhalb der MAP nicht möglich
+
+GUI: Sidebar funktioniert : -Alle Maschienen die gebaut werden können werden angezeigt
+                            -Der Button mit dem gebaut wird wird links unten angezeigt
+                            -Änder ich den Button wird er auch dort geändert
+     
+      bei Escape öffnet sich das Menü:-Exit und Save and Exit funktionieren und führen dazu, dass das Spiel verlassen wird
+                                      -Save and Exit konnte noch nicht getestet werden
+                                      -Resume funktioniert noch nicht
+      
+      schwarzer Pfeil zeigt immer auf die CollectionSite
+
+      weitere Befehle werden unten rechts angezeigt
+    
+      oben rechts werden die Ressourcen angezeigt und wieviele man davon hat
+
+Bauen: Zuerst Taste für die jeweilige Maschine drücken
+       ->oben Links wird sie nochmal angezeigt mit ihrer aktuellen Rotation
+       ->unter dir wird das passende Feld markiert
+       durch R rotieren wir unser Gebäude
+       Mit B platzieren funktioniert 
+       ->aktuelle Rotation wird übernommen
+       mit X zerstöre ich das aktuelle Gebäude
+       
+       extractor: bauen funktioniert nur auf Materialien
+                  Rotation passt und wirkt sich auf Laufband aus
+                  baue ich geht die Option zum bauen weg
+                  direkt an collectionSite werden direkt reingeliefert mit richtiger Rotation
+       
+       conveyerBelt: 12 Rotationen beim conveyerBelt möglich
+                     Items laufen nur in richtige Richtung 
+                     Loops funktionieren nicht
+                     mehrere conveyerBelts bauen möglich durch mehrmal tippen
+                     
+       Ofen: funktioniert bei allen Materialen außer Stein
+             Rotation funktioniert 
+             beim bauen geht Option für Ofen weg
+
+Musik: im StartingPanel startmusik
+       in Settings geht Musik aus
+       Wechsel ins Spiel: Startmusik geht aus
+                          Gamemusik startet
+       Lautstärke erhöht sich durch +
+       Lautstärke verringert sich durch -
+
+
+      
+
+
+
+       
+
+                                                                                    
+     
