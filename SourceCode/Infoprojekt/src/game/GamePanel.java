@@ -122,12 +122,12 @@ public class GamePanel extends JPanel implements Runnable {
      * @param pFr       Frame rate
      * @param pFilePath to be done
      */
-    public GamePanel(int pFr, String pFilePath) {
-        this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
+    public GamePanel(int pFr, String pFilePath, String pWorldName) {
+        this.setPreferredSize(new Dimension(1000, 600)); // random values, TO DO: choose better
         this.setDoubleBuffered(true);
         frameRate = pFr;
         if (pFilePath == null) {
-            gameController = new GameController();
+            gameController = new GameController(pWorldName, true);
         } else {
             gameController = new GameController(pFilePath);
         }

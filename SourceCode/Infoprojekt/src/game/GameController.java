@@ -80,7 +80,13 @@ public class GameController {
      * 
      * @throws IllegalArgumentException to be done
      */
-    public GameController() throws IllegalArgumentException {
+    public GameController(String pWorldName, boolean createNewGame) throws IllegalArgumentException {
+        if (pWorldName == null) {
+            throw new IllegalArgumentException("The world name should not be null.");
+        }
+
+        worldName = pWorldName;
+
         inventory = new HashMap<Item, Integer>();
         for (int i = 0; i < 8; i++) {
             try {

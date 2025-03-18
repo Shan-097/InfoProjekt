@@ -5,9 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.io.File;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -81,7 +79,7 @@ public class LoadGamePanel extends JPanel implements Runnable {
                 if (!fileList.isSelectionEmpty()) {
                     selectedFilePath = "SourceCode/Infoprojekt/saves/" + fileList.getSelectedValue();
                     System.out.println("Selected file: " + selectedFilePath);
-                    App.loadGameScreen(selectedFilePath);
+                    App.loadGameScreen(selectedFilePath, null);
                 }
             }
         });
