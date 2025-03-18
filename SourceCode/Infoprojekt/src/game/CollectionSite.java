@@ -1,6 +1,8 @@
 package game;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,6 +38,16 @@ public class CollectionSite extends Building {
      */
     public CollectionSite() {
         super();
+    }
+
+    /**
+     * Constructor for CollectionSite that initializes the object with saved values.
+     * 
+     * @param rotation The rotation of the collection site.
+     * @param content  The inventory of the collection site.
+     */
+    public CollectionSite(int rotation, LinkedList<Item> content) {
+        super(rotation, content);
     }
 
     /**

@@ -181,9 +181,19 @@ public class GameController {
         }
     }
 
+    /**
+     * Helper method to get the building object from the type and the JSONObject.
+     * 
+     * @param buildingType The type of the building as a string.
+     * @param buildingObject The JSONObject containing the building.
+     * @return The building object.
+     */
     private Building getBuildingFromType(String buildingType, JSONObject buildingObject) {
         return switch (buildingType) {
-            case "collectionSite" -> new CollectionSite();
+            case "collectionSite" -> new CollectionSite(
+                buildingObject.getInt("rotation"),
+                parseContent(buildingObject.getJSONArray("content"))
+            );
             case "conveyorBelt" -> new ConveyorBelt(
                 buildingObject.getInt("rotation"),
                 parseContent(buildingObject.getJSONArray("content")),
@@ -194,7 +204,10 @@ public class GameController {
                 parseContent(buildingObject.getJSONArray("content")),
                 buildingObject.getInt("itemToBeExtracted")
             );
-            case "smelter" -> new Smelter();
+            case "smelter" -> new Smelter(
+                buildingObject.getInt("rotation"),
+                parseContent(buildingObject.getJSONArray("content"))
+            );
             default -> null;
         };
     }
@@ -812,17 +825,9 @@ public class GameController {
             }
             properties.put("inventory", inventoryArray);
 
+            JSONArray jsonMap = wGenerator.getJSONMap();
 
-            JSONArray outerArray = new JSONArray();
-            for (Field[] row : wGenerator.getMap()) {
-                JSONArray innerArray = new JSONArray();
-                for (Field field : row) {
-                    innerArray.put(field != null ? field.toJSONObject() : JSONObject.NULL);
-                }
-                outerArray.put(innerArray);
-            }
-
-            properties.put("worldMap", outerArray);
+            properties.put("worldMap", jsonMap);
 
             file.write(properties.toString(4));
 

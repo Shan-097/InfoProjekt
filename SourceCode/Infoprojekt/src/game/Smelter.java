@@ -1,6 +1,7 @@
 package game;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,6 +46,16 @@ public class Smelter extends Building {
      */
     public Smelter() {
         super();
+    }
+
+    /**
+     * Constructor for Smelter that initializes the object with saved values.
+     * 
+     * @param rotation The rotation of the smelter.
+     * @param content  The inventory of the smelter.
+     */
+    public Smelter(int rotation, LinkedList<Item> content) {
+        super(rotation, content);
     }
 
     /**
@@ -101,9 +112,6 @@ public class Smelter extends Building {
         jsonObject.put("rotation", rotation);
         jsonObject.put("content", new JSONArray(content));
         jsonObject.put("type", "smelter");
-
-        jsonObject.put("inputDirections", new JSONArray(INPUT_DIRECTIONS));
-        jsonObject.put("outputDirections", new JSONArray(OUTPUT_DIRECTIONS));
 
         JSONObject costObject = new JSONObject();
         for (Item item : COST.keySet()) {
