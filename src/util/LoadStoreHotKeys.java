@@ -1,7 +1,8 @@
-package main;
+package util;
 
 import java.io.File;
 import java.io.FileWriter;
+
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -51,6 +52,12 @@ public class LoadStoreHotKeys {
         STANDARD_INPUT_MAP_HOLDABLE.put("deleteBuilding", 'x');
         STANDARD_INPUT_MAP_HOLDABLE.put("increaseVolume", '+');
         STANDARD_INPUT_MAP_HOLDABLE.put("decreaseVolume", '-');
+    }
+
+    /**
+     * Empty and unused constructor of LoadStoreHotKeys
+     */
+    public LoadStoreHotKeys(){
     }
 
     /**

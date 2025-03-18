@@ -1,13 +1,20 @@
-package hotKey;
+package main;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import java.io.File;
+import util.HotKeyInputHandler;
+import util.InputHandler;
+import util.LoadStoreHotKeys;
+import util.Music;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,15 +22,7 @@ import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import game.Music;
-
-import main.App;
-import main.InputHandler;
-import main.LoadStoreHotKeys;
+import java.io.File;
 
 /**
  * The class of the panel for reasigning and viewing the hot keys.<br>
@@ -94,7 +93,7 @@ public class HotKeyPanel extends JPanel implements Runnable {
      * 
      * @param pFR the desired frame rate of the starting menu
      */
-    public HotKeyPanel(int pFR) {
+    protected HotKeyPanel(int pFR) {
         frameRate = pFR;
         InputHandler inputHandler = new InputHandler();
         addKeyListener(inputHandler);
@@ -160,7 +159,7 @@ public class HotKeyPanel extends JPanel implements Runnable {
      * Updates the postion of the buttons so that they are centered and have the
      * correct height and width.
      */
-    public void updateGraphicElements() {
+    private void updateGraphicElements() {
         returnToMainMenu.setBounds(10, 10, 230, 35);
 
         int actionCount = actions.size();
@@ -184,7 +183,7 @@ public class HotKeyPanel extends JPanel implements Runnable {
     /**
      * Starts the thread to keep updating the window.
      */
-    public void startGameThread() {
+    protected void startGameThread() {
         thread = new Thread(this);
         thread.start();
     }

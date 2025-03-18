@@ -48,7 +48,7 @@ public class Resource {
      * @return The resource with the specified id
      * @throws IllegalArgumentException to be done
      */
-    public static Resource getResourceWithID(int pResourceID) throws IllegalArgumentException {
+    protected static Resource getResourceWithID(int pResourceID) throws IllegalArgumentException {
         if (!ID_MAP.containsKey(pResourceID)) {
             throw new IllegalArgumentException("The id is not associated with a resource.");
         }
@@ -68,7 +68,7 @@ public class Resource {
      * to be done
      * @return
      */
-    public JSONObject toJSONObject() {
+    protected JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("resourceID", resourceID);
         return jsonObject;

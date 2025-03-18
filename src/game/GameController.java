@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import main.Tuple;
+import util.Tuple;
 
 /**
  * The GameController class is the heart of the model.<br>
@@ -685,7 +685,7 @@ public class GameController {
      * @return Returns wheter the item has been added sucessfully or not
      * @throws IllegalArgumentException to be done
      */
-    public static boolean addItemToInventory(Item item) throws IllegalArgumentException {
+    protected static boolean addItemToInventory(Item item) throws IllegalArgumentException {
         if (item == null) {
             return true;
         }
@@ -811,7 +811,7 @@ public class GameController {
      * @return Returns whether the save was successful or not
      */
     public boolean saveWorld() {
-        try (FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {
+        try (FileWriter file = new FileWriter("./saves/" + worldName + ".json")) {
             JSONObject properties = new JSONObject();
 
             properties.put("worldName", worldName);

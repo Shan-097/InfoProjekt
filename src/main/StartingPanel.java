@@ -1,17 +1,20 @@
 package main;
 
-import game.Music;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import javax.imageio.ImageIO;
+
+import java.io.File;
+
+import util.Music;
 
 /**
  * The class of the starting panel.<br>
@@ -65,7 +68,7 @@ public class StartingPanel extends JPanel implements Runnable {
      * 
      * @param pFR the desired frame rate of the starting menu
      */
-    public StartingPanel(int pFR) {
+    protected StartingPanel(int pFR) {
         frameRate = pFR;
         this.setLayout(null);
         this.setPreferredSize(null);
@@ -95,8 +98,7 @@ public class StartingPanel extends JPanel implements Runnable {
             imgBackground = ImageIO.read(new File("./Graphics/hintergrundbild(latest).png"));
             imgBackground = imgBackground.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_DEFAULT);
             // this.drawImage(imgBackground);
-        } catch (Exception ex) {
-            System.out.println(ex);
+        } catch (Exception e) {
         }
 
         startNewGame.addActionListener(new ActionListener() {
@@ -129,7 +131,7 @@ public class StartingPanel extends JPanel implements Runnable {
      * Updates the postion of the buttons so that they are centered and have the
      * correct height and width.
      */
-    public void moveButtons() {
+    private void moveButtons() {
         startNewGame.setBounds((this.getWidth() - buttonWidth) / 2,
                 (int) ((this.getHeight() - buttonHeight) / 2 - 1.1 * buttonHeight), buttonWidth, buttonHeight);
         controls.setBounds((this.getWidth() - buttonWidth) / 2,
@@ -143,7 +145,7 @@ public class StartingPanel extends JPanel implements Runnable {
     /**
      * Starts the thread to keep updating the window.
      */
-    public void startGameThread() {
+    protected void startGameThread() {
         thread = new Thread(this);
         thread.start();
     }

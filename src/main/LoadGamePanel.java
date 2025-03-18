@@ -55,7 +55,7 @@ public class LoadGamePanel extends JPanel implements Runnable {
      * 
      * @param pFR the desired frame rate of the saves menu
      */
-    public LoadGamePanel(int pFR) {
+    protected LoadGamePanel(int pFR) {
         this.frameRate = pFR;
 
         this.setLayout(new BorderLayout());
@@ -77,8 +77,7 @@ public class LoadGamePanel extends JPanel implements Runnable {
         loadSelectedGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (!fileList.isSelectionEmpty()) {
-                    selectedFilePath = "SourceCode/Infoprojekt/saves/" + fileList.getSelectedValue();
-                    System.out.println("Selected file: " + selectedFilePath);
+                    selectedFilePath = "./saves/" + fileList.getSelectedValue();
                     App.loadGameScreen(selectedFilePath, null);
                 }
             }
@@ -92,7 +91,7 @@ public class LoadGamePanel extends JPanel implements Runnable {
      * to be done
      */
     private void loadFileList() {
-        File saveFolder = new File("SourceCode/Infoprojekt/saves");
+        File saveFolder = new File("./saves");
         if (saveFolder.exists() && saveFolder.isDirectory()) {
             File[] files = saveFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".json"));
             if (files != null) {

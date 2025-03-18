@@ -50,7 +50,7 @@ public class Item {
      * @return The smelted item
      * @throws IllegalArgumentException to be done
      */
-    public static Item getSmeltedItem(Item item) throws IllegalArgumentException {
+    protected static Item getSmeltedItem(Item item) throws IllegalArgumentException {
         if (item == null) {
             throw new IllegalArgumentException("The item can't be null.");
         }
@@ -82,7 +82,7 @@ public class Item {
      * @return The item with the specified id
      * @throws IllegalArgumentException to be done
      */
-    public static Item getItemWithID(int pItemID) throws IllegalArgumentException {
+    protected static Item getItemWithID(int pItemID) throws IllegalArgumentException {
         if (!ID_MAP.containsKey(pItemID)) {
             throw new IllegalArgumentException("The id is not associated with an item.");
         }
@@ -96,7 +96,7 @@ public class Item {
      * @return The item of the specified resource
      * @throws IllegalArgumentException to be done
      */
-    public static Item getItemFromResource(Resource resource) throws IllegalArgumentException {
+    protected static Item getItemFromResource(Resource resource) throws IllegalArgumentException {
         if (resource ==  null) {
             throw new IllegalArgumentException("The resource can't be null");
         }

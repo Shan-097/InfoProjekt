@@ -1,11 +1,12 @@
 {    
-    "javadoc-tools.generateJavadoc.isUsingPwsh": false,
-    "javadoc-tools.generateJavadoc.workspaceSourceFolder": "./SourceCode/Infoprojekt/src/",
+    "javadoc-tools.generateJavadoc.isUsingPwsh": true,
+    "javadoc-tools.generateJavadoc.workspaceSourceFolder": "./src/",
     "javadoc-tools.generateJavadoc.targetFolder": "./javadoc/",
-    "java.project.sourcePaths": ["SourceCode/Infoprojekt/src"],
-    "java.project.outputPath": "SourceCode/Infoprojekt/bin",
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "dependencies/json.jar"
+        "c:\\Users\\mfrit\\Desktop\\Infoprojekt\\dependencies\\json.jar"
     ],
 }

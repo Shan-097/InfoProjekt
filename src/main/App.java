@@ -1,10 +1,9 @@
 package main;
 
-import game.GamePanel;
-import hotKey.HotKeyPanel;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 
 /**
  * Main class of the programm.
@@ -41,12 +40,11 @@ public class App {
      * loadStartingScreen sets the necessary values and creates the window of and
      * for the starting screen closing the others in the process.
      */
-    public static void loadStartingScreen() {
+    protected static void loadStartingScreen() {
         StartingPanel startingPanel = new StartingPanel(FRAME_RATE);
         setStandardProperties(startingPanel);
 
-        // random values, TODO: choose better
-        window.setMinimumSize(new Dimension(500, 300));
+        window.setMinimumSize(new Dimension(600, 500));
         startingPanel.startGameThread();
     }
 
@@ -54,7 +52,7 @@ public class App {
      * loadLoadGameScreen sets the necessary values and creates the window of and
      * for the load game screen closing the others in the process.
      */
-    public static void loadLoadGameScreen() {
+    protected static void loadLoadGameScreen() {
         LoadGamePanel loadGamePanel = new LoadGamePanel(FRAME_RATE);
         setStandardProperties(loadGamePanel);
 
@@ -78,7 +76,7 @@ public class App {
      * loadHotKeyScreen sets the necessary values and creates the window of and for
      * the hot key screen closing the others in the process.
      */
-    public static void loadHotKeyScreen() {
+    protected static void loadHotKeyScreen() {
         HotKeyPanel hotKeyPanel = new HotKeyPanel(FRAME_RATE);
         setStandardProperties(hotKeyPanel);
 
@@ -98,8 +96,7 @@ public class App {
         GamePanel gamePanel = new GamePanel(FRAME_RATE, worldPath, worldName);
         setStandardProperties(gamePanel);
 
-        // random values, TODO: choose better
-        window.setMinimumSize(new Dimension(500, 300));
+        window.setMinimumSize(new Dimension(1000, 600));
         gamePanel.startGameThread();
     }
 
