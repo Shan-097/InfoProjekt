@@ -51,6 +51,19 @@ public abstract class Building {
     }
 
     /**
+     * Constructor of Building for subclasses.<br>
+     * Initalizes the rotation and inventory of the building with given values.
+     * 
+     * @param pRotation The rotation of the building as an integer.
+     * @param pContent  The inventory of the building.
+     */
+    public Building(int pRotation, LinkedList<Item> pContent) {
+        rotation = (byte) pRotation;
+        content = pContent;
+        movedIndices = new HashSet<Integer>(INVENTORY_SIZE);
+    }
+
+    /**
      * Adds an item to the inventory.<br>
      * Returns whether or not the operation was sucessful. The operation is defined
      * as successfull, if and only if the last item in the inventory is null or the
@@ -222,17 +235,5 @@ public abstract class Building {
         rotation = pRotation;
     }
 
-    /**
-     * to be done
-     * 
-     * @return to be done
-     */
-    public JSONObject toJSONObject() {
-        // TODO: Implement building specific overrides for buildings that need that.
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("rotation", rotation);
-        jsonObject.put("content", new JSONArray(content));
-
-        return jsonObject;
-    }
+    public abstract JSONObject toJSONObject();
 }

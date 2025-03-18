@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.json.JSONArray;
@@ -66,7 +67,7 @@ public class GameController {
     /**
      * stores worldName in a String attribute
      */
-    private String worldName = "testWorld";
+    private String worldName = "savedWorld";
 
     /**
      * A temporary Building object storing what the player plans to place next.
@@ -77,9 +78,17 @@ public class GameController {
      * Instantiates a new Object of type GameController.<br>
      * Sets for example the starting position of the player.
      * 
+     * @param pWorldName to be done
+     * @param createNewGame to be done
      * @throws IllegalArgumentException to be done
      */
-    public GameController() throws IllegalArgumentException {
+    public GameController(String pWorldName, boolean createNewGame) throws IllegalArgumentException {
+        if (pWorldName == null) {
+            throw new IllegalArgumentException("The world name should not be null.");
+        }
+
+        worldName = pWorldName;
+
         inventory = new HashMap<Item, Integer>();
         for (int i = 0; i < 8; i++) {
             try {
@@ -111,27 +120,60 @@ public class GameController {
         if (pFilePath == null) {
             throw new IllegalArgumentException("If the world is loaded from a file the path should not be null.");
         }
-        // TODO: Load all other attributs and values. E.g. inventory, position
+    
         try {
             JSONObject savedWorld = readJsonFile(pFilePath);
+    
+            // Load the worldName
+            worldName = savedWorld.getString("worldName");
+    
+            // Load the players position
+            posXinArray = savedWorld.getInt("posX");
+            posYinArray = savedWorld.getInt("posY");
+            posXonTile = (float) savedWorld.getDouble("offsetX");
+            posYonTile = (float) savedWorld.getDouble("offsetY");
+    
+            // Load the movement direction of the player
+            movementDirection = savedWorld.getString("movementDirection").charAt(0);
+    
+            // Load the player inventory
+            inventory = new HashMap<>();
+            JSONArray inventoryArray = savedWorld.getJSONArray("inventory");
+            for (int i = 0; i < inventoryArray.length(); i++) {
+                JSONObject itemObject = inventoryArray.getJSONObject(i);
+                Item item = Item.getItemWithID(itemObject.getInt("itemID"));
+                int quantity = itemObject.getInt("quantity");
+                inventory.put(item, quantity);
+            }
+    
+            // Load the worldMap
             JSONArray worldMap = savedWorld.getJSONArray("worldMap");
-
             int rows = worldMap.length();
             int cols = worldMap.getJSONArray(0).length();
             Field[][] fieldArray = new Field[rows][cols];
-
+    
             for (int i = 0; i < rows; i++) {
                 JSONArray rowArray = worldMap.getJSONArray(i);
                 for (int j = 0; j < cols; j++) {
-                    fieldArray[i][j] = new Field(
-                            rowArray.getJSONObject(j).getJSONObject("resource").getInt("resourceID"));
-                    // rowArray.getJSONObject(j)
+                    if (!rowArray.isNull(j)) {
+                        if(rowArray.getJSONObject(j).has("resource") && rowArray.getJSONObject(j).has("building")) {
+                            fieldArray[i][j] = new Field(
+                                getBuildingFromType(rowArray.getJSONObject(j).getJSONObject("building").getString("type"), rowArray.getJSONObject(j).getJSONObject("building")),
+                                Resource.getResourceWithID(rowArray.getJSONObject(j).getJSONObject("resource").getInt("resourceID"))
+                            );
+                        } else if(rowArray.getJSONObject(j).has("resource")) {
+                            fieldArray[i][j] = new Field(
+                                rowArray.getJSONObject(j).getJSONObject("resource").getInt("resourceID"));
+                        }
+                    }
                 }
             }
-
+    
+            // Initialize the worldGenerator with the loaded fieldArray
             wGenerator = new WorldGenerator(fieldArray);
+    
         } catch (Exception e) {
-            throw new IllegalArgumentException("Something is wrong with the input file or something went wrong while loading it.");
+            throw new IllegalArgumentException("Something is wrong with the input file or something went wrong while loading it: " + e.getMessage());
         }
     }
 
@@ -145,6 +187,69 @@ public class GameController {
         } catch (IllegalArgumentException e) {
             return;
         }
+    }
+
+    /**
+     * Helper method to get the building object from the type and the JSONObject.
+     * 
+     * @param buildingType The type of the building as a string.
+     * @param buildingObject The JSONObject containing the building.
+     * @return The building object.
+     */
+    private Building getBuildingFromType(String buildingType, JSONObject buildingObject) {
+        return switch (buildingType) {
+            case "collectionSite" -> new CollectionSite(
+                buildingObject.getInt("rotation"),
+                parseContent(buildingObject.getJSONArray("content"))
+            );
+            case "conveyorBelt" -> new ConveyorBelt(
+                buildingObject.getInt("rotation"),
+                parseContent(buildingObject.getJSONArray("content")),
+                parseOutputDirections(buildingObject.getJSONArray("outputDirections"))
+            );
+            case "extractor" -> new Extractor(
+                buildingObject.getInt("rotation"),
+                parseContent(buildingObject.getJSONArray("content")),
+                buildingObject.getInt("itemToBeExtracted")
+            );
+            case "smelter" -> new Smelter(
+                buildingObject.getInt("rotation"),
+                parseContent(buildingObject.getJSONArray("content"))
+            );
+            default -> null;
+        };
+    }
+
+    /**
+     * Helper method to parse the content from a JSONArray.
+     * 
+     * @param jsonArray The JSONArray containing the content.
+     * @return A LinkedList of Items.
+     */
+    private static LinkedList<Item> parseContent(JSONArray jsonArray) {
+        LinkedList<Item> content = new LinkedList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            if (jsonArray.isNull(i)) {
+                content.add(null);
+            } else {
+                content.add(Item.getItemWithID(jsonArray.getInt(i)));
+            }
+        }
+        return content;
+    }
+
+    /**
+     * Helper method to parse the output directions from a JSONArray.
+     * 
+     * @param jsonArray The JSONArray containing the output directions.
+     * @return A byte array of output directions.
+     */
+    private static byte[] parseOutputDirections(JSONArray jsonArray) {
+        byte[] outputDirections = new byte[jsonArray.length()];
+        for (int i = 0; i < jsonArray.length(); i++) {
+            outputDirections[i] = (byte) jsonArray.getInt(i);
+        }
+        return outputDirections;
     }
 
     /**
@@ -647,9 +752,9 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Returns the building that is planned to be placed next.
      * 
-     * @return to be done
+     * @return The building object
      */
     public Building getBuildingToBePlaced() {
         return buildingToBePlaced;
@@ -692,38 +797,45 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Returns the inventory of the player.
      * 
-     * @return to be done
+     * @return The inventory as a HashMap
      */
     public HashMap<Item, Integer> getInventory() {
         return inventory;
     }
 
     /**
-     * to be done
+     * Method to save the current world state to a JSON file.
      * 
-     * @return to be done
+     * @return Returns whether the save was successful or not
      */
     public boolean saveWorld() {
         try (FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {
             JSONObject properties = new JSONObject();
 
             properties.put("worldName", worldName);
+
             properties.put("posX", String.valueOf(posXinArray));
             properties.put("posY", String.valueOf(posYinArray));
 
-            JSONArray outerArray = new JSONArray();
+            properties.put("offsetX", posXonTile);
+            properties.put("offsetY", posYonTile);
 
-            for (Field[] row : wGenerator.getMap()) {
-                JSONArray innerArray = new JSONArray();
-                for (Field field : row) {
-                    innerArray.put(field != null ? field.toJSONObject() : JSONObject.NULL);
-                }
-                outerArray.put(innerArray);
+            properties.put("movementDirection", String.valueOf(movementDirection));
+
+            JSONArray inventoryArray = new JSONArray();
+            for (Entry<Item, Integer> entry : inventory.entrySet()) {
+                JSONObject itemObject = new JSONObject();
+                itemObject.put("itemID", entry.getKey().getItemID());
+                itemObject.put("quantity", entry.getValue());
+                inventoryArray.put(itemObject);
             }
+            properties.put("inventory", inventoryArray);
 
-            properties.put("worldMap", outerArray);
+            JSONArray jsonMap = wGenerator.getJSONMap();
+
+            properties.put("worldMap", jsonMap);
 
             file.write(properties.toString(0));
 
@@ -735,7 +847,7 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Method to read a JSON file and return it as a JSONObject.
      * 
      * @param filePath FilePath of the JSON File to read from
      * @return JSONObject Returns JSON Input File as JSONObject

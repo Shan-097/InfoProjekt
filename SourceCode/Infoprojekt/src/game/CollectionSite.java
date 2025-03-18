@@ -1,6 +1,10 @@
 package game;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * The collection site is a building that collects the items moved to it and
@@ -33,6 +37,16 @@ public class CollectionSite extends Building {
      */
     public CollectionSite() {
         super();
+    }
+
+    /**
+     * Constructor for CollectionSite that initializes the object with saved values.
+     * 
+     * @param rotation The rotation of the collection site.
+     * @param content  The inventory of the collection site.
+     */
+    public CollectionSite(int rotation, LinkedList<Item> content) {
+        super(rotation, content);
     }
 
     /**
@@ -88,5 +102,20 @@ public class CollectionSite extends Building {
      */
     public byte[] getOutputDirections() {
         return OUTPUT_DIRECTIONS;
+    }
+
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
+    @Override
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("rotation", this.getRotation());
+        jsonObject.put("content", new JSONArray(this.getInventory()));
+        jsonObject.put("type", "collectionSite");
+
+        return jsonObject;
     }
 }

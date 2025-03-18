@@ -2,9 +2,7 @@ package main;
 
 import game.GamePanel;
 import hotKey.HotKeyPanel;
-
 import java.awt.Dimension;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -65,6 +63,18 @@ public class App {
     }
 
     /**
+     * loadCreateGameScreen sets the necessary values and creates the window of and
+     * for the create game screen closing the others in the process.
+     */
+    public static void loadCreateGameScreen() {
+        CreateGamePanel createGamePanel = new CreateGamePanel(FRAME_RATE);
+        setStandardProperties(createGamePanel);
+
+        // random values, TODO: choose better
+        window.setMinimumSize(new Dimension(500, 300));
+    }
+
+    /**
      * loadHotKeyScreen sets the necessary values and creates the window of and for
      * the hot key screen closing the others in the process.
      */
@@ -80,9 +90,12 @@ public class App {
     /**
      * loadGameScreen sets the necessary values and creates the window of and for
      * the game screen closing the others in the process.
+     * 
+     * @param worldPath to be done
+     * @param worldName to be done
      */
-    public static void loadGameScreen(String worldPath) {
-        GamePanel gamePanel = new GamePanel(FRAME_RATE, worldPath);
+    public static void loadGameScreen(String worldPath, String worldName) {
+        GamePanel gamePanel = new GamePanel(FRAME_RATE, worldPath, worldName);
         setStandardProperties(gamePanel);
 
         // random values, TODO: choose better

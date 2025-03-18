@@ -1,6 +1,10 @@
 package game;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * The smelter is a building that turns passing through items into their semlted
@@ -45,6 +49,16 @@ public class Smelter extends Building {
     }
 
     /**
+     * Constructor for Smelter that initializes the object with saved values.
+     * 
+     * @param rotation The rotation of the smelter.
+     * @param content  The inventory of the smelter.
+     */
+    public Smelter(int rotation, LinkedList<Item> content) {
+        super(rotation, content);
+    }
+
+    /**
      * As this building smelts items it returns the smelted variant of the given
      * one.<br>
      * null is defined as the smelted item of null.
@@ -85,5 +99,20 @@ public class Smelter extends Building {
      */
     public byte[] getOutputDirections() {
         return OUTPUT_DIRECTIONS;
+    }
+
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
+    @Override
+    public JSONObject toJSONObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("rotation", this.getRotation());
+        jsonObject.put("content", new JSONArray(this.getInventory()));
+        jsonObject.put("type", "smelter");
+
+        return jsonObject;
     }
 }

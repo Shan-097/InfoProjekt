@@ -122,12 +122,12 @@ public class GamePanel extends JPanel implements Runnable {
      * @param pFr       Frame rate
      * @param pFilePath to be done
      */
-    public GamePanel(int pFr, String pFilePath) {
-        this.setPreferredSize(new Dimension(1000, 600));// random values, TO DO: choose better
+    public GamePanel(int pFr, String pFilePath, String pWorldName) {
+        this.setPreferredSize(new Dimension(1000, 600)); // random values, TO DO: choose better
         this.setDoubleBuffered(true);
         frameRate = pFr;
         if (pFilePath == null) {
-            gameController = new GameController();
+            gameController = new GameController(pWorldName, true);
         } else {
             gameController = new GameController(pFilePath);
         }
@@ -257,9 +257,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         Music.stopMusic();
-        Music.SpawnMusic(".\\Music\\spawn sound.wav");
+        Music.SpawnMusic("./Music/spawn sound.wav");
         Music.stopMusic();
-        Music.LoopMusic(".\\Music\\Hintergrund.wav");
+        Music.LoopMusic("./Music/Hintergrund.wav");
 
         resumeButton = new JButton("Resume");
         exitButton = new JButton("Exit");
@@ -293,9 +293,14 @@ public class GamePanel extends JPanel implements Runnable {
         resumeButton.setRequestFocusEnabled(false);
         saveAndExitButton.setRequestFocusEnabled(false);
         exitButton.setRequestFocusEnabled(false);
+
         add(resumeButton);
         add(saveAndExitButton);
         add(exitButton);
+
+        resumeButton.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 - 45, buttonWidth, buttonHeight);
+        saveAndExitButton.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 + 45, buttonWidth, buttonHeight);
+        exitButton.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
     }
 
     /**
@@ -658,12 +663,17 @@ public class GamePanel extends JPanel implements Runnable {
             g2d.setColor(Color.WHITE);
             g2d.fillRect((width / 2) - (width / 3) / 2, (height / 2) - (height / 3) / 2, width / 3, height / 3);
 
-            resumeButton.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 - 45,
-                    buttonWidth, buttonHeight);
-            saveAndExitButton.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 + 45,
-                    buttonWidth, buttonHeight);
-            exitButton.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2,
-                    buttonWidth, buttonHeight);
+            resumeButton.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 - 45, buttonWidth, buttonHeight);
+            saveAndExitButton.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2 + 45, buttonWidth, buttonHeight);
+            exitButton.setBounds((this.getWidth() - buttonWidth) / 2, (this.getHeight() - buttonHeight) / 2, buttonWidth, buttonHeight);
+
+            resumeButton.setVisible(true);
+            saveAndExitButton.setVisible(true);
+            exitButton.setVisible(true);
+        } else {
+            resumeButton.setVisible(false);
+            saveAndExitButton.setVisible(false);
+            exitButton.setVisible(false);
         }
     }
 

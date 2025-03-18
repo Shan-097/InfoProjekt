@@ -1,18 +1,14 @@
 package main;
 
 import game.Music;
-
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.io.File;
-
 import javax.imageio.ImageIO;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -105,8 +101,7 @@ public class StartingPanel extends JPanel implements Runnable {
 
         startNewGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // TODO: Implement a way to create world with custom size and name.
-                App.loadGameScreen(null);
+                App.loadCreateGameScreen();
             }
         });
         loadGame.addActionListener(new ActionListener() {
@@ -127,7 +122,7 @@ public class StartingPanel extends JPanel implements Runnable {
         add(loadGame);
 
         Music.stopMusic();
-        Music.LoopMusic(".\\Music\\mainmenu.wav");
+        Music.LoopMusic("./Music/mainmenu.wav");
     }
 
     /**

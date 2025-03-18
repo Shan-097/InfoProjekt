@@ -3,6 +3,9 @@ package game;
 import java.util.HashSet;
 import java.util.Random;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * The WorldGenerator class is responsible for generating and manipulating the
  * map.
@@ -395,10 +398,21 @@ public class WorldGenerator {
     }
 
     /**
-     * TODO: Move store method from game controller here to remove this method.
+     * Returns the map as a JSONArray.
+     * 
+     * @return The map as a JSONArray.
      */
-    public Field[][] getMap() {
-        return map;
+    public JSONArray getJSONMap() {
+        JSONArray outerArray = new JSONArray();
+        for (Field[] row : map) {
+            JSONArray innerArray = new JSONArray();
+            for (Field field : row) {
+                innerArray.put(field != null ? field.toJSONObject() : JSONObject.NULL);
+            }
+            outerArray.put(innerArray);
+        }
+
+        return outerArray;
     }
 
     /**
