@@ -1,7 +1,7 @@
 {
-    "posX": "46",
-    "offsetX": -0.11629539,
-    "posY": "46",
+    "posX": "41",
+    "offsetX": -0.034672305,
+    "posY": "43",
     "worldMap": [
         [
             {"resource": {"resourceID": 0}},
@@ -4269,7 +4269,31 @@
             {"resource": {"resourceID": 0}},
             {"resource": {"resourceID": 0}},
             {"resource": {"resourceID": 0}},
-            {"resource": {"resourceID": 1}},
+            {
+                "resource": {"resourceID": 1},
+                "building": {
+                    "cost": {
+                        "0": 0,
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0,
+                        "6": 0,
+                        "7": 0
+                    },
+                    "rotation": 1,
+                    "itemToBeExtracted": 4,
+                    "outputDirections": [2],
+                    "type": "extractor",
+                    "inputDirections": [],
+                    "content": [
+                        null,
+                        null,
+                        null
+                    ]
+                }
+            },
             {"resource": {"resourceID": 0}},
             {"resource": {"resourceID": 0}},
             {"resource": {"resourceID": 0}},
@@ -10806,9 +10830,9 @@
             {"resource": {"resourceID": 0}}
         ]
     ],
-    "offsetY": 0.38370463,
+    "offsetY": 0.06532763,
     "worldName": "testWorld",
-    "movementDirection": "A",
+    "movementDirection": "S",
     "inventory": [
         {
             "itemID": 4,

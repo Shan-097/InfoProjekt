@@ -67,7 +67,7 @@ public class GameController {
     /**
      * stores worldName in a String attribute
      */
-    private String worldName = "testWorld";
+    private String worldName = "savedWorld";
 
     /**
      * A temporary Building object storing what the player plans to place next.
@@ -797,11 +797,7 @@ public class GameController {
         return inventory;
     }
 
-    /**
-     * to be done
-     * 
-     * @return to be done
-     */
+
     public boolean saveWorld() {
         try (FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {
             JSONObject properties = new JSONObject();
