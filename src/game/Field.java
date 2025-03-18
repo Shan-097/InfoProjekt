@@ -81,9 +81,9 @@ public class Field {
     }
 
     /**
-     * to be done
+     * Builds a JSONObject with both the resource and (if present) the building.
      * 
-     * @return to be done
+     * @return The JSONObject representing the field.
      */
     protected JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();

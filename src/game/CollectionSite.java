@@ -105,9 +105,9 @@ public class CollectionSite extends Building {
     }
 
     /**
-     * to be done
+     * Function to create a JSONObject containing all necessary information about this CollectionSite to be saved in a JSON file.
      * 
-     * @return to be done
+     * @return The finished JSONObject.
      */
     @Override
     public JSONObject toJSONObject() {

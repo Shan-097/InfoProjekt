@@ -112,10 +112,12 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Instantiates a new Object of type GameController.<br>
+     * Loads the previously world from a file.
      * 
-     * @param pFilePath to be done
-     * @throws IllegalArgumentException to be done
+     * @param pFilePath The path to the file to load the world from.
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the path
+     *                                  is null or the file can't be read.
      */
     public GameController(String pFilePath) throws IllegalArgumentException {
         if (pFilePath == null) {

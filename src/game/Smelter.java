@@ -102,9 +102,9 @@ public class Smelter extends Building {
     }
 
     /**
-     * to be done
+     * Function to create a JSONObject containing all necessary information about this Smelter to be saved in a JSON file.
      * 
-     * @return to be done
+     * @return JSONObject containing all necessary information about this Smelter
      */
     @Override
     public JSONObject toJSONObject() {

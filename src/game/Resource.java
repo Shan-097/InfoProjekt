@@ -66,9 +66,9 @@ public class Resource {
     }
 
     /**
-     * to be done
+     * Builds a JSONObject containing this objects resourceID to be saved as part of the worldMap in a JSON file.
      * 
-     * @return to be done
+     * @return The JSONObject containing the resourceID.
      */
     protected JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();

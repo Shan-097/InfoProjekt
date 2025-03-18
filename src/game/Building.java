@@ -238,9 +238,9 @@ public abstract class Building {
     }
 
     /**
-     * to be done
+     * Creates a JSONObject containing the necessary information of the building.
      * 
-     * @return to be done
+     * @return JSONObject containing the necessary information of the building.
      */
     public abstract JSONObject toJSONObject();
 }
