@@ -1,1 +1,0 @@
-{"normal":{"moveRight":"d","moveLeft":"a","moveDown":"s","moveUp":"w"},"holdable":{"deleteBuilding":"x","decreaseVolume":"-","placeBuilding":"b","increaseVolume":"+"},"not_holdable":{"cancelPlacement":"q","placeConveyorBelt":"1","placeExtractor":"2","placeSmelter":"3","pauseMenu":"\u001b","rotateBuilding":"r"}}
