@@ -744,9 +744,9 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Returns the building that is planned to be placed next.
      * 
-     * @return to be done
+     * @return The building object
      */
     public Building getBuildingToBePlaced() {
         return buildingToBePlaced;
@@ -789,15 +789,19 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Returns the inventory of the player.
      * 
-     * @return to be done
+     * @return The inventory as a HashMap
      */
     public HashMap<Item, Integer> getInventory() {
         return inventory;
     }
 
-
+    /**
+     * Method to save the current world state to a JSON file.
+     * 
+     * @return Returns whether the save was successful or not
+     */
     public boolean saveWorld() {
         try (FileWriter file = new FileWriter("SourceCode/Infoprojekt/saves/" + worldName + ".json")) {
             JSONObject properties = new JSONObject();
@@ -835,7 +839,7 @@ public class GameController {
     }
 
     /**
-     * to be done
+     * Method to read a JSON file and return it as a JSONObject.
      * 
      * @param filePath FilePath of the JSON File to read from
      * @return JSONObject Returns JSON Input File as JSONObject
