@@ -128,7 +128,7 @@ public class HotKeyPanel extends JPanel implements Runnable {
         JButton temp;
         JLabel textField;
         for (Entry<String, Character> inputMapping : unionInputMap.entrySet()) {
-            textField = new JLabel(inputMapping.getKey() + ":");
+            textField = new JLabel("<html><font color='white'>" + inputMapping.getKey() + ":</html>");
             textField.setFont(new Font("Arial", Font.BOLD, 15));
             actions.put(inputMapping.getKey(), textField);
             add(textField);
