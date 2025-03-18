@@ -237,5 +237,10 @@ public abstract class Building {
         rotation = pRotation;
     }
 
+    /**
+     * to be done
+     * 
+     * @return to be done
+     */
     public abstract JSONObject toJSONObject();
 }

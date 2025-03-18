@@ -30,6 +30,11 @@ public class CreateGamePanel extends JPanel implements Runnable {
      */
     private Thread thread;
 
+    /**
+     * to be done
+     * 
+     * @param pFR to be done
+     */
     public CreateGamePanel(int pFR) {
         frameRate = pFR;
         thread = null;
