@@ -234,19 +234,41 @@ public class GameInputHandler {
         }
         for (Entry<Character, String> entry : reversedInputMapNormal.entrySet()) {
             if (entry.getValue().equals(s)) {
-                return String.valueOf(entry.getKey());
+                return charToHumanReadableString(entry.getKey());
             }
         }
         for (Entry<Character, String> entry : reversedInputMapHoldable.entrySet()) {
             if (entry.getValue().equals(s)) {
-                return String.valueOf(entry.getKey());
+                return charToHumanReadableString(entry.getKey());
             }
         }
         for (Entry<Character, String> entry : reversedInputMapNotHoldable.entrySet()) {
             if (entry.getValue().equals(s)) {
-                return String.valueOf(entry.getKey());
+                return charToHumanReadableString(entry.getKey());
             }
         }
         return "";
+    }
+
+    /**
+     * Converts the char to a human readable string.<br>
+     * Note that not all characters are supported.<br>
+     * E.g. '\u001B' to "escape"
+     * 
+     * @param c The character to be converted
+     * @return The string of the given character in human readable form
+     */
+    private String charToHumanReadableString(char c) {
+        // '\u001B' esc, '\u0020' space, '\u007F' delete
+        switch (c) {
+            case '\u001B':
+                return "escape";
+            case '\u0020':
+                return "space";
+            case '\u007F':
+                return "delete";
+            default:
+                return String.valueOf((char) c);
+        }
     }
 }

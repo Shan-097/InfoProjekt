@@ -45,7 +45,7 @@ public class App {
         setStandardProperties(startingPanel);
 
         // random values, TODO: choose better
-        window.setMinimumSize(new Dimension(500, 300));
+        window.setMinimumSize(new Dimension(600, 500));
         startingPanel.startGameThread();
     }
 
