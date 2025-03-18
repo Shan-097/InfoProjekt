@@ -33,7 +33,8 @@ public class Field {
      * The constructor for a field when only the resource id is known.
      * 
      * @param pResourceID The id of the resource of the vein of the new field.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException throws an IllegalArgumentException
+     *                                  if {@link Resource#getResourceWithID(int)} throws one.
      */
     protected Field(int pResourceID) throws IllegalArgumentException {
         try {
@@ -86,11 +87,11 @@ public class Field {
      */
     protected JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
-        
-        if(building != null) {
+
+        if (building != null) {
             jsonObject.put("building", building.toJSONObject());
         }
-        if(resource != null) {
+        if (resource != null) {
             jsonObject.put("resource", resource.toJSONObject());
         }
 

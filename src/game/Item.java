@@ -48,7 +48,8 @@ public class Item {
      * 
      * @param item The item to be smelted
      * @return The smelted item
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  given item is null or not recognized.
      */
     protected static Item getSmeltedItem(Item item) throws IllegalArgumentException {
         if (item == null) {
@@ -80,7 +81,8 @@ public class Item {
      * 
      * @param pItemID The id of the requested item
      * @return The item with the specified id
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  item id isn't recognized.
      */
     protected static Item getItemWithID(int pItemID) throws IllegalArgumentException {
         if (!ID_MAP.containsKey(pItemID)) {
@@ -94,10 +96,11 @@ public class Item {
      * 
      * @param resource The resource the item is requested from
      * @return The item of the specified resource
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  given resource is null.
      */
     protected static Item getItemFromResource(Resource resource) throws IllegalArgumentException {
-        if (resource ==  null) {
+        if (resource == null) {
             throw new IllegalArgumentException("The resource can't be null");
         }
         switch (resource.getResourceID()) {

@@ -78,12 +78,13 @@ public class GameController {
      * Instantiates a new Object of type GameController.<br>
      * Sets for example the starting position of the player.
      * 
-     * @param pWorldName to be done
-     * @param createNewGame to be done
-     * @throws IllegalArgumentException to be done
+     * @param pWorldName    The name of this world.
+     * @param createNewGame A parameter just to distinguish the two Constructors.
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  world name is null or empty.
      */
     public GameController(String pWorldName, boolean createNewGame) throws IllegalArgumentException {
-        if (pWorldName == null) {
+        if (pWorldName == null || pWorldName.isEmpty()) {
             throw new IllegalArgumentException("The world name should not be null.");
         }
 
@@ -120,22 +121,22 @@ public class GameController {
         if (pFilePath == null) {
             throw new IllegalArgumentException("If the world is loaded from a file the path should not be null.");
         }
-    
+
         try {
             JSONObject savedWorld = readJsonFile(pFilePath);
-    
+
             // Load the worldName
             worldName = savedWorld.getString("worldName");
-    
+
             // Load the players position
             posXinArray = savedWorld.getInt("posX");
             posYinArray = savedWorld.getInt("posY");
             posXonTile = (float) savedWorld.getDouble("offsetX");
             posYonTile = (float) savedWorld.getDouble("offsetY");
-    
+
             // Load the movement direction of the player
             movementDirection = savedWorld.getString("movementDirection").charAt(0);
-    
+
             // Load the player inventory
             inventory = new HashMap<>();
             JSONArray inventoryArray = savedWorld.getJSONArray("inventory");
@@ -145,35 +146,39 @@ public class GameController {
                 int quantity = itemObject.getInt("quantity");
                 inventory.put(item, quantity);
             }
-    
+
             // Load the worldMap
             JSONArray worldMap = savedWorld.getJSONArray("worldMap");
             int rows = worldMap.length();
             int cols = worldMap.getJSONArray(0).length();
             Field[][] fieldArray = new Field[rows][cols];
-    
+
             for (int i = 0; i < rows; i++) {
                 JSONArray rowArray = worldMap.getJSONArray(i);
                 for (int j = 0; j < cols; j++) {
                     if (!rowArray.isNull(j)) {
-                        if(rowArray.getJSONObject(j).has("resource") && rowArray.getJSONObject(j).has("building")) {
+                        if (rowArray.getJSONObject(j).has("resource") && rowArray.getJSONObject(j).has("building")) {
                             fieldArray[i][j] = new Field(
-                                getBuildingFromType(rowArray.getJSONObject(j).getJSONObject("building").getString("type"), rowArray.getJSONObject(j).getJSONObject("building")),
-                                Resource.getResourceWithID(rowArray.getJSONObject(j).getJSONObject("resource").getInt("resourceID"))
-                            );
-                        } else if(rowArray.getJSONObject(j).has("resource")) {
+                                    getBuildingFromType(
+                                            rowArray.getJSONObject(j).getJSONObject("building").getString("type"),
+                                            rowArray.getJSONObject(j).getJSONObject("building")),
+                                    Resource.getResourceWithID(
+                                            rowArray.getJSONObject(j).getJSONObject("resource").getInt("resourceID")));
+                        } else if (rowArray.getJSONObject(j).has("resource")) {
                             fieldArray[i][j] = new Field(
-                                rowArray.getJSONObject(j).getJSONObject("resource").getInt("resourceID"));
+                                    rowArray.getJSONObject(j).getJSONObject("resource").getInt("resourceID"));
                         }
                     }
                 }
             }
-    
+
             // Initialize the worldGenerator with the loaded fieldArray
             wGenerator = new WorldGenerator(fieldArray);
-    
+
         } catch (Exception e) {
-            throw new IllegalArgumentException("Something is wrong with the input file or something went wrong while loading it: " + e.getMessage());
+            throw new IllegalArgumentException(
+                    "Something is wrong with the input file or something went wrong while loading it: "
+                            + e.getMessage());
         }
     }
 
@@ -192,30 +197,26 @@ public class GameController {
     /**
      * Helper method to get the building object from the type and the JSONObject.
      * 
-     * @param buildingType The type of the building as a string.
+     * @param buildingType   The type of the building as a string.
      * @param buildingObject The JSONObject containing the building.
      * @return The building object.
      */
     private Building getBuildingFromType(String buildingType, JSONObject buildingObject) {
         return switch (buildingType) {
             case "collectionSite" -> new CollectionSite(
-                buildingObject.getInt("rotation"),
-                parseContent(buildingObject.getJSONArray("content"))
-            );
+                    buildingObject.getInt("rotation"),
+                    parseContent(buildingObject.getJSONArray("content")));
             case "conveyorBelt" -> new ConveyorBelt(
-                buildingObject.getInt("rotation"),
-                parseContent(buildingObject.getJSONArray("content")),
-                parseOutputDirections(buildingObject.getJSONArray("outputDirections"))
-            );
+                    buildingObject.getInt("rotation"),
+                    parseContent(buildingObject.getJSONArray("content")),
+                    parseOutputDirections(buildingObject.getJSONArray("outputDirections")));
             case "extractor" -> new Extractor(
-                buildingObject.getInt("rotation"),
-                parseContent(buildingObject.getJSONArray("content")),
-                buildingObject.getInt("itemToBeExtracted")
-            );
+                    buildingObject.getInt("rotation"),
+                    parseContent(buildingObject.getJSONArray("content")),
+                    buildingObject.getInt("itemToBeExtracted"));
             case "smelter" -> new Smelter(
-                buildingObject.getInt("rotation"),
-                parseContent(buildingObject.getJSONArray("content"))
-            );
+                    buildingObject.getInt("rotation"),
+                    parseContent(buildingObject.getJSONArray("content")));
             default -> null;
         };
     }
@@ -349,7 +350,9 @@ public class GameController {
      * 
      * @param startingPoints A list of coordinates of the building nothing is moved
      *                       away from.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  list of coordinates is null or one of the
+     *                                  coordinates isn't valid.
      */
     private void moveItems(ArrayList<Tuple> startingPoints) throws IllegalArgumentException {
         if (startingPoints == null) {
@@ -439,7 +442,8 @@ public class GameController {
      * Y S C
      * 
      * @param direction The direction the player is moving in.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  given direction isn't valid.
      */
     public void movePlayer(char direction) throws IllegalArgumentException {
         if ("QWEADYSC".indexOf(direction) == -1) {
@@ -538,7 +542,9 @@ public class GameController {
      * Sets the building that the player plans to place next.
      * 
      * @param buildingType The type of building given by a string.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  given building type is null or not
+     *                                  recognized.
      */
     public void chooseBuildingToPlace(String buildingType) throws IllegalArgumentException {
         if (buildingType == null) {
@@ -683,7 +689,8 @@ public class GameController {
      * 
      * @param item The item to be added to the inventory.
      * @return Returns wheter the item has been added sucessfully or not
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  given item isn't recognized.
      */
     protected static boolean addItemToInventory(Item item) throws IllegalArgumentException {
         if (item == null) {
@@ -766,7 +773,9 @@ public class GameController {
      * @param posXinArray The x coordinate in the map
      * @param posYinArray The y coordinate in the map
      * @return The Field object
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException when
+     *                                  {@link WorldGenerator#getField(int, int)}
+     *                                  throws an IllegalArgumentException.
      */
     public Field getField(int posXinArray, int posYinArray) throws IllegalArgumentException {
         try {

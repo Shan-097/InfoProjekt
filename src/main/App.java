@@ -89,8 +89,8 @@ public class App {
      * loadGameScreen sets the necessary values and creates the window of and for
      * the game screen closing the others in the process.
      * 
-     * @param worldPath to be done
-     * @param worldName to be done
+     * @param worldPath The path of the world file if it exists.
+     * @param worldName The name of the world.
      */
     public static void loadGameScreen(String worldPath, String worldName) {
         GamePanel gamePanel = new GamePanel(FRAME_RATE, worldPath, worldName);

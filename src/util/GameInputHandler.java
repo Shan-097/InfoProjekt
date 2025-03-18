@@ -19,17 +19,17 @@ public class GameInputHandler {
     private InputHandler inputHandler;
 
     /**
-     * to be done
+     * The reversed input map of actions with normal input behavior.
      */
     private HashMap<Character, String> reversedInputMapNormal;
 
     /**
-     * to be done
+     * The reversed input map of actions that can't be hold.
      */
     private HashMap<Character, String> reversedInputMapNotHoldable;
 
     /**
-     * to be done
+     * The reversed input map of actions that can be hold.
      */
     private HashMap<Character, String> reversedInputMapHoldable;
 
@@ -39,7 +39,7 @@ public class GameInputHandler {
     private GameController gameController;
 
     /**
-     * to be done
+     * The game panel object.
      */
     private GamePanel gamePanel;
 
@@ -50,7 +50,7 @@ public class GameInputHandler {
      * 
      * @param pGC The gameController object of this instance
      * @param pIH The inputHandler of the JPanel
-     * @param pGP to be done
+     * @param pGP The game panel object.
      */
     public GameInputHandler(GameController pGC, GamePanel pGP, InputHandler pIH) {
         gameController = pGC;
@@ -223,10 +223,10 @@ public class GameInputHandler {
     }
 
     /**
-     * to be done
+     * Returns the key of a given action.
      * 
-     * @param s to be done
-     * @return to be done
+     * @param s The given action.
+     * @return The string of the key.
      */
     public String getKey(String s){
         if (s == null) {

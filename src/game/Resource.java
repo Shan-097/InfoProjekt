@@ -46,7 +46,8 @@ public class Resource {
      * 
      * @param pResourceID The id of the requested resource
      * @return The resource with the specified id
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  given resource id isn't recognized.
      */
     protected static Resource getResourceWithID(int pResourceID) throws IllegalArgumentException {
         if (!ID_MAP.containsKey(pResourceID)) {
@@ -66,7 +67,8 @@ public class Resource {
 
     /**
      * to be done
-     * @return
+     * 
+     * @return to be done
      */
     protected JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();

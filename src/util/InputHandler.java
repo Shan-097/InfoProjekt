@@ -78,17 +78,18 @@ public class InputHandler implements KeyListener {
      * Returns wheter a character is pressed or not.
      * 
      * @param c The character to be checked
-     * @return boolean True if pressed otherwise false
+     * @return True if pressed otherwise false
      */
     public boolean keyIsPressed(char c) {
         return keysDown.contains(c);
     }
 
     /**
-     * to be done
+     * Returns wheter a character is pressed or not.<br>
+     * The key is then removed from the collection.
      * 
-     * @param c to be done
-     * @return to be done
+     * @param c The character to be checked
+     * @return True if pressed otherwise false
      */
     public boolean keyIsHold(Character c) {
         if (keysDown.contains(c)) {
@@ -99,10 +100,11 @@ public class InputHandler implements KeyListener {
     }
 
     /**
-     * to be done
+     * Returns wheter a character is pressed or not.<br>
+     * The key is then removed from the collection and black listed until released.
      * 
-     * @param c to be done
-     * @return to be done
+     * @param c The character to be checked
+     * @return True if pressed otherwise false
      */
     public boolean keyIsClicked(Character c) {
         if (keysDown.contains(c)) {

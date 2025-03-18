@@ -15,17 +15,17 @@ import game.GameController;
  */
 public class LoadStoreHotKeys {
     /**
-     * to be done
+     * The standard input map of actions that can be hold.
      */
     private static final HashMap<String, Character> STANDARD_INPUT_MAP_HOLDABLE;
 
     /**
-     * to be done
+     * The standard input map of actions with normal input behavior.
      */
     private static final HashMap<String, Character> STANDARD_INPUT_MAP_NORMAL;
 
     /**
-     * to be done
+     * The standard input map of actions that can't be hold.
      */
     private static final HashMap<String, Character> STANDARD_INPUT_MAP_NOT_HOLDABLE;
 
@@ -57,16 +57,16 @@ public class LoadStoreHotKeys {
     /**
      * Empty and unused constructor of LoadStoreHotKeys
      */
-    public LoadStoreHotKeys(){
+    public LoadStoreHotKeys() {
     }
 
     /**
      * Stores the given input maps.
      * 
-     * @return to be done
-     * @param iMN  to be done
-     * @param iMNH to be done
-     * @param iMH  to be done
+     * @param iMN  The input map of actions with normal input behavior.
+     * @param iMNH The input map of actions that can't be hold.
+     * @param iMH  The input map of actions that can be hold.
+     * @return Returns if the store operation was sucessful.
      */
     public static boolean storeHotKeys(HashMap<String, Character> iMN, HashMap<String, Character> iMNH,
             HashMap<String, Character> iMH) {
@@ -116,7 +116,10 @@ public class LoadStoreHotKeys {
      * Loads and returns the stored input maps or returns the standard input maps if
      * an error occurs.
      * 
-     * @return to be done
+     * @return Returns a hashmap that maps the input maps as follows:<br>
+     *         "normal" -> The input map of actions with normal input behavior.<br>
+     *         "not_holdable" -> The input map of actions that can't be hold.<br>
+     *         "holdable" -> The input map of actions that can be hold.
      */
     public static HashMap<String, HashMap<String, Character>> loadHotKeys() {
         HashMap<String, HashMap<String, Character>> standard = new HashMap<String, HashMap<String, Character>>();

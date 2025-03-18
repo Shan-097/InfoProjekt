@@ -104,7 +104,7 @@ public class GamePanel extends JPanel implements Runnable {
     private long drawState = 0;
 
     /**
-     * to be done
+     * A boolean storing wheter or not the game is paused.
      */
     private boolean gamePaused;
 
@@ -381,7 +381,7 @@ public class GamePanel extends JPanel implements Runnable {
      * Always keeps player centered and redraws the background to imitate movement
      * Responsible for the majority of visuals displayed on the screen
      * 
-     * @param g to be done
+     * @param g A necessary parameter that is used to draw.
      */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

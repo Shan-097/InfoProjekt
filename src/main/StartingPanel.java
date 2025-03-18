@@ -57,7 +57,7 @@ public class StartingPanel extends JPanel implements Runnable {
     private Thread thread;
 
     /**
-     * to be done
+     * The background image of the starting panel.
      */
     private Image imgBackground;
 
@@ -176,13 +176,13 @@ public class StartingPanel extends JPanel implements Runnable {
     }
 
     /**
-     * to be done
+     * The draw method of the starting panel
      * 
-     * @param g to be done
+     * @param g The necessary graphics object that is used to draw.
      */
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g); // Call this first!
+        super.paintComponent(g);
 
         Graphics2D g2d = (Graphics2D) g;
 

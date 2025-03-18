@@ -62,17 +62,17 @@ public class HotKeyPanel extends JPanel implements Runnable {
     private String nameOfActionToChange;
 
     /**
-     * to be done
+     * The input map of actions with normal input behavior.
      */
     private HashMap<String, Character> iMN;
 
     /**
-     * to be done
+     * The input map of actions that can't be hold.
      */
     private HashMap<String, Character> iMNH;
 
     /**
-     * to be done
+     * The input map of actions that can be hold.
      */
     private HashMap<String, Character> iMH;
 
@@ -82,7 +82,7 @@ public class HotKeyPanel extends JPanel implements Runnable {
     private Thread thread;
 
     /**
-     * to be done
+     * The background image of the hotkey panel.
      */
     private Image imgBackground;
 

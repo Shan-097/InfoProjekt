@@ -32,7 +32,7 @@ public abstract class Building {
     private LinkedList<Item> content;
 
     /**
-     * to be done
+     * The indices of the item that have moved last iteration.
      */
     private HashSet<Integer> movedIndices;
 
@@ -121,7 +121,10 @@ public abstract class Building {
     }
 
     /**
-     * to be done
+     * moveItemInsideBuilding is called if the next building won't accept the item
+     * that this building would move to it or there is no next building.<br>
+     * This method moves a item inside this buildings inventory if a previous item
+     * is null.
      */
     protected void moveItemInsideBuilding() {
         movedIndices.clear();
@@ -171,9 +174,9 @@ public abstract class Building {
     }
 
     /**
-     * to be done
+     * Returns the collection of indices of items that were moved in the last iteration.
      * 
-     * @return to be done
+     * @return The collection of indices
      */
     public HashSet<Integer> getMovedItems() {
         return movedIndices;

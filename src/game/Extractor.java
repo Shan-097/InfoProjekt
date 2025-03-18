@@ -55,13 +55,13 @@ public class Extractor extends Building {
     /**
      * Constructor for Extractor that initializes the object with saved values.
      * 
-     * @param rotation         The rotation of the extractor.
-     * @param content          The inventory of the extractor.
+     * @param rotation          The rotation of the extractor.
+     * @param content           The inventory of the extractor.
      * @param itemToBeExtracted The item to be extraced.
      */
     public Extractor(int rotation, LinkedList<Item> content, int itemToBeExtracted) {
         super(rotation, content); // Call the parent constructor with rotation and content
-        
+
         this.itemToBeExtracted = Item.getItemWithID(itemToBeExtracted);
     }
 
@@ -108,7 +108,8 @@ public class Extractor extends Building {
      * Sets the item that this extractor should extract from the given resource.
      * 
      * @param pResource The resource of the item that is to be extracted.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if
+     *                                  {@link Item#getItemFromResource(Resource)} throws one.
      */
     protected void setResourceToBeExtracted(Resource pResource) throws IllegalArgumentException {
         try {

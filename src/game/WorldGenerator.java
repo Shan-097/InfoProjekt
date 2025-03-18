@@ -30,7 +30,10 @@ public class WorldGenerator {
      *
      * @param sizeX The number of tiles in the x dimension.
      * @param sizeY The number of tiles in the y dimension.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  given size is considered to small or the VM
+     *                                  ran out of memory while allocating the
+     *                                  requested map.
      */
     protected WorldGenerator(int sizeX, int sizeY) throws IllegalArgumentException {
         if (sizeX < 101 || sizeY < 101) {
@@ -64,13 +67,14 @@ public class WorldGenerator {
     }
 
     /**
-     * to be done
+     * Initializes a world generator object with a given map.
      * 
-     * @param worldMap to be done
-     * @throws IllegalArgumentException to be done
+     * @param worldMap The map that is to be used.
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  given world map is null (or invalid).
      */
     protected WorldGenerator(Field[][] worldMap) throws IllegalArgumentException {
-        if(worldMap == null) {
+        if (worldMap == null) {
             throw new IllegalArgumentException("The given map can't be null.");
         }
         map = worldMap;
@@ -84,7 +88,8 @@ public class WorldGenerator {
      * 
      * @param posX The x coordinate of the tile to be generated.
      * @param posY The y coordinate of the tile to be generated.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  given coordinates aren't valid.
      */
     protected void generateTile(int posX, int posY) throws IllegalArgumentException {
         if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
@@ -133,7 +138,8 @@ public class WorldGenerator {
      * @param probability The probabilities for the resources. probability[i] is the
      *                    probability of the resource with id i.
      * @return Returns the id of the chosen resource.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  given probabilities aren't valid.
      */
     private int generateRandomResource(double[] probability) throws IllegalArgumentException {
         if (probability == null || probability.length != 5) {
@@ -164,7 +170,9 @@ public class WorldGenerator {
      * 
      * @param posX The x coordinate of the tile to be generated.
      * @param posY The y coordinate of the tile to be generated.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  coordinates aren't valid or there is no
+     *                                  known resource id.
      */
     private void chooseResource(int posX, int posY) throws IllegalArgumentException {
         if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
@@ -299,7 +307,9 @@ public class WorldGenerator {
      * 
      * @param posX The x coordinate of the tile to be generated.
      * @param posY The y coordinate of the tile to be generated.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  coordinates aren't valid or there is no
+     *                                  known resource id.
      */
     private void collapseFunctionWave(int posX, int posY) throws IllegalArgumentException {
         if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
@@ -388,7 +398,8 @@ public class WorldGenerator {
      * @param posX The x coordinate of the tile.
      * @param posY The y coordinate of the tile.
      * @return The Field object of the tile.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  coordinates aren't valid.
      */
     public Field getField(int posX, int posY) throws IllegalArgumentException {
         if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
@@ -445,7 +456,9 @@ public class WorldGenerator {
      * @param posX The x coordinate of the tile.
      * @param posY The y coordinate of the tile.
      * @param b    The Building to be placed on the tile.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  coordinates aren't valid, the given building
+     *                                  is null or one would overwrite a building.
      */
     protected void placeBuilding(int posX, int posY, Building b) throws IllegalArgumentException {
         if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
@@ -453,6 +466,9 @@ public class WorldGenerator {
         }
         if (b == null) {
             throw new IllegalArgumentException("No building is given but instead null.");
+        }
+        if (map[posX][posY].getBuilding() != null) {
+            throw new IllegalArgumentException("There is already a building on this tile.");
         }
 
         map[posX][posY].setBuilding(b);
@@ -463,7 +479,8 @@ public class WorldGenerator {
      * 
      * @param posX The x coordinate of the tile.
      * @param posY The y coordinate of the tile.
-     * @throws IllegalArgumentException to be done
+     * @throws IllegalArgumentException Throws an IllegalArgumentException if the
+     *                                  coordinates aren't valid.
      */
     protected void deleteBuilding(int posX, int posY) throws IllegalArgumentException {
         if (posX < 0 || posY < 0 || map.length <= posX || map[0].length <= posY) {
